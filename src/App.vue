@@ -7,8 +7,8 @@
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
-          <b-nav-item href="#">Link</b-nav-item>
-          <b-nav-item href="#" disabled>Disabled</b-nav-item>
+          <b-nav-item to="/">Menu</b-nav-item>
+          <b-nav-item to="taps">Taps</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
