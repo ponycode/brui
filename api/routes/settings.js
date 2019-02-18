@@ -1,14 +1,28 @@
 const { Setting } = require('../models').models;
 
 module.exports = function( app ){
-  app.put('/api/settings',  _putSettings );
+  app.get('/api/settings', _getSettings );
+  app.put('/api/settings', _putSettings );
 };
+
+async function _getSettings( req, res ){
+  let settings = await Setting.findOne({
+    id: 1
+  });
+
+  settings = settings.toJSON();
+  delete settings.id;
+
+  res.send( settings );
+}
 
 async function _putSettings( req, res ){
   const settings = req.body;
 
-  const r = await Setting.upsert({ numberOfTaps: settings.numberOfTaps });
-  res.status( 200 );
+  await Setting.updateAllSettings({
+    numberOfTaps: settings.numberOfTaps
+  });
+
   res.send({
     taps: [
       {

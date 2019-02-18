@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { saveSettings } from '../api/settings.js'
+import { saveSettings, getSettings } from '../api/settings.js'
 
 export default {
   name: 'settings',
@@ -36,6 +36,11 @@ export default {
         numberOfTaps: this.numberOfTaps
       })
     }
+  },
+  async mounted () {
+    const settings = await getSettings();
+    console.log('settings', settings);
+    this.numberOfTaps = settings.numberOfTaps;
   }
 }
 </script>

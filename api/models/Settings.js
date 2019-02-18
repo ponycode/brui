@@ -7,6 +7,13 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
+  Setting.updateAllSettings = async function( settings ){
+    return await Setting.upsert({
+      id: 1,
+      numberOfTaps: settings.numberOfTaps
+    });
+  };
+
   return Setting;
 };
 
