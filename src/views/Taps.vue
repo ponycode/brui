@@ -1,9 +1,15 @@
 <template>
   <div class="taps">
-    <div v-for="(tap, index) in taps" :key="index">
-      <beer-tap-settings :tap="tap"></beer-tap-settings>
-      <hr/>
-    </div>
+    <b-tabs>
+      <b-tab :title="tap.name" v-for="(tap, index) in taps" :key="index">
+        <b-row>
+          <b-col>
+            <br/>
+            <beer-tap-settings :tap="tap"></beer-tap-settings>
+          </b-col>
+        </b-row>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
@@ -21,3 +27,9 @@ export default {
   })
 }
 </script>
+
+<style>
+.taps {
+  margin-top: 20px;
+}
+</style>

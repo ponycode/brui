@@ -71,7 +71,7 @@
 
 <script>
 export default {
-  name: 'beerTap',
+  name: 'beerTapSettings',
   props: {
     tap: {
       type: Object,

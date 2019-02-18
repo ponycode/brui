@@ -2,10 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Menu from './views/Menu.vue'
 import Taps from './views/Taps.vue'
+import Settings from './views/Settings.vue'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -16,6 +18,11 @@ export default new Router({
       path: '/taps',
       name: 'taps',
       component: Taps
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Settings
     }
   ]
 })
