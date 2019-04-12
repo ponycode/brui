@@ -8,14 +8,16 @@ export const MUTATIONS = {
   'SET_SETTINGS': 'SET_SETTINGS',
   'SET_BEERS': 'SET_BEERS',
   'SET_BEER': 'SET_BEER',
-  'SET_TAPS': 'SET_TAPS'
+  'SET_TAPS': 'SET_TAPS',
+  'FULLSCREEN': 'FULLSCREEN'
 };
 
 export default new Vuex.Store({
   state: {
     settings: null,
     beers: null,
-    taps: null
+    taps: null,
+    fullscreen: false
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -29,6 +31,9 @@ export default new Vuex.Store({
     },
     [MUTATIONS.SET_TAPS] ( state, taps ) {
       state.taps = taps
+    },
+    [MUTATIONS.FULLSCREEN] ( state, value ) {
+      state.fullscreen = value
     }
   },
   actions: {
@@ -44,7 +49,7 @@ export default new Vuex.Store({
       commit( MUTATIONS.SET_BEERS, beers )
     },
     async saveBeer ({ dispatch }, { beer, tapIndex }) {
-      beer = await saveBeer( tapIndex, beer )
+      await saveBeer( tapIndex, beer )
       dispatch('fetchTaps')
     },
     async fetchTaps({ commit }) {
