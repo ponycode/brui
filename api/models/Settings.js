@@ -7,6 +7,12 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
+  Setting.findAllSettings = async function(){
+    return await Setting.findOne({
+      id: 1
+    });
+  };
+
   Setting.updateAllSettings = async function( settings ){
     return await Setting.upsert({
       id: 1,

@@ -6,9 +6,7 @@ module.exports = function( app ){
 };
 
 async function _getSettings( req, res ){
-  let settings = await Setting.findOne({
-    id: 1
-  });
+  let settings = await Setting.findAllSettings();
 
   settings = settings.toJSON();
   delete settings.id;
@@ -23,11 +21,6 @@ async function _putSettings( req, res ){
     numberOfTaps: settings.numberOfTaps
   });
 
-  res.send({
-    taps: [
-      {
-        fuck: 'yea'
-      }
-    ]
-  })
+  const updatedSettings = await Setting.findAllSettings();
+  res.send( updatedSettings );
 }
