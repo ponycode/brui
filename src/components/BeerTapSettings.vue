@@ -1,20 +1,8 @@
 <template>
   <div class="beerTap">
     <b-form>
-      <b-form-group label="Tap Name"
-                    label-for="tapName"
-                    description="Tap name ( left, right, etc. )">
-        <b-form-input type="text"
-                      v-model="tap.name"
-                      required
-                      placeholder="Enter a name for your tap">
-        </b-form-input>
-      </b-form-group>
-
       <div class="row">
         <div class="col-md-6 col-md-offset-2">
-          <strong>Beer on Tap:</strong>
-
           <b-form-group label="Name" label-for="beerName">
             <b-form-input id="beerName"
                           type="text"
@@ -77,6 +65,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed () {
+    
   }
 }
 </script>

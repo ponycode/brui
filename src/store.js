@@ -1,10 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { getSettings, saveSettings } from './api/settings'
 
 Vue.use(Vuex)
 
+export const MUTATIONS = {
+  'SET_SETTINGS': 'SET_SETTINGS'
+};
+
 export default new Vuex.Store({
   state: {
+    settings: {
+      numberOfTaps: 1,
+      tapNames: []
+    },
     taps: [
       {
         name: 'Left Tap',
@@ -41,9 +50,17 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
-
+    [MUTATIONS.SET_SETTINGS] ( state, settings ) {
+      state.settings = settings;
+    }
   },
   actions: {
-
+    async fetchSettings ({ commit }) {
+      commit( MUTATIONS.SET_SETTINGS, await getSettings() )
+    },
+    async saveSettings ({ commit }, settings) {
+      settings = await saveSettings( settings )
+      commit( MUTATIONS.SET_SETTINGS, settings )
+    }
   }
 })

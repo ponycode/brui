@@ -7,6 +7,13 @@ module.exports = function( app ){
 
 async function _getSettings( req, res ){
   let settings = await Setting.findAllSettings();
+  if( !settings ){
+    // Let's always have a settings row no matter what
+    settings = await Setting.updateAllSettings({
+      numberOfTaps: 1,
+      tapNames: ['Tap 1']
+    });
+  }
 
   settings = settings.toJSON();
   delete settings.id;

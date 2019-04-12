@@ -2,7 +2,8 @@
   <div class="settings">
     <br/>
 
-    <b-form @submit="onSubmit">
+    <b-form v-on:submit.prevent="onSubmit">
+      <font-awesome-icon icon="coffee" />
 
       <b-row>
         <b-col md="4">
@@ -32,40 +33,44 @@
 </template>
 
 <script>
-import { saveSettings, getSettings } from '../api/settings.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'settings',
   data () {
     return {
-      numberOfTaps: 3,
       numberOfTapsOptions: [
         { value: 1, text: 'One, single tap kegarator' },
         { value: 2, text: 'Two, dual tap kegarator' },
         { value: 3, text: 'Triple tap kegarator' }
       ],
+      numberOfTaps: 1,
       tapNames: []
     };
   },
+  computed: {
+    ...mapState({
+      settings: state => state.settings,
+    })
+  },
   methods: {
-    onSubmit ( e ) {
-      e.preventDefault()
-      saveSettings({
+    async onSubmit () {
+      await this.$store.dispatch('saveSettings', {
         numberOfTaps: this.numberOfTaps,
         tapNames: this.tapNames
       })
+      this.$toasted.success('Settings Updated', { singleton: true }).goAway(3000)
     }
   },
   watch: {
-    numberOfTaps () {
-      this.tapNames = this.tapNames.slice( 0, this.numberOfTaps )
+    settings () {
+      if( !this.settings ) return 
+      this.numberOfTaps = this.settings.numberOfTaps
+      this.tapNames = this.settings.tapNames
     }
   },
   async mounted () {
-    const settings = await getSettings();
-    console.log('settings', settings);
-    this.numberOfTaps = settings.numberOfTaps || 1;
-    this.tapNames = settings.tapNames || [];
+    await this.$store.dispatch('fetchSettings')
   }
 }
 </script>
