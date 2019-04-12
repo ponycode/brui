@@ -4,6 +4,8 @@ const basename  = path.basename( __filename );
 const models = {};
 
 exports.load = function( sequelize ){
+  models.Op = sequelize.Op;
+
   fs.readdirSync( path.resolve( __dirname ) )
   .filter( file => {
     return ( file.indexOf('.') !== 0 ) && file !== basename && path.extname( file ) === '.js';
@@ -19,5 +21,6 @@ exports.load = function( sequelize ){
     }
   });
 };
+
 
 exports.models = models;

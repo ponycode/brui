@@ -49,7 +49,7 @@ exports.connect = async function(){
     await _createDb();
     const sequelize = await _connect();
     models.load( sequelize );
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: true, force: false }); // CAUTION: force=true will delete data
   }catch( e ){
     console.error( 'Error connecting to db', e );
     throw e;

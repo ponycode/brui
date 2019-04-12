@@ -3,8 +3,6 @@
     <br/>
 
     <b-form v-on:submit.prevent="onSubmit">
-      <font-awesome-icon icon="coffee" />
-
       <b-row>
         <b-col md="4">
             <b-form-group label="Number of Taps">

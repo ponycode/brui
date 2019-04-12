@@ -1,12 +1,12 @@
 <template>
   <div class="beerTap">
-    <b-form>
+    <b-form  v-on:submit.prevent="onSubmit" v-if="beer">
       <div class="row">
-        <div class="col-md-6 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-2" >
           <b-form-group label="Name" label-for="beerName">
             <b-form-input id="beerName"
                           type="text"
-                          v-model="tap.beer.name"
+                          v-model="beer.name"
                           required
                           placeholder="Beer name">
             </b-form-input>
@@ -15,7 +15,7 @@
           <b-form-group label="Image" label-for="beerImage">
             <b-form-input id="beerImage"
                           type="text"
-                          v-model="tap.beer.imageUrl"
+                          v-model="beer.imageUrl"
                           required
                           placeholder="Beer image url">
             </b-form-input>
@@ -24,7 +24,7 @@
           <b-form-group label="ABV" label-for="abv">
             <b-form-input id="abv" 
                           type="number"
-                          v-model="tap.beer.abv"
+                          v-model="beer.abv"
                           required
                           placeholder="ABV">
             </b-form-input>
@@ -33,7 +33,7 @@
           <b-form-group label="IBU" label-for="ibu">
             <b-form-input id="ibu" 
                           type="number"
-                          v-model="tap.beer.ibu"
+                          v-model="beer.ibu"
                           required
                           placeholder="IBU">
             </b-form-input>
@@ -41,7 +41,7 @@
 
           <b-form-group label="Description" label-for="description">
             <b-form-textarea id="description"
-                            v-model="tap.beer.description"
+                            v-model="beer.description"
                             placeholder="Beer description"
                             :rows="3"
                             :max-rows="6">
@@ -50,24 +50,43 @@
 
         </div>
         <div class="col-md-4">
-          <img v-if="tap.beer.imageUrl" :src="tap.beer.imageUrl" class="beerImage"/>
+          <img v-if="beer.imageUrl" :src="beer.imageUrl" class="beerImage"/>
         </div>
       </div>
+    
+      <b-button type="submit" variant="primary">Save</b-button>
+
     </b-form>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'beerTapSettings',
   props: {
-    tap: {
-      type: Object,
+    tapIndex: {
+      type: Number,
       required: true
     }
   },
-  computed () {
-    
+  computed: {
+    ...mapState({
+      beers: state => state.beers
+    }),
+    beer () {
+      if( !this.beers ) return null
+      for( const beer of this.beers ){
+        if( beer.tapIndex === this.tapIndex ) return beer.beer
+      }
+      return null
+    }
+  },
+  methods: {
+    async onSubmit () {
+      await this.$store.dispatch('saveBeer', { beer: { name: 'beer1' }, tapIndex: this.tap.index })
+    }
   }
 }
 </script>
