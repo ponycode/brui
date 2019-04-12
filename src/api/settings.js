@@ -16,7 +16,7 @@ export async function getBeers () {
   return result.data.beers
 }
 
-export async function saveBeer ( beer, tapIndex ) {
+export async function saveBeer ( tapIndex, beer ) {
   const result = await axios.put( `/api/taps/${tapIndex}/beer`, beer )
   return result.data
 }

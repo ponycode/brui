@@ -14,12 +14,6 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
-  Tap.associate = function( models ){
-    models.Tap.hasOne( models.Beer, {
-      foreignKey: 'beerId'
-    });
-  }
-
   return Tap;
 };
 

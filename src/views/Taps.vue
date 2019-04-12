@@ -1,11 +1,11 @@
 <template>
   <div class="taps" v-if="taps">
     <b-tabs>
-      <b-tab :title="tap.name" v-for="tap in taps" :key="tap.tapIndex">
+      <b-tab :title="tap.tapName" v-for="tap in taps" :key="tap.tapIndex">
         <b-row>
           <b-col>
             <br/>
-            <beer-tap-settings :tapIndex="tap.tapIndex"></beer-tap-settings>
+            <beer-tap-settings :tap="tap"></beer-tap-settings>
           </b-col>
         </b-row>
       </b-tab>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import BeerTapSettings from '@/components/BeerTapSettings'
 
 export default {
@@ -23,12 +23,12 @@ export default {
     BeerTapSettings
   },
   computed: {
-    ...mapGetters(['taps'])
+    ...mapState({
+      taps: state => state.taps
+    })
   },
   mounted () {
     this.$store.dispatch( 'fetchTaps' )
-    // this.$store.dispatch('fetchSettings')
-    // this.$store.dispatch('fetchBeers')
   }
 }
 </script>

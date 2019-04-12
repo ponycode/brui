@@ -1,4 +1,5 @@
 const { Setting, Tap, Beer, Op } = require('../models').models;
+const _ = require('lodash');
 
 module.exports = function( app ){
   app.get('/api/settings', _getSettings );
@@ -15,6 +16,11 @@ async function _getSettings( req, res ){
   res.send( await _fetchSettings() );
 }
 
+/**
+ * This retrieves the single settings row for basic settings. It also loads
+ * all the Taps from the DB. I'm storing the names on the Taps in the DB - not 
+ * the settings row.
+ */
 async function _fetchSettings(){
   let settings = await Setting.findAllSettings();
   if( !settings ){
@@ -36,6 +42,18 @@ async function _fetchSettings(){
   return settings;
 }
 
+/**
+ * If the user modifies the number of taps we do the following:
+ * 
+ * - Change the number in the single settings row
+ * - Upsert the correct number of Taps with names
+ * - Delete any leftover taps ( when the user decreases the number of taps )
+ * 
+ * This route then re-fetches and returns all settings and tapNames
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 async function _putSettings( req, res ){
   let { tapNames, numberOfTaps } = req.body;
 
@@ -119,24 +137,62 @@ async function _getBeers( req, res ){
 }
 
 async function _putBeer( req, res ){
-  res.send({ beer: req.body.tap });
+  let beer = req.body;
+  let { tapIndex } = req.params;
+  tapIndex = parseInt( tapIndex, 10 );
+
+  // Insert a new beer everytime - planning on keeping beers separate so they be resued
+  // For now these records will just be historical
+  beer = await Beer.create({
+    name: beer.name,
+    imageUrl: beer.imageUrl,
+    abv: beer.abv,
+    ibu: beer.ibu,
+    description: beer.description
+  });
+
+  await Tap.update({
+    beerId: beer.beerId
+  },
+  {
+    where: {
+      tapIndex 
+    }
+  });
+
+  beer = beer.toJSON();
+  beer.tapIndex = tapIndex;
+
+  res.send({ beer });
+}
+
+async function _getBeersByIds( beerIds ){
+  const beers = await Beer.find({
+    where: {
+      beerId: beerIds
+    }
+  });
+  return _.keyBy( beers, 'beerId' );
+}
+
+function _extractBeerIdsFromTaps( taps ){
+  const beerIds = [];
+  _.each( taps, tap => {
+    if( tap.beerId ) beerIds.push( tap.beerId );
+  })
+  return beerIds;
 }
 
 async function _getTaps( req, res ){
-  const taps = await Tap.findAll({
-    include: [Beer]
-  })
+  const taps = await Tap.findAll();
 
+  const beersById = await _getBeersByIds( _extractBeerIdsFromTaps( taps ) );
+ 
   const results = [];
   for( let tap of taps ){
-    tap = tap.toJSON();
-    const { Beer: beer } = tap
-
-    delete tap.Beer;
-
     results.push({
-      ...tap,
-      beer
+      ...tap.toJSON(),
+      beer: beersById[tap.beerId]
     });
   }
 

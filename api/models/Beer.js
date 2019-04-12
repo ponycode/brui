@@ -27,10 +27,6 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
-  Beer.associate = function( models ){
-    models.Beer.belongsTo( models.Tap, { foreignKey: 'beerId' } );
-  }
-
   return Beer;
 };
 

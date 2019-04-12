@@ -14,7 +14,8 @@ export const MUTATIONS = {
 export default new Vuex.Store({
   state: {
     settings: null,
-    beers: null
+    beers: null,
+    taps: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -42,27 +43,13 @@ export default new Vuex.Store({
       const beers = await getBeers()
       commit( MUTATIONS.SET_BEERS, beers )
     },
-    async saveBeer ({ commit }, { beer, tapIndex }) {
+    async saveBeer ({ dispatch }, { beer, tapIndex }) {
       beer = await saveBeer( tapIndex, beer )
-      commit( MUTATIONS.SET_BEER, beer)
+      dispatch('fetchTaps')
     },
     async fetchTaps({ commit }) {
       const taps = await getTaps()
       commit( MUTATIONS.SET_TAPS, taps)
-    }
-  },
-  getters: {
-    taps: state => {
-      return []
-      // if( !state.settings ) return null
-      // const taps = []
-      // for( let i = 0; i < state.settings.numberOfTaps; i++ ){
-      //   taps.push({
-      //     tapIndex: i,
-      //     name: state.settings.tapNames[i]
-      //   })
-      // }
-      // return taps
     }
   }
 })
