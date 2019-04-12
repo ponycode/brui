@@ -83,6 +83,7 @@ export default {
   methods: {
     async onSubmit () {
       await this.$store.dispatch('saveBeer', { beer: this.beer, tapIndex: this.tap.tapIndex })
+      this.$toasted.success('Beer Saved', { singleton: true }).goAway(3000)
     }
   },
   computed: {

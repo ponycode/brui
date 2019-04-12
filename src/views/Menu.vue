@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col text-center" v-for="tap in taps" :key="tap.name">
-        <h1>{{tap.name}}</h1>
+      <div class="col text-center" v-for="tap in taps" :key="tap.tapIndex">
+        <h1>{{tap.tapName}}</h1>
         <beer-on-tap :beer="tap.beer"></beer-on-tap>
       </div>
     </div>
@@ -20,6 +20,9 @@ export default {
   },
   computed: mapState({
     taps: state => state.taps
-  })
+  }),
+  mounted () {
+    this.$store.dispatch('fetchTaps')
+  }
 }
 </script>

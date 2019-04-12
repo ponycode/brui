@@ -167,7 +167,7 @@ async function _putBeer( req, res ){
 }
 
 async function _getBeersByIds( beerIds ){
-  const beers = await Beer.find({
+  const beers = await Beer.findAll({
     where: {
       beerId: beerIds
     }
@@ -186,7 +186,8 @@ function _extractBeerIdsFromTaps( taps ){
 async function _getTaps( req, res ){
   const taps = await Tap.findAll();
 
-  const beersById = await _getBeersByIds( _extractBeerIdsFromTaps( taps ) );
+  const beerIdsFromTaps = _extractBeerIdsFromTaps( taps );
+  const beersById = await _getBeersByIds( beerIdsFromTaps );
  
   const results = [];
   for( let tap of taps ){
