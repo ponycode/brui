@@ -18,7 +18,8 @@ async function _putSettings( req, res ){
   const settings = req.body;
 
   await Setting.updateAllSettings({
-    numberOfTaps: settings.numberOfTaps
+    numberOfTaps: settings.numberOfTaps,
+    tapNames: settings.tapNames
   });
 
   const updatedSettings = await Setting.findAllSettings();
