@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Toasted from 'vue-toasted';
 import './icons'
+import './sockets'
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false

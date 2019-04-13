@@ -20,7 +20,7 @@ export default {
   props: {
     beer: {
       type: Object,
-      required: true
+      required: false
     }
   }
 }

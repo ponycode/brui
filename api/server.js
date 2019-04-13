@@ -15,9 +15,11 @@
   require('./routes/settings')( app );
   
   const PORT = process.env.PORT || 8081;
-  app.listen( PORT, () => {
+  const server = app.listen( PORT, () => {
     // eslint-disable-next-line no-console
     console.log(`brui server running on port ${PORT}`)
   });
+
+  require('./sockets')( server );
 
 })();

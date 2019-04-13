@@ -20,6 +20,10 @@
     <a v-show="fullscreen" @click="exitFullscreen" class="exitFullscreen">
       <font-awesome-icon icon="compress-arrows-alt" />
     </a>
+
+    <b-modal title="Pouring" v-model="showPouringModal">
+      <p class="my-4">POURING</p>
+    </b-modal>
   </div>
 </template>
 
@@ -27,9 +31,20 @@
 import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+      showPouringModal: false
+    }
+  },
   computed: mapState({
-    fullscreen: state => state.fullscreen
+    fullscreen: state => state.fullscreen,
+    pouring: state => state.pouring
   }),
+  watch:{ 
+    pouring (value) {
+      this.showPouringModal = value
+    }
+  },
   methods: {
     enterFullScreen () {
       this.$store.commit('FULLSCREEN', true)
