@@ -8,6 +8,8 @@ socket.addEventListener('open', function (event) {
 
 socket.addEventListener('message', function (event) {
     const message = JSON.parse( event.data );
+
+    // eslint-disable-next-line no-console
     console.log('Message from server ', message);
 
     if( message.type === 'pour_start' ){
