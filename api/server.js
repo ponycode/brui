@@ -1,9 +1,10 @@
 ( async function(){
 
+  const argv = require('minimist')(process.argv.slice(2));
   const express = require('express');
   const path = require('path');
   const bodyParser = require('body-parser')
-  await require('./database').connect();
+  await require('./database').connect( argv.database );
   
   const app = express();
   
@@ -21,5 +22,7 @@
   });
 
   require('./sockets').init( server );
+
+  if( argv.flow_meter ) require('./flow-meter').listen();
 
 })();

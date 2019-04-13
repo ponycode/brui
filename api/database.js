@@ -8,11 +8,13 @@ const models = require('./models');
 
 const dbPath = path.resolve( __dirname, 'brui.sqlite' );
 
-async function _connect(){
+async function _connect( databasePath ){
+  if( !databasePath ) databasePath = path.resolve( __dirname, 'brui.sqlite' );
+
    const sequelize = new Sequelize( 'brui', 'brui-user', 'brui-password', {
     host: 'localhost',
     dialect: 'sqlite',
-    storage: dbPath
+    storage: databasePath
   });
 
   await sequelize.authenticate()
@@ -44,10 +46,10 @@ async function _createDb(){
   });
 }
 
-exports.connect = async function(){
+exports.connect = async function( databasePath ){
   try{
     await _createDb();
-    const sequelize = await _connect();
+    const sequelize = await _connect( databasePath );
     models.load( sequelize );
     await sequelize.sync({ alter: true, force: false }); // CAUTION: force=true will delete data
   }catch( e ){

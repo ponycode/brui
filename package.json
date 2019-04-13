@@ -17,6 +17,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "express": "^4.16.4",
     "i": "^0.3.6",
+    "minimist": "^1.2.0",
     "npm": "^6.9.0",
     "onoff": "^3.2.2",
     "sequelize": "^4.41.2",
