@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid menuContent">
     <div class="row">
       <div class="col text-center" v-for="tap in taps" :key="tap.tapIndex">
         <h1>{{tap.tapName}}</h1>
@@ -26,3 +26,23 @@ export default {
   }
 }
 </script>
+
+<style type="scss" scoped>
+
+.menuContent {
+  background: rgb(73,73,73);
+  background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);
+  height: 100vh;
+  color: white;
+}
+
+h1 {
+  color: #ccc;
+  font-weight: 100;
+  border-bottom: 1px solid rgba( 255, 255, 255, 0.2 );
+  padding: 12px 0;
+  margin-bottom: 30px;
+  font-size: 1.8em;
+}
+
+</style>
