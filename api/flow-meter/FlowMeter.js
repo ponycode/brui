@@ -1,7 +1,9 @@
+const EventEmitter = require('events');
 
-class FlowMeter {
+class FlowMeter extends EventEmitter{
 
 	constructor( gpio ){
+    super();
 		this.gpio = gpio;
 		this.pouring = false;
 		this.pourTickCount = 0;
@@ -14,7 +16,8 @@ class FlowMeter {
 	}
 
 	startPour () {
-		console.log("Pour started");
+    console.log("Pour started");
+    this.emit( 'pour_start', {} );
 
 		this.pouring = true;
 
@@ -48,7 +51,8 @@ class FlowMeter {
 			this.gpio.unwatch();
 			this.gpio.watch( this.startPour.bind( this ) );
 
-			console.log("Pour Stopped", this.pourTickCount, this.diffHrTime);
+      console.log("Pour Stopped", this.pourTickCount, this.diffHrTime);
+      this.emit( 'pour_end', { diffHrTime: this.diffHrTime, pourTickCount: this.pourTickCount } );
 		}else{
 			// pour still running
 			this.lastCheckedTickCount = this.pourTickCount;

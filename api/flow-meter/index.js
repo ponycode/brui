@@ -1,6 +1,7 @@
 
 const GPIO = require('onoff').Gpio;
 const sensor = new GPIO( 23, 'in', 'rising', { activeLow: false } );
+const sockets = require('../sockets');
 
 console.log("STARTING", sensor);
 
@@ -21,5 +22,13 @@ process.on('SIGINT', () => {
 
 exports.listen = function(){
   const FlowMeter = require('./FlowMeter');
-  new FlowMeter( sensor );
+  const meter = new FlowMeter( sensor );
+
+  meter.on('pour_start', () => {
+    sockets.broadcast({ type: 'pour_start' });
+  })
+
+  meter.on('pour_end', () => {
+    sockets.broadcast({ type: 'pour_end' });
+  })
 };
