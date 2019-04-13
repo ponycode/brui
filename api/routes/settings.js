@@ -1,5 +1,6 @@
 const { Setting, Tap, Beer, Op } = require('../models').models;
 const _ = require('lodash');
+const sockets = require('../sockets');
 
 module.exports = function( app ){
   app.get('/api/settings', _getSettings );
@@ -169,6 +170,8 @@ async function _putBeer( req, res ){
     beer = beer.toJSON();
     beer.tapIndex = tapIndex;
   }
+
+  sockets.broadcast({ type: 'reload_taps' });
 
   res.send({ beer });
 }

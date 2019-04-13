@@ -14,5 +14,7 @@ socket.addEventListener('message', function (event) {
       store.commit('SET_POURING', true)
     }else if( message.type === 'pour_end' ){
       store.commit('SET_POURING', false)
+    }else if( message.type === 'reload_taps' ){
+      store.dispatch('fetchTaps', false)
     }
 });

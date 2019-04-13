@@ -20,6 +20,6 @@
     console.log(`brui server running on port ${PORT}`)
   });
 
-  require('./sockets')( server );
+  require('./sockets').init( server );
 
 })();

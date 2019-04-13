@@ -1,36 +1,23 @@
 const WebSocket = require('ws');
 
-module.exports = function( server ){
-  const wss = new WebSocket.Server({ server, path: '/sockets' });
+let wss = null;
 
-  let interval = null;
+exports.init = function( server ){
+  wss = new WebSocket.Server({ server, path: '/sockets' });
 
-  wss.on("connection", function(ws){
-    console.log('ws connection');
-
-    let started = false;
-/*
-    interval = setInterval( function(){
-      if( !started ){
-        _send( ws, {
-          type: 'pour_start'
-        });
-        started = true;
-      }else{
-        _send( ws, {
-          type: 'pour_end'
-        });
-        started = false;
-      }
-      
-     }, 5000 )
-
-    ws.on('close', function close() {
-      clearInterval( interval );
-    });
-    */
+  wss.on("connection", ws => {
+    console.log('ws connection', ws);
  });
 
+};
+
+exports.broadcast = function broadcast( message ){
+  if( !wss ) return;
+  
+  wss.clients.forEach( ws => {
+    if( ws.readyState !== WebSocket.OPEN ) return;
+    _send( ws, message );
+  });
 };
 
 function _send( ws, message ){
