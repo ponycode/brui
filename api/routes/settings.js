@@ -141,27 +141,34 @@ async function _putBeer( req, res ){
   let { tapIndex } = req.params;
   tapIndex = parseInt( tapIndex, 10 );
 
-  // Insert a new beer everytime - planning on keeping beers separate so they be resued
-  // For now these records will just be historical
-  beer = await Beer.create({
-    name: beer.name,
-    imageUrl: beer.imageUrl,
-    abv: beer.abv,
-    ibu: beer.ibu,
-    description: beer.description
-  });
+  if( !beer.empty ){
+    // Insert a new beer everytime - planning on keeping beers separate so they be resued
+    // For now these records will just be historical
+    beer = await Beer.create({
+      name: beer.name,
+      imageUrl: beer.imageUrl,
+      abv: beer.abv,
+      ibu: beer.ibu,
+      description: beer.description
+    });
+  }
+  
+  const beerId = beer && beer.beerId ? beer.beerId : null;
 
   await Tap.update({
-    beerId: beer.beerId
+    beerId: beerId
   },
   {
     where: {
       tapIndex 
-    }
+    },
+    omitNull: false
   });
 
-  beer = beer.toJSON();
-  beer.tapIndex = tapIndex;
+  if( beer && beer.toJSON ){
+    beer = beer.toJSON();
+    beer.tapIndex = tapIndex;
+  }
 
   res.send({ beer });
 }

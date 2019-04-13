@@ -1,9 +1,11 @@
 <template>
   <div class="container-fluid menuContent">
-    <div class="row">
-      <div class="col text-center" v-for="tap in taps" :key="tap.tapIndex">
+    <div class="row beerOnTapRow">
+      <div class="col text-center beerOnTapCol" v-for="tap in taps" :key="tap.tapIndex">
         <h1>{{tap.tapName}}</h1>
-        <beer-on-tap :beer="tap.beer"></beer-on-tap>
+        <div class="beerOnTapContainer">
+          <beer-on-tap :beer="tap.beer"></beer-on-tap>
+        </div>
       </div>
     </div>
   </div>
@@ -43,6 +45,16 @@ h1 {
   padding: 12px 0;
   margin-bottom: 30px;
   font-size: 1.8em;
+}
+
+.beerOnTapRow, .beer{
+  height: 100%;
+}
+
+.beerOnTapContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 </style>
