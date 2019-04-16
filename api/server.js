@@ -9,12 +9,11 @@
   const app = express();
   
   app.use( express.static( path.join( __dirname, '/public' ) ) );
-  app.use( express.static( path.join( __dirname, '../dist' ) ) );
+  app.use( express.static( path.join( __dirname, '../dist' ), { index: false } ) );
   app.use( bodyParser.json() );
   app.use( bodyParser.urlencoded({ extended: true }) );
   
-  require('./routes/settings')( app );
-  require('./routes/pours')( app );
+  require('./routes')( app );
 
   const PORT = process.env.PORT || 8081;
   const server = app.listen( PORT, () => {
