@@ -1,26 +1,18 @@
 
-const GPIO = require('onoff').Gpio;
 const sockets = require('../sockets');
 const { Pour } = require('../models').models;
+const FlowMeter = require('./FlowMeter');
 
+const flowMeters = [];
 
 exports.listen = function(){
-  const FlowMeter = require('./FlowMeter');
+  const gpioPin = 23;
+  const tapIndex = 3;// TODO: stop hardcoding these tapIndex - use config
 
-  const rightTapSensor = new GPIO( 23, 'in', 'rising', { activeLow: false } );
-  const rightTapFlowMeter = new FlowMeter( rightTapSensor );
-
-  process.on('SIGINT', () => {
-    rightTapSensor.unexport();
-  });
-
-  rightTapFlowMeter.on('pour_start', () => {
-    exports.pourStart( 3 ); // TODO: stop hardcoding these tapIndexes
-  })
-
-  rightTapFlowMeter.on('pour_end', (data) => {
-    exports.pourEnd( 3, data );
-  })
+  const flowMeter = new FlowMeter( gpioPin );
+  flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) ); 
+  flowMeter.on('pour_end', exports.pourEnd.bind( null, tapIndex ) );
+  flowMeters.push( flowMeter );
 };
 
 exports.pourStart = async function( tapIndex ){
@@ -28,6 +20,7 @@ exports.pourStart = async function( tapIndex ){
 }
 
 exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } ){
+  console.log( "Pour ended", tapIndex, durationSeconds, pourTickCount );
   sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, pourTickCount });
 
   const pour = await Pour.create({
@@ -37,5 +30,5 @@ exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } )
     durationSeconds: durationSeconds
   })
 
-  console.log( "Saved a pour", pour.pourId );
+  console.log( "Saved a pour record", pour.pourId );
 };

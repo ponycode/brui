@@ -1,10 +1,11 @@
 const EventEmitter = require('events');
+const GPIO = require('onoff').Gpio;
 
 class FlowMeter extends EventEmitter{
 
-	constructor( gpio ){
+	constructor( gpioPin ){
     super();
-		this.gpio = gpio;
+    this.gpio = new GPIO( gpioPin, 'in', 'rising', { activeLow: false } );
 		this.pouring = false;
 		this.pourTickCount = 0;
 		this.lastCheckedTickCount = 0;
@@ -12,7 +13,11 @@ class FlowMeter extends EventEmitter{
     this.lastTickDate = null;
 
 		this.gpio.unwatch();
-		this.gpio.watch( this.startPour.bind(this) )
+    this.gpio.watch( this.startPour.bind(this) )
+    
+    process.on( 'SIGINT', () => {
+      this.gpio.unexport();
+    });
 	}
 
   /**
