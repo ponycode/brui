@@ -27,14 +27,14 @@ exports.pourStart = async function( tapIndex ){
   sockets.broadcast({ type: 'pour_start', tapIndex });
 }
 
-exports.pourEnd = async function( tapIndex, { diffHrTime, pourTickCount } ){
-  sockets.broadcast({ type: 'pour_end', tapIndex, diffHrTime, pourTickCount });
+exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } ){
+  sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, pourTickCount });
 
   const pour = await Pour.create({
     beerId: 0,
     tapIndex,
     tickCount: pourTickCount,
-    durationSeconds: diffHrTime / 1e6
+    durationSeconds: durationSeconds
   })
 
   console.log( "Saved a pour", pour.pourId );
