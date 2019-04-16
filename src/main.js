@@ -8,6 +8,13 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Toasted from 'vue-toasted';
 import './icons'
 import './sockets'
+import moment from 'moment'
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm A')
+  }
+});
 
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false

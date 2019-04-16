@@ -10,7 +10,6 @@ module.exports = function( app ){
   app.put('/api/taps/:tapIndex/beer', _putBeer );
 
   app.get('/api/taps', _getTaps );
-
 };
 
 async function _getSettings( req, res ){

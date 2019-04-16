@@ -14,7 +14,8 @@
   app.use( bodyParser.urlencoded({ extended: true }) );
   
   require('./routes/settings')( app );
-  
+  require('./routes/pours')( app );
+
   const PORT = process.env.PORT || 8081;
   const server = app.listen( PORT, () => {
     // eslint-disable-next-line no-console
@@ -23,6 +24,9 @@
 
   require('./sockets').init( server );
 
-  if( argv.flow_meter ) require('./flow-meter').listen();
+  if( argv.flow_meter ){
+      const flowMeter = require('./flow-meter')
+      flowMeter.listen();
+  }
 
 })();

@@ -1,34 +1,41 @@
 
 const GPIO = require('onoff').Gpio;
-const sensor = new GPIO( 23, 'in', 'rising', { activeLow: false } );
 const sockets = require('../sockets');
-
-console.log("STARTING", sensor);
-
-// sensor.watch( function(){
-// 	console.log( "WATCH", arguments );
-// });
-
-// console.log("DONE");
-
-// setInterval( function(){
-// 	console.log( "READ", sensor.readSync() );
-// }, 500 );
-
-process.on('SIGINT', () => {
-	sensor.unexport();
-});
+const { Pour } = require('../models').models;
 
 
 exports.listen = function(){
   const FlowMeter = require('./FlowMeter');
-  const meter = new FlowMeter( sensor );
 
-  meter.on('pour_start', () => {
-    sockets.broadcast({ type: 'pour_start' });
+  const rightTapSensor = new GPIO( 23, 'in', 'rising', { activeLow: false } );
+  const rightTapFlowMeter = new FlowMeter( rightTapSensor );
+
+  process.on('SIGINT', () => {
+    rightTapSensor.unexport();
+  });
+
+  rightTapFlowMeter.on('pour_start', () => {
+    exports.pourStart( 3 ); // TODO: stop hardcoding these tapIndexes
   })
 
-  meter.on('pour_end', () => {
-    sockets.broadcast({ type: 'pour_end' });
+  rightTapFlowMeter.on('pour_end', (data) => {
+    exports.pourEnd( 3, data );
   })
+};
+
+exports.pourStart = async function( tapIndex ){
+  sockets.broadcast({ type: 'pour_start', tapIndex });
+}
+
+exports.pourEnd = async function( tapIndex, { diffHrTime, pourTickCount } ){
+  sockets.broadcast({ type: 'pour_end', tapIndex, diffHrTime, pourTickCount });
+
+  const pour = await Pour.create({
+    beerId: 0,
+    tapIndex,
+    tickCount: pourTickCount,
+    durationSeconds: diffHrTime / 1e6
+  })
+
+  console.log( "Saved a pour", pour.pourId );
 };

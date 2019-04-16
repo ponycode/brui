@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getSettings, saveSettings, getBeers, saveBeer, getTaps } from './api/settings'
+import { getPourHistory } from './api/stats'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export const MUTATIONS = {
   'SET_BEER': 'SET_BEER',
   'SET_TAPS': 'SET_TAPS',
   'FULLSCREEN': 'FULLSCREEN',
-  'SET_POURING': 'SET_POURING'
+  'SET_POURING': 'SET_POURING',
+  'SET_POURS': 'SET_POURS'
 };
 
 export default new Vuex.Store({
@@ -19,7 +21,8 @@ export default new Vuex.Store({
     beers: null,
     taps: null,
     fullscreen: false,
-    pouring: false
+    pouring: false,
+    pours: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -39,6 +42,9 @@ export default new Vuex.Store({
     },
     [MUTATIONS.SET_POURING] ( state, value ){
       state.pouring = value
+    },
+    [MUTATIONS.SET_POURS] ( state, pours ) {
+      state.pours = pours
     }
   },
   actions: {
@@ -60,6 +66,10 @@ export default new Vuex.Store({
     async fetchTaps({ commit }) {
       const taps = await getTaps()
       commit( MUTATIONS.SET_TAPS, taps)
+    },
+    async fetchPours({ commit }){
+      const taps = await getPourHistory()
+      commit( MUTATIONS.SET_POURS, taps)
     }
   }
 })
