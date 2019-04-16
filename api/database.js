@@ -9,7 +9,9 @@ const models = require('./models');
 const dbPath = path.resolve( __dirname, 'brui.sqlite' );
 
 async function _connect( databasePath ){
-  if( !databasePath ) databasePath = path.resolve( __dirname, 'brui.sqlite' );
+  if( !databasePath ) databasePath = 'brui.sqlite';
+  databasePath = path.resolve( __dirname, databasePath );
+  console.log('connecting to db', databasePath);
 
    const sequelize = new Sequelize( 'brui', 'brui-user', 'brui-password', {
     host: 'localhost',
