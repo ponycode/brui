@@ -4,7 +4,7 @@ const { Pour, Tap } = require('../models').models;
 const FlowMeter = require('./FlowMeter');
 
 const flowMeters = [];
-const TICKS_PER_ML = 0.64; // TODO: add to settings UI
+const ML_PER_TICK = 0.64; // TODO: add to settings UI
 
 exports.listen = function(){
   const gpioPin = 23;
@@ -21,7 +21,7 @@ exports.pourStart = async function( tapIndex ){
 }
 
 exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } ){
-  const milliliters = pourTickCount / TICKS_PER_ML;
+  const milliliters = pourTickCount * ML_PER_TICK;
 
   console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
   sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, milliliters });
