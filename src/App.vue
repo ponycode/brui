@@ -22,10 +22,12 @@
       <font-awesome-icon icon="compress-arrows-alt" />
     </a>
 
-    <b-modal title="Pouring" v-model="showPouringModal">
+    <b-modal title="Pouring" v-model="showPouringModal" no-fade>
       <div v-if="pour">
         <h2>{{pour.beerName}}</h2>
-        <h3>{{Math.round( (pour.milliliters * 0.0338 ) * 100 ) / 100}} floz</h3>
+        <h3>{{Math.round( ((pour.milliliters || 0) * 0.0338 ) * 100 ) / 100}} floz</h3>
+      </div>
+      <div slot="modal-footer">
       </div>
     </b-modal>
   </div>
@@ -37,16 +39,15 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      showPouringModal: true
     }
   },
-  computed: mapState({
-    fullscreen: state => state.fullscreen,
-    pour: state => state.pour
-  }),
-  watch:{ 
-    pouring (value) {
-      this.showPouringModal = !!value
+  computed: {
+    ...mapState({
+      fullscreen: state => state.fullscreen,
+      pour: state => state.currentPour
+    }),
+    showPouringModal () {
+      return !!this.pour
     }
   },
   methods: {

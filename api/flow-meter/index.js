@@ -8,7 +8,7 @@ const ML_PER_TICK = 0.64; // TODO: add to settings UI
 
 exports.listen = function(){
   const gpioPin = 23;
-  const tapIndex = 3;// TODO: stop hardcoding these tapIndex - use config
+  const tapIndex = 2;// TODO: stop hardcoding these tapIndex - use config
 
   const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
   flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) );
@@ -19,11 +19,11 @@ exports.listen = function(){
 
 exports.pourStart = async function( tapIndex ){
   const tap = await Tap.findByTapIndexWithBeer( tapIndex );
-  let beerName = tap.Beer ? tap.Beer.beerName : ''
+  const beerName = tap && tap.Beer ? tap.Beer.name : ''
   sockets.broadcast({ type: 'pour_start', tapIndex, beerName });
 }
 
-exports.pourStatus = async function( { durationSeconds, pourTickCount } ){
+exports.pourStatus = async function( tapIndex, { durationSeconds, pourTickCount } ){
   const milliliters = pourTickCount * ML_PER_TICK;
   sockets.broadcast({ type: 'pour_status', durationSeconds, pourTickCount, milliliters });
 }

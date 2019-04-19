@@ -14,14 +14,14 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
-  Tap.findByTapIndexWithBeer = function( tapIndex ){
-    const tap = this.findById( tapIndex );
+  Tap.findByTapIndexWithBeer = async function( tapIndex ){
+    const tap = await this.findById( tapIndex );
     if( !tap ) return null;
 
     if( tap.beerId ) {
       // TODO: get associations working
       const { Beer } = require('.').models;
-      tap.Beer = Beer.findById( tap.beerId )
+      tap.Beer = await Beer.findById( tap.beerId )
     }
     
     return tap;
