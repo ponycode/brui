@@ -10,7 +10,7 @@ exports.listen = function(){
   const gpioPin = 23;
   const tapIndex = 3;// TODO: stop hardcoding these tapIndex - use config
 
-  const flowMeter = new FlowMeter( FlowMeter.gpioPin( gpioPin ) );
+  const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
   flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) ); 
   flowMeter.on('pour_end', exports.pourEnd.bind( null, tapIndex ) );
   flowMeters.push( flowMeter );
