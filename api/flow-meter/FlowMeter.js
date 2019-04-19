@@ -1,11 +1,13 @@
 const EventEmitter = require('events');
-const GPIO = require('onoff').Gpio;
+
+const MIN_TICKS_FOR_POUR = 3;
+const POUR_END_CHECK_INTERVAL_MS = 250;
 
 class FlowMeter extends EventEmitter{
 
-	constructor( gpioPin ){
+	constructor( gpio ){
     super();
-    this.gpio = new GPIO( gpioPin, 'in', 'rising', { activeLow: false } );
+    this.gpio = gpio;
 		this.pouring = false;
 		this.pourTickCount = 0;
 		this.lastCheckedTickCount = 0;
@@ -18,7 +20,13 @@ class FlowMeter extends EventEmitter{
     process.on( 'SIGINT', () => {
       this.gpio.unexport();
     });
-	}
+  }
+  
+  // This is mainly to keep testability
+  static createGPIO( gpioPin ){
+    const GPIO = require('onoff').Gpio;
+    return new GPIO( gpioPin, 'in', 'rising', { activeLow: false } );
+  }
 
   /**
    * This gets called first and once per pour. It rewires the event to the
@@ -26,15 +34,15 @@ class FlowMeter extends EventEmitter{
    * tick counts until they stop - meaning the pour is over.
    */
 	startPour () {
-		this.pouring = true;
+    this.pouring = true;
+    this.startEmitted = false;
 		this.lastPourTickCount = this.pourTickCount = 1;
-		this.pourStartDate = this.lastTickDate = new Date();
+    this.pourStartDate = this.lastTickDate = new Date();
 
 		this.gpio.unwatch();
 		this.gpio.watch( this.continuedPour.bind(this) );
 
-    this.interval = setInterval( this.checkForPourEnd.bind(this), 250 );
-    this.emit( 'pour_start', {} );
+    this.interval = setInterval( this.checkForPourEnd.bind(this), POUR_END_CHECK_INTERVAL_MS );
 	}
 
   /**
@@ -42,7 +50,15 @@ class FlowMeter extends EventEmitter{
    */
 	continuedPour () {
 		this.pourTickCount++;
-		this.lastTickDate = new Date();
+    this.lastTickDate = new Date();
+    
+    if( !this.startEmitted && this.pourTickCount >= MIN_TICKS_FOR_POUR ){
+      // Moved the start event in here because I was seeing a bunch of 1 and 2
+      // tick pours - 1 per hour roughly. I assume this is either air moving up
+      // or gravity pulling beer down. Decided to only count pours with 3 ticks or more
+      this.startEmitted = true;
+      this.emit( 'pour_start', {} );
+    }
 	}
 
   /**
@@ -52,16 +68,23 @@ class FlowMeter extends EventEmitter{
 	checkForPourEnd () {
 		if( this.lastCheckedTickCount === this.pourTickCount ){
 			// pour stopped
-			this.pouring = false;
 
-			clearInterval( this.interval );
+      clearInterval( this.interval );
+      this.interval = null;
 
 			this.gpio.unwatch();
 			this.gpio.watch( this.startPour.bind( this ) );
 
-      const durationSeconds = (this.lastTickDate.getTime() - this.pourStartDate.getTime()) / 1000;
+      const durationSeconds = (this.lastTickDate.getTime() - this.pourStartDate.getTime()) / 1000.0;
 
-      this.emit( 'pour_end', { durationSeconds, pourTickCount: this.pourTickCount } );
+      if( this.startEmitted ){
+        // Don't emit end event if we didn't emit a start event
+        this.emit( 'pour_end', { durationSeconds, pourTickCount: this.pourTickCount } );
+      }
+
+      this.startEmitted = false;
+      this.pouring = false;
+
 		}else{
 			// pour still running
       this.lastCheckedTickCount = this.pourTickCount;
@@ -69,5 +92,8 @@ class FlowMeter extends EventEmitter{
 	}
 
 }
+
+FlowMeter.POUR_END_CHECK_INTERVAL_MS = POUR_END_CHECK_INTERVAL_MS;
+FlowMeter.MIN_TICKS_FOR_POUR = MIN_TICKS_FOR_POUR;
 
 module.exports = FlowMeter;
