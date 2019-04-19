@@ -23,7 +23,10 @@
     </a>
 
     <b-modal title="Pouring" v-model="showPouringModal">
-      <p class="my-4">POURING</p>
+      <div v-if="pour">
+        <h2>{{pour.beerName}}</h2>
+        <h3>{{Math.round( (pour.milliliters * 0.0338 ) * 100 ) / 100}} floz</h3>
+      </div>
     </b-modal>
   </div>
 </template>
@@ -34,16 +37,16 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      showPouringModal: false
+      showPouringModal: true
     }
   },
   computed: mapState({
     fullscreen: state => state.fullscreen,
-    pouring: state => state.pouring
+    pour: state => state.pour
   }),
   watch:{ 
     pouring (value) {
-      this.showPouringModal = value
+      this.showPouringModal = !!value
     }
   },
   methods: {

@@ -11,8 +11,10 @@ export const MUTATIONS = {
   'SET_BEER': 'SET_BEER',
   'SET_TAPS': 'SET_TAPS',
   'FULLSCREEN': 'FULLSCREEN',
-  'SET_POURING': 'SET_POURING',
-  'SET_POURS': 'SET_POURS'
+  'SET_POURS': 'SET_POURS',
+  'START_POUR': 'START_POUR,',
+  'POUR_STATUS': 'POUR_STATUS',
+  'STOP_POUR': 'STOP_POUR'
 };
 
 export default new Vuex.Store({
@@ -22,7 +24,8 @@ export default new Vuex.Store({
     taps: null,
     fullscreen: false,
     pouring: false,
-    pours: null
+    pours: null,
+    currentPour: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -40,11 +43,21 @@ export default new Vuex.Store({
     [MUTATIONS.FULLSCREEN] ( state, value ) {
       state.fullscreen = value
     },
-    [MUTATIONS.SET_POURING] ( state, value ){
-      state.pouring = value
-    },
+  
     [MUTATIONS.SET_POURS] ( state, pours ) {
       state.pours = pours
+    },
+    [MUTATIONS.START_POUR] ( state, { milliliters, beerName } ){
+      state.pour = {
+        milliliters,
+        beerName
+      }
+    },
+    [MUTATIONS.POUR_STATUS] ( state, { milliliters } ) {
+      state.pour.milliliters = milliliters
+    },
+    [MUTATIONS.STOP_POUR] ( state ) {
+      state.pour = null
     }
   },
   actions: {

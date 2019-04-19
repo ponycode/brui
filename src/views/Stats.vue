@@ -6,12 +6,14 @@
       <tr>
         <th>Date</th>
         <th>Floz. / Milliliters</th>
+        <th>Beer Id</th>
         <th>Duration</th>
         <th>Ticks</th>
       </tr>
       <tr v-for="pour in pours" :key="pour.pourId">
         <td>{{pour.createdAt | formatDate}}</td>
         <td>{{Math.round( (pour.milliliters * 0.0338 ) * 100 ) / 100}} floz / {{pour.milliliters}} ml</td>
+        <td>{{pour.beerId}}</td>
         <td>{{pour.durationSeconds}}s</td>
         <td>{{pour.tickCount}}</td>
       </tr>

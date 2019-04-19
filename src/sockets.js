@@ -13,9 +13,11 @@ socket.addEventListener('message', function (event) {
     console.log('Message from server ', message);
 
     if( message.type === 'pour_start' ){
-      store.commit('SET_POURING', true)
+      store.commit('START_POUR', message )
+    }else if ( message.type === 'pour_status' ){
+      store.commit('POUR_STATUS', message )
     }else if( message.type === 'pour_end' ){
-      store.commit('SET_POURING', false)
+      store.commit('STOP_POUR')
     }else if( message.type === 'reload_taps' ){
       store.dispatch('fetchTaps', false)
     }

@@ -11,13 +11,21 @@ exports.listen = function(){
   const tapIndex = 3;// TODO: stop hardcoding these tapIndex - use config
 
   const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
-  flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) ); 
+  flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) );
+  flowMeter.on('pour_status', exports.pourStart.bind( null, tapIndex ) ); 
   flowMeter.on('pour_end', exports.pourEnd.bind( null, tapIndex ) );
   flowMeters.push( flowMeter );
 };
 
 exports.pourStart = async function( tapIndex ){
-  sockets.broadcast({ type: 'pour_start', tapIndex });
+  const tap = await Tap.findByTapIndexWithBeer( tapIndex );
+  let beerName = tap.Beer ? tap.Beer.beerName : ''
+  sockets.broadcast({ type: 'pour_start', tapIndex, beerName });
+}
+
+exports.pourStatus = async function( { durationSeconds, pourTickCount } ){
+  const milliliters = pourTickCount * ML_PER_TICK;
+  sockets.broadcast({ type: 'pour_status', durationSeconds, pourTickCount, milliliters });
 }
 
 exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } ){
