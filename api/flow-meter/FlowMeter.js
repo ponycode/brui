@@ -75,8 +75,9 @@ class FlowMeter extends EventEmitter{
 			this.gpio.unwatch();
 			this.gpio.watch( this.startPour.bind( this ) );
 
-      const durationSeconds = (this.lastTickDate.getTime() - this.pourStartDate.getTime()) / 1000.0;
-
+      let durationSeconds = (this.lastTickDate.getTime() - this.pourStartDate.getTime()) / 1000.0;
+      durationSeconds = Math.round( durationSeconds * 100 ) / 100;
+      
       if( this.startEmitted ){
         // Don't emit end event if we didn't emit a start event
         this.emit( 'pour_end', { durationSeconds, pourTickCount: this.pourTickCount } );

@@ -11,7 +11,8 @@ async function _getPours( req, res ){
         $gt: new Date( new Date().getTime() - 30 * 24 * 60 * 60 * 1000 )
       }
     },
-    order: ['createdAt']
+    order: [['createdAt', 'DESC']],
+    limit: 1000
   })
   if( pours.length > 0 ) pours = pours.map( p => p.toJSON() );
   res.send({ pours })

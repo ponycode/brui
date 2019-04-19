@@ -19,6 +19,9 @@ module.exports = ( sequelize, DataTypes ) => {
     tickCount: {
       type: DataTypes.INTEGER
     },
+    milliliters: {
+      type: DataTypes.DECIMAL
+    }
   });
 
   return Pour;

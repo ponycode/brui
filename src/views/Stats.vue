@@ -5,12 +5,14 @@
     <table class="table">
       <tr>
         <th>Date</th>
-        <th>Duration Seconds</th>
-        <th>Tick Count</th>
+        <th>Floz. / Milliliters</th>
+        <th>Duration</th>
+        <th>Ticks</th>
       </tr>
       <tr v-for="pour in pours" :key="pour.pourId">
         <td>{{pour.createdAt | formatDate}}</td>
-        <td>{{pour.durationSeconds}}</td>
+        <td>{{Math.round( (pour.milliliters * 0.0338 ) * 100 ) / 100}} floz / {{pour.milliliters}} ml</td>
+        <td>{{pour.durationSeconds}}s</td>
         <td>{{pour.tickCount}}</td>
       </tr>
     </table>
