@@ -35,6 +35,7 @@ exports.pourStart = async function( tapIndex ){
 }
 
 exports.pourStatus = async function( tapIndex, { durationSeconds, pourTickCount } ){
+  console.log( "Pour status", tapIndex, pourTickCount, durationSeconds );
   const milliliters = pourTickCount * ML_PER_TICK;
   sockets.broadcast({ type: 'pour_status', durationSeconds, pourTickCount, milliliters });
 }
