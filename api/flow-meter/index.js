@@ -7,14 +7,25 @@ const flowMeters = [];
 const ML_PER_TICK = 0.64; // TODO: add to settings UI
 
 exports.listen = function(){
-  const gpioPin = 23;
-  const tapIndex = 2;// TODO: stop hardcoding these tapIndex - use config
+  const tapConfig = [
+    {
+      tapIndex: 0,
+      gpioPin: 24
+    },
+    // No middle tap right now
+    {
+      tapIndex: 2,
+      gpioPin: 23
+    }
+  ];
 
-  const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
-  flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) );
-  flowMeter.on('pour_status', exports.pourStart.bind( null, tapIndex ) ); 
-  flowMeter.on('pour_end', exports.pourEnd.bind( null, tapIndex ) );
-  flowMeters.push( flowMeter );
+  tapConfig.forEach( ({ tapIndex, gpioPin }) => {
+    const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
+    flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) );
+    flowMeter.on('pour_status', exports.pourStart.bind( null, tapIndex ) ); 
+    flowMeter.on('pour_end', exports.pourEnd.bind( null, tapIndex ) );
+    flowMeters.push( flowMeter );
+  });
 };
 
 exports.pourStart = async function( tapIndex ){
