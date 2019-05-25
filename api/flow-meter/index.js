@@ -22,7 +22,7 @@ exports.listen = function(){
   tapConfig.forEach( ({ tapIndex, gpioPin }) => {
     const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
     flowMeter.on('pour_start', exports.pourStart.bind( null, tapIndex ) );
-    flowMeter.on('pour_status', exports.pourStart.bind( null, tapIndex ) ); 
+    flowMeter.on('pour_status', exports.pourStatus.bind( null, tapIndex ) ); 
     flowMeter.on('pour_end', exports.pourEnd.bind( null, tapIndex ) );
     flowMeters.push( flowMeter );
   });
@@ -43,7 +43,6 @@ exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } )
   const milliliters = pourTickCount * ML_PER_TICK;
 
   console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
-  sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, milliliters });
 
   const tap = await Tap.findById( tapIndex );
 
@@ -54,6 +53,10 @@ exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } )
     durationSeconds: durationSeconds,
     milliliters
   })
-
   console.log( "Saved a pour record", pour.pourId );
+
+  setTimeout( () => {
+    // have modal linger a bit
+    sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, milliliters });
+  }, 3000 );
 };
