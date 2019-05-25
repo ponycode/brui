@@ -27,6 +27,12 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
+  Beer.associate = function( models ){
+    const { Beer, Pour } = models;
+    // Beer.hasMany(Pour);
+    Pour.belongsTo( Beer, { foreignKey: 'beerId' });
+  };
+
   return Beer;
 };
 

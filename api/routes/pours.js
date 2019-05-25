@@ -1,4 +1,4 @@
-const { Pour } = require('../models').models;
+const { Pour, Beer } = require('../models').models;
 
 module.exports = function( app ){
   app.get('/api/pours', _getPours );
@@ -12,8 +12,13 @@ async function _getPours( req, res ){
       }
     },
     order: [['createdAt', 'DESC']],
-    limit: 1000
+    limit: 1000,
+    include: [Beer]
   })
-  if( pours.length > 0 ) pours = pours.map( p => p.toJSON() );
+  if( pours.length > 0 ) pours = pours.map( p => {
+    const result = p.toJSON();
+    result.beerName = p.Beer.name;
+    return result;
+  });
   res.send({ pours })
 }
