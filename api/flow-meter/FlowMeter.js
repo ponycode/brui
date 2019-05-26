@@ -63,8 +63,6 @@ class FlowMeter extends EventEmitter{
       // or gravity pulling beer down. Decided to only count pours with 3 ticks or more
       this.startEmitted = true;
       this.emit( 'pour_start', {} );
-    }else{
-      this.emit( 'pour_status', { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount } );
     }
   }
 
@@ -93,6 +91,7 @@ class FlowMeter extends EventEmitter{
     }else{
       // pour still running
       this.lastCheckedTickCount = this.pourTickCount;
+      this.emit( 'pour_status', { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount } );
     }
   }
 
