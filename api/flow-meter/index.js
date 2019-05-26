@@ -35,14 +35,12 @@ exports.pourStart = async function( tapIndex ){
 }
 
 exports.pourStatus = async function( tapIndex, { durationSeconds, pourTickCount } ){
-  console.log( "Pour status", tapIndex, pourTickCount, durationSeconds );
   const milliliters = pourTickCount * ML_PER_TICK;
-  sockets.broadcast({ type: 'pour_status', durationSeconds, pourTickCount, milliliters });
+  sockets.broadcast({ type: 'pour_status', tapIndex, durationSeconds, pourTickCount, milliliters });
 }
 
 exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } ){
   const milliliters = pourTickCount * ML_PER_TICK;
-
   console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
 
   const tap = await Tap.findById( tapIndex );
@@ -59,5 +57,5 @@ exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } )
   setTimeout( () => {
     // have modal linger a bit
     sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, milliliters });
-  }, 3000 );
+  }, 2000 );
 };
