@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="root">
     <b-navbar toggleable="md" type="dark" variant="dark" v-show="!fullscreen">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-navbar-brand :to="{ name: 'menu' }" @click="enterFullScreen"><font-awesome-icon icon="arrows-alt" /> BRUI</b-navbar-brand>
@@ -22,14 +22,14 @@
       <font-awesome-icon icon="compress-arrows-alt" />
     </a>
 
-    <b-modal title="Pouring" v-model="showPouringModal" no-fade>
-      <div v-if="pour">
-        <h2>{{pour.beerName}}</h2>
-        <h3>{{Math.round( ((pour.milliliters || 0) * 0.0338 ) * 100 ) / 100}} floz</h3>
+    <div class="pourModal" :class="{'pourModalVisible': currentPour }">
+      <div v-if="currentPour">
+        <h1 class="lead">You are Pouring</h1>
+        <h2>{{currentPour.beerName}}</h2>
+        <h3 class="text-success">{{Math.round( ((currentPour.milliliters || 0) * 0.0338 ) * 100 ) / 100}} floz</h3>
       </div>
-      <div slot="modal-footer">
-      </div>
-    </b-modal>
+    </div>
+
   </div>
 </template>
 
@@ -44,11 +44,8 @@ export default {
   computed: {
     ...mapState({
       fullscreen: state => state.fullscreen,
-      pour: state => state.currentPour
-    }),
-    showPouringModal () {
-      return !!this.pour
-    }
+      currentPour: state => state.currentPour
+    })
   },
   methods: {
     enterFullScreen () {
@@ -62,6 +59,12 @@ export default {
 </script>
 
 <style type="scss" scoped>
+
+.root {
+  min-width: 100%;
+  min-height: 100%;
+  position: relative;
+}
 
 .exitFullscreen {
   background-color: black;
@@ -80,6 +83,25 @@ export default {
 .exitFullscreen svg {
   font-size: 26px;
   color: white;
+}
+
+.pourModal{
+  position: absolute;
+  top: -300px;
+  left: 50%;
+  margin-left: -300px;
+  width: 600px;
+  height: 300px;
+  padding: 40px;
+  border-radius: 30px;
+  z-index: 999;
+  background-color: white;
+  transform: translate3d( 0, 0, 0 );
+  transition: transform 0.3s;
+}
+
+.pourModalVisible {
+    transform: translate3d( 0, 400px, 0 );
 }
 
 </style>

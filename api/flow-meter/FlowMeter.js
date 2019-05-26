@@ -91,7 +91,7 @@ class FlowMeter extends EventEmitter{
     }else{
       // pour still running
       this.lastCheckedTickCount = this.pourTickCount;
-      this.emit( 'pour_status', { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount } );
+      if( this.pouring ) this.emit( 'pour_status', { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount } );
     }
   }
 

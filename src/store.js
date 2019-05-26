@@ -52,7 +52,7 @@ export default new Vuex.Store({
       }
     },
     [MUTATIONS.POUR_STATUS] ( state, { milliliters } ) {
-      if( !state.currentPour ) state.currentPour = {}
+      if( !state.currentPour ) return
       state.currentPour.milliliters = milliliters
     },
     [MUTATIONS.POUR_END] ( state ) {
