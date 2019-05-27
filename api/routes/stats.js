@@ -46,7 +46,8 @@ async function _fetchBeerStats( beerIds ){
       MAX(p."createdAt") as "lastPourDate",
       CAST( JULIANDAY( MAX(p."createdAt") ) - JULIANDAY( MIN(p."createdAt") ) AS INT ) as "daysOnTap"
     FROM "Beers" b LEFT JOIN "Pours" p ON( b.beerId = p.beerId )
-    WHERE b.beerId IN(?);
+    WHERE b.beerId IN(?)
+    GROUP BY b.beerId;
   `;
   const stats = await sequelize.query( sql, { replacements: [beerIds], type: sequelize.QueryTypes.SELECT });
   return stats;

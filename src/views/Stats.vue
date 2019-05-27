@@ -18,7 +18,6 @@
       </tr>
     </table>
 
-
     <br/>
     <h2>Pour History</h2>
     <table class="table">
