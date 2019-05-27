@@ -25,7 +25,7 @@
     <div class="pourModal" :class="{'pourModalVisible': currentPour }">
       <div v-if="currentPour">
         <h1 class="lead">You are Pouring</h1>
-        <h2>{{currentPour.beerName}} {{beerTranslate}}</h2>
+        <h2>{{currentPour.beerName}}</h2>
         <h3 class="text-success">{{Math.round( ((currentPour.milliliters || 0) * 0.0338 ) * 100 ) / 100}} floz</h3>
 
         <div class="text-center mt-4">
@@ -46,7 +46,7 @@
                           </mask>
                           <g id="Path"></g>
                           <g id="BeerHead" mask="url(#mask-2)">
-                              <g transform="translate(-82.311516, 160.025045)" id="Rectangle" ref="beerHead">
+                              <g transform="translate(-82.311516, 160.025045)" id="Rectangle" ref="beerHead" class="beerHead">
                                   <rect fill="#FFB241" x="0.3" y="27.3" width="294" height="164.7"></rect>
                                   <rect fill="#FFEBD3" x="0.3" y="0" width="294" height="29.3"></rect>
                               </g>
@@ -74,7 +74,7 @@ export default {
     ...mapState({
       fullscreen: state => state.fullscreen,
       currentPour: state => state.currentPour,
-      beerTranslate: state => {
+      beerInGlassOffset: state => {
         if( !state.currentPour ) return 0;
 
         const millilitersIn12Floz = 354.882;
@@ -93,7 +93,7 @@ export default {
     }
   },
   watch: {
-    beerTranslate( offset ){
+    beerInGlassOffset( offset ){
       if( !this.$refs.beerHead ) return;
 
       const start = 160.025045; // stolen from original y translate in svg
@@ -150,6 +150,10 @@ export default {
 
 .pourModalVisible {
     transform: translate3d( 0, 530px, 0 );
+}
+
+.beerHead{
+  transition: 0.5s transform;
 }
 
 </style>
