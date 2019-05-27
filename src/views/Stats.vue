@@ -6,13 +6,16 @@
     <table class="table">
       <tr>
         <th>Beer</th>
-        <th>Gallons Poured</th>
+        <th>Poured</th>
         <th>Number of Pours</th>
         <th>Days on Tap</th>
       </tr>
       <tr v-for="beerStat in beerStats" :key="beerStat.beerId">
         <td>{{beerStat.name}}</td>
-        <td>{{beerStat.gallons}}</td>
+        <td>
+          <span v-if="beerStat.gallons > 1">{{beerStat.gallons}} gal.</span>
+          <span v-else>{{beerStat.floz}} floz</span>
+        </td>
         <td>{{beerStat.numberOfPours}}</td>
         <td>{{beerStat.daysOnTap}}</td>
       </tr>
