@@ -14,7 +14,8 @@
         <td>{{beerStat.name}}</td>
         <td>
           <span v-if="beerStat.gallons > 1">{{beerStat.gallons}} gal.</span>
-          <span v-else>{{beerStat.floz}} floz</span>
+          <span v-else-if="beerStat.floz > 0">{{beerStat.floz}} floz</span>
+          <span v-else>0 floz</span>
         </td>
         <td>{{beerStat.numberOfPours}}</td>
         <td>{{beerStat.daysOnTap}}</td>

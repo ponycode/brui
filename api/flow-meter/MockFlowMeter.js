@@ -1,26 +1,27 @@
 const flowMeter = require('./index')
 
-setInterval( () => {
-  flowMeter.pourStart(2);
+run( 2 );
 
-  setTimeout( () => {
-    flowMeter.pourStatus(2, { durationSeconds: .2, pourTickCount: 30, milliliters: 100 });
-  }, 500 );
+async function waitMs( ms ){
+  return new Promise( resolve => {
+    setTimeout( resolve, ms );
+  });
+}
 
-  setTimeout( () => {
-    flowMeter.pourStatus(2, { durationSeconds: .3, pourTickCount: 60, milliliters: 200 });
-  }, 1000 );
+async function run( tapIndex ){
+  flowMeter.pourStart( tapIndex );
+  await waitMs( 1000 );
+  flowMeter.pourStatus( tapIndex, { durationSeconds: .2, pourTickCount: 30, milliliters: 100 });
+  await waitMs( 1000 );
+  flowMeter.pourStatus( tapIndex, { durationSeconds: .3, pourTickCount: 60, milliliters: 200 });
+  await waitMs( 1000 );
+  flowMeter.pourStatus( tapIndex, { durationSeconds: .4, pourTickCount: 80, milliliters: 300 });
+  await waitMs( 1000 );
+  flowMeter.pourStatus( tapIndex, { durationSeconds: .5, pourTickCount: 100, milliliters: 400 });
+  await waitMs( 1000 );
+  flowMeter.pourStatus( tapIndex, { durationSeconds: .6, pourTickCount: 120, milliliters: 500 });
+  await waitMs( 1000 );
+  flowMeter.pourEnd( tapIndex, { durationSeconds: .7, pourTickCount: 150, milliliters: 600 });
 
-  setTimeout( () => {
-    flowMeter.pourStatus(2, { durationSeconds: .4, pourTickCount: 80, milliliters: 300 });
-  }, 1500 );
-
-  setTimeout( () => {
-    flowMeter.pourStatus(2, { durationSeconds: .4, pourTickCount: 100, milliliters: 400 });
-  }, 2000 );
-
-  setTimeout( () => {
-    flowMeter.pourEnd(2, { durationSeconds: .6, pourTickCount: 101, milliliters: 500 });
-  }, 2500 );
-
-}, 6000 );
+  setTimeout( run.bind( null, tapIndex ), 6000 )
+}
