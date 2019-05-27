@@ -18,6 +18,7 @@ async function _getPours( req, res ){
   if( pours.length > 0 ) pours = pours.map( p => {
     const result = p.toJSON();
     result.beerName = p.Beer.name;
+    result.floz = p.milliliters * 0.033814;
     return result;
   });
   res.send({ pours })

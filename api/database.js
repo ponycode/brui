@@ -53,23 +53,6 @@ exports.connect = async function( databasePath ){
     await _createDb();
     const sequelize = await _connect( databasePath );
     models.load( sequelize );
-
-
-    const { Pour, Beer } = require('./models').models;
-    let pours = await Pour.findAll({
-      where: {
-        createdAt: {
-          $gt: new Date( new Date().getTime() - 30 * 24 * 60 * 60 * 1000 )
-        }
-      },
-      order: [['createdAt', 'DESC']],
-      limit: 1000,
-      include: [Beer]
-    })
-    console.log( 'POURS', pours );
-
-
-    //await sequelize.sync({ alter: true, force: false }); // CAUTION: force=true will delete data
   }catch( e ){
     console.error( 'Error connecting to db', e );
     throw e;
