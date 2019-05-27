@@ -77,8 +77,8 @@ export default {
       beerInGlassOffset: state => {
         if( !state.currentPour ) return 0;
 
-        const millilitersIn12Floz = 354.882;
-        const percentOfGlass = state.currentPour.milliliters / millilitersIn12Floz;
+        const millilitersIn8Floz = 230;
+        const percentOfGlass = state.currentPour.milliliters / millilitersIn8Floz;
         const totalMovement = 100;
         return Math.round( totalMovement * percentOfGlass );
       }
