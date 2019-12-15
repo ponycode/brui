@@ -1,14 +1,19 @@
-# brui
+# BRUI
+
+BRUI displays beer menus for kegarators with 1 to 3 taps and even tracks pours when coupled with flow sensors and the BRUI PCB. The entire project is open source including the PCB designs so feel free to take, use, and contribute.
 
 ## Equipment
 
+BRUI runs entirely on a raspberry pi running raspbian with internet access ( for images ). You should buy the fast raspberry pi you can find: pi 3 B+ at the time of this writing. You can optionally build a BRUI PCB which will allow you to plug your flow sensors directly to your raspberry pi.
+
+The BRUI application is written in nodejs and must be running on the pi at all times in order to track pours via the flow sensors. The frontend is written in VueJS.
 
 ### Flow Sensors
 
 I used the Titan 300 flow sensors purchased from here:
 https://brewskey.myshopify.com/products/titan-300-flow-sensor
 
-These are a little pricy - I'm pretty sure any food safe hall-effect flow sensor will work.
+These are a little pricy - I'm pretty sure any similarly rated food-grade hall effect flow sensor will work.
 
 ### Temperature Sensor
 
