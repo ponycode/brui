@@ -2,7 +2,10 @@
 
 BRUI displays beer menus for kegarators with 1 to 3 taps and even tracks pours when coupled with flow sensors and the BRUI PCB. The entire project is open source including the PCB designs so feel free to take, use, and contribute.
 
-![Order From OSH Park](assets/brui-menu.png)
+![BRUI Menu](assets/brui-menu.png)
+
+![BRUI Pour Tracking](assets/brui-pouring.png)
+
 
 ## Equipment
 
