@@ -2,6 +2,8 @@
 
 BRUI displays beer menus for kegarators with 1 to 3 taps and even tracks pours when coupled with flow sensors and the BRUI PCB. The entire project is open source including the PCB designs so feel free to take, use, and contribute.
 
+![Order From OSH Park](assets/brui-menu.png)
+
 ## Equipment
 
 BRUI runs entirely on a raspberry pi running raspbian with internet access ( for images ). You should buy the fast raspberry pi you can find: pi 3 B+ at the time of this writing. You can optionally build a BRUI PCB which will allow you to plug your flow sensors directly to your raspberry pi.
