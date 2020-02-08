@@ -1,7 +1,12 @@
 <template>
-  <div class="beerDetails">
+  <div class="beerDetails mt-3">
+
+    <router-link to="/beers"><font-awesome-icon icon="chevron-left" /> All Beers</router-link>
+
     <b-form v-on:submit.prevent="onSubmit">
-      <div class="row" v-if="beer">
+      <div class="row mt-3" v-if="beer">
+
+
         <div class="col-md-6 col-md-offset-2" >
           <div>
 
@@ -57,6 +62,7 @@
         </div>
       </div>
     
+      <b-button variant="default-outline" @click="reset">Reset</b-button>
       <b-button type="submit" variant="primary">Save</b-button>
 
     </b-form>
@@ -88,6 +94,16 @@ export default {
     async onSubmit () {
       await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
       this.$toasted.success('Beer Saved', { singleton: true }).goAway(3000)
+    },
+    reset () {
+      const beer = this.beer
+      if( !beer ) return
+
+      this.name = beer.name
+      this.imageUrl = beer.imageUrl
+      this.abv = beer.abv
+      this.ibu = beer.ibu
+      this.description = beer.description
     }
   },
   computed: {
@@ -112,12 +128,7 @@ export default {
         if( !this.beer ) return
 
         // copy data into local data so it can be edited
-        const beer = this.beer
-        this.name = beer.name
-        this.imageUrl = beer.imageUrl
-        this.abv = beer.abv
-        this.ibu = beer.ibu
-        this.description = beer.description
+        this.reset()
       }
     }
   },
