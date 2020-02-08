@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { getSettings, saveSettings, getBeers, saveBeer, getTaps } from './api/settings'
 import { getPourHistory, getBeerStats } from './api/stats'
-import { getMostRecentBeers, getBeerDetails, updateBeerDetails } from './api/beers'
+import { getMostRecentBeers, getBeerDetails, updateBeerDetails, createNewBeer } from './api/beers'
 
 Vue.use(Vuex)
 
@@ -98,6 +98,10 @@ export default new Vuex.Store({
     async updateBeerDetails ({ commit }, beerDetails ) {
       const updatedBeerDetails = await updateBeerDetails( beerDetails )
       commit( MUTATIONS.SET_BEER_DETAILS, updatedBeerDetails )
+    },
+    async createNewBeer ({ commit }, beerDetails ) {
+      const newBeerDetails = await createNewBeer( beerDetails )
+      commit( MUTATIONS.SET_BEER_DETAILS, newBeerDetails )
     },
     async saveBeer ({ dispatch }, { beer, tapIndex }) {
       await saveBeer( tapIndex, beer )

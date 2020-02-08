@@ -38,6 +38,11 @@ export default new Router({
       component: Beers
     },
     {
+      path: '/beers/new',
+      name: 'createBeer',
+      component: BeerDetails
+    },
+    {
       path: '/beers/:beerId',
       name: 'beerDetails',
       component: BeerDetails,

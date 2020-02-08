@@ -4,7 +4,7 @@
     <router-link to="/beers"><font-awesome-icon icon="chevron-left" /> All Beers</router-link>
 
     <b-form v-on:submit.prevent="onSubmit">
-      <div class="row mt-3" v-if="beer">
+      <div class="row mt-3">
 
 
         <div class="col-md-6 col-md-offset-2" >
@@ -23,7 +23,6 @@
               <b-form-input 
                             type="text"
                             v-model="imageUrl"
-                            required
                             placeholder="Beer image url">
               </b-form-input>
             </b-form-group>
@@ -31,7 +30,6 @@
             <b-form-group label="ABV" label-for="abv">
               <b-form-input 
                             v-model="abv"
-                            required
                             placeholder="ABV">
               </b-form-input>
             </b-form-group>
@@ -40,7 +38,6 @@
               <b-form-input 
                             type="number"
                             v-model="ibu"
-                            required
                             placeholder="IBU">
               </b-form-input>
             </b-form-group>
@@ -63,7 +60,7 @@
       </div>
     
       <b-button variant="default-outline" @click="reset">Reset</b-button>
-      <b-button type="submit" variant="primary">Save</b-button>
+      <b-button type="submit" variant="primary">{{saveButtonTitle}}</b-button>
 
     </b-form>
   </div>
@@ -77,7 +74,7 @@ export default {
   props: {
     beerId: {
       type: String,
-      required: true
+      required: false
     }
   },
   data () {
@@ -92,8 +89,13 @@ export default {
   },
   methods: {
     async onSubmit () {
-      await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
-      this.$toasted.success('Beer Saved', { singleton: true }).goAway(3000)
+      if( this.beerId ) {
+        const beer = await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
+        this.$toasted.success('Beer Updated', { singleton: true }).goAway(3000)
+      } else {
+        await this.$store.dispatch('createNewBeer', this.updatedBeer )
+        this.$toasted.success('Beer Created', { singleton: true }).goAway(3000)
+      }
     },
     reset () {
       const beer = this.beer
@@ -110,9 +112,16 @@ export default {
     ...mapState({
       beer: state => state.beerDetails
     }),
+    saveButtonTitle () {
+      if ( this.beerId ) {
+        return 'Update Beer'
+      } else { 
+        return 'Create Beer'
+      }
+    },
     updatedBeer () {
       const b = {};
-      b.beerId = this.beerId;
+      if( this.beerId ) b.beerId = this.beerId;
       b.name = this.name;
       b.imageUrl = this.imageUrl;
       b.abv = this.abv;
@@ -125,10 +134,11 @@ export default {
     beer: {
       immediate: true,
       handler () {
-        if( !this.beer ) return
-
-        // copy data into local data so it can be edited
-        this.reset()
+        if( !this.beerId && this.beer.beerId ){
+          // created a new beer - update url and UI
+          return this.$router.push({ name: 'beerDetails', params: { beerId: this.beer.beerId } })
+        }
+        this.reset() // copy data into local data so it can be edited
       }
     }
   },

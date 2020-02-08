@@ -6,7 +6,7 @@
     <b-table v-if="beers" class="beerTable" striped hover :items="beers" :fields="fields" :no-select-on-click="true" @row-clicked="showDetails">
       <template v-slot:head(name)>
         <div class="d-flex align-items-center justify-content-between">
-            Beer Name: <b-button size="xs" variant="primary" @click="newBeer">New Beer</b-button>
+            Beer Name: <b-button size="xs" variant="primary" to="/beers/new">New Beer</b-button>
         </div>
       </template>
     </b-table>
@@ -34,7 +34,7 @@ export default {
       this.$router.push({ name: 'beerDetails', params: { beerId } })
     },
     newBeer () {
-      alert( 'new beer' );
+      this.$router.push({ name: 'beerDetails' })
     }
   },
   async mounted () {
