@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { getSettings, saveSettings, getBeers, saveBeer, getTaps } from './api/settings'
 import { getPourHistory, getBeerStats } from './api/stats'
+import { getMostRecentBeers } from './api/beers'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export const MUTATIONS = {
   'POUR_START': 'POUR_START',
   'POUR_STATUS': 'POUR_STATUS',
   'POUR_END': 'POUR_END',
-  'SET_BEER_STATS': 'SET_BEER_STATS'
+  'SET_BEER_STATS': 'SET_BEER_STATS',
+  'SET_MOST_RECENT_BEERS': 'SET_MOST_RECENT_BEERS'
 };
 
 export default new Vuex.Store({
@@ -26,7 +28,8 @@ export default new Vuex.Store({
     fullscreen: false,
     pours: null,
     currentPour: null,
-    beerStats: null
+    beerStats: null,
+    mostRecentBeers: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -62,6 +65,9 @@ export default new Vuex.Store({
     },
     [MUTATIONS.SET_BEER_STATS] ( state, beerStats ) {
       state.beerStats = beerStats
+    },
+    [MUTATIONS.SET_MOST_RECENT_BEERS] ( state, mostRecentBeers ){
+      state.mostRecentBeers = mostRecentBeers
     }
   },
   actions: {
@@ -75,6 +81,10 @@ export default new Vuex.Store({
     async fetchBeers ({ commit }) {
       const beers = await getBeers()
       commit( MUTATIONS.SET_BEERS, beers )
+    },
+    async fetchMostRecentBeers ({ commit }) {
+      const beers = await getMostRecentBeers()
+      commit( MUTATIONS.SET_MOST_RECENT_BEERS, beers )
     },
     async saveBeer ({ dispatch }, { beer, tapIndex }) {
       await saveBeer( tapIndex, beer )

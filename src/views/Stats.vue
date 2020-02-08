@@ -3,6 +3,9 @@
 
     <br/>
     <h2>Stats</h2>
+
+    <pours-chart></pours-chart>
+
     <table class="table">
       <tr>
         <th>Beer</th>
@@ -45,9 +48,11 @@
 
 <script>
 import {mapState} from 'vuex'
+import PoursChart from '../components/PoursChart'
 
 export default {
   name: 'stats',
+  components: { PoursChart },
   computed: {
     ...mapState({
       pours: state => state.pours,

@@ -12,6 +12,7 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item :to="{ name: 'taps' }">Taps / Beers</b-nav-item>
+          <b-nav-item :to="{ name: 'beers' }">Beers</b-nav-item>
           <b-nav-item :to="{ name: 'settings' }"><font-awesome-icon icon="cog" /> Settings</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
