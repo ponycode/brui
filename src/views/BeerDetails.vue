@@ -6,7 +6,6 @@
     <b-form v-on:submit.prevent="onSubmit">
       <div class="row mt-3">
 
-
         <div class="col-md-6 col-md-offset-2" >
           <div>
 
@@ -90,7 +89,7 @@ export default {
   methods: {
     async onSubmit () {
       if( this.beerId ) {
-        const beer = await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
+        await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
         this.$toasted.success('Beer Updated', { singleton: true }).goAway(3000)
       } else {
         await this.$store.dispatch('createNewBeer', this.updatedBeer )
