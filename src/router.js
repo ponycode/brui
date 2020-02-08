@@ -40,7 +40,8 @@ export default new Router({
     {
       path: '/beers/:beerId',
       name: 'beerDetails',
-      component: BeerDetails
+      component: BeerDetails,
+      props: true
     }
   ]
 })

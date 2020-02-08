@@ -1,16 +1,9 @@
 <template>
   <div class="beerDetails">
-    <b-form  v-on:submit.prevent="onSubmit">
-      <div class="row">
+    <b-form v-on:submit.prevent="onSubmit">
+      <div class="row" v-if="beer">
         <div class="col-md-6 col-md-offset-2" >
-          <b-form-checkbox
-            v-model="empty"
-            class="emptyCheckbox"
-          >
-            Empty Tap
-          </b-form-checkbox>
-
-          <div v-if="!empty">
+          <div>
 
             <b-form-group label="Name" label-for="beerName">
               <b-form-input 
@@ -32,7 +25,6 @@
 
             <b-form-group label="ABV" label-for="abv">
               <b-form-input 
-                            type="number"
                             v-model="abv"
                             required
                             placeholder="ABV">
@@ -72,11 +64,13 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'beerDetails',
   props: {
     beerId: {
-      type: Number,
+      type: String,
       required: true
     }
   },
@@ -92,19 +86,17 @@ export default {
   },
   methods: {
     async onSubmit () {
-      let beer = { empty: true };
-
-      if( !this.empty ){
-        beer = this.beer;
-      }
-
-      await this.$store.dispatch('saveBeer', { beer, tapIndex: this.tap.tapIndex })
+      await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
       this.$toasted.success('Beer Saved', { singleton: true }).goAway(3000)
     }
   },
   computed: {
-    beer () {
+    ...mapState({
+      beer: state => state.beerDetails
+    }),
+    updatedBeer () {
       const b = {};
+      b.beerId = this.beerId;
       b.name = this.name;
       b.imageUrl = this.imageUrl;
       b.abv = this.abv;
@@ -114,25 +106,23 @@ export default {
     }
   },
   watch: {
-    tap: {
+    beer: {
       immediate: true,
       handler () {
-        if (!this.tap ) return;
-        const {beer} = this.tap;
-        
-        this.empty = !beer
+        if( !this.beer ) return
 
-        if (!beer) return
-        this.name = beer.name;
-        this.imageUrl = beer.imageUrl;
-        this.abv = beer.abv;
-        this.ibu = beer.ibu;
-        this.description = beer.description;
+        // copy data into local data so it can be edited
+        const beer = this.beer
+        this.name = beer.name
+        this.imageUrl = beer.imageUrl
+        this.abv = beer.abv
+        this.ibu = beer.ibu
+        this.description = beer.description
       }
     }
   },
   async mounted () {
-    await this.$store.dispatch('fetchBeerDetails')
+    await this.$store.dispatch('fetchBeerDetails', this.beerId )
   }
 }
 </script>
@@ -143,10 +133,6 @@ export default {
   max-height: 300px;
   width: auto;
   margin: 0 auto;
-}
-
-.emptyCheckbox{
-  margin-bottom: 20px;
 }
 
 </style>
