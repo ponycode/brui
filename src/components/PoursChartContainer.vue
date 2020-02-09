@@ -19,7 +19,7 @@ export default {
     options: {
       title: {
         display: true,
-        text: 'Pours over last 6 months'
+        text: 'Pours over last 3 months'
       },
       tooltips: {
         mode: 'index',
@@ -34,10 +34,10 @@ export default {
             parser: 'YYYY-MM-DD',
             unit: 'day'
           },
-          stacked: false,
+          stacked: true,
         }],
         yAxes: [{
-          stacked: false
+          stacked: true
         }]
       }
     }

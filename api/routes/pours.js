@@ -31,7 +31,7 @@ async function _getPoursChart( req, res ){
       date( createdAt, 'start of day' ) as date,
       beerId,
       COUNT(1) as pourCount
-    FROM "Pours" WHERE createdAt > date('now','-6 months')
+    FROM "Pours" WHERE createdAt > date('now','-3 months')
     GROUP BY date( createdAt, 'start of day' ), beerId
     ORDER BY date( createdAt, 'start of day' ) DESC;
   `;
