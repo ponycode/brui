@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getSettings, saveSettings, getBeers, saveBeer, getTaps } from './api/settings'
-import { getPourHistory, getBeerStats } from './api/stats'
+import { getPourHistory, getBeerStats, getPoursChartData } from './api/stats'
 import { getMostRecentBeers, getBeerDetails, updateBeerDetails, createNewBeer } from './api/beers'
 
 Vue.use(Vuex)
@@ -18,7 +18,8 @@ export const MUTATIONS = {
   'POUR_END': 'POUR_END',
   'SET_BEER_STATS': 'SET_BEER_STATS',
   'SET_MOST_RECENT_BEERS': 'SET_MOST_RECENT_BEERS',
-  'SET_BEER_DETAILS': 'SET_BEER_DETAILS'
+  'SET_BEER_DETAILS': 'SET_BEER_DETAILS',
+  'SET_POUR_CHART_DATA': 'SET_POUR_CHART_DATA'
 };
 
 export default new Vuex.Store({
@@ -31,7 +32,8 @@ export default new Vuex.Store({
     currentPour: null,
     beerStats: null,
     mostRecentBeers: null,
-    beerDetails: null
+    beerDetails: null,
+    poursChartData: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -73,6 +75,9 @@ export default new Vuex.Store({
     },
     [MUTATIONS.SET_BEER_DETAILS] ( state, beerDetails ){
       state.beerDetails = beerDetails
+    },
+    [MUTATIONS.SET_POUR_CHART_DATA] ( state, poursChartData ) {
+      state.poursChartData = poursChartData
     }
   },
   actions: {
@@ -107,17 +112,21 @@ export default new Vuex.Store({
       await saveBeer( tapIndex, beer )
       dispatch('fetchTaps')
     },
-    async fetchTaps({ commit }) {
+    async fetchTaps ({ commit }) {
       const taps = await getTaps()
       commit( MUTATIONS.SET_TAPS, taps)
     },
-    async fetchPours({ commit }){
+    async fetchPours ({ commit }){
       const taps = await getPourHistory()
       commit( MUTATIONS.SET_POURS, taps)
     },
-    async fetchBeerStats({ commit }){
+    async fetchBeerStats ({ commit }){
       const stats = await getBeerStats()
       commit( MUTATIONS.SET_BEER_STATS, stats)
+    },
+    async fetchPoursChartData ({ commit }) {
+      const chartData = await getPoursChartData()
+      commit( MUTATIONS.SET_POUR_CHART_DATA, chartData)
     }
   }
 })
