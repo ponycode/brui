@@ -20,3 +20,8 @@ export async function createNewBeer ( beerDetails ) {
   const result = await axios.put( `/api/beers`, beerDetails )
   return result.data.beerDetails
 }
+
+export async function getBeerSearch ( searchTerm ) {
+  const result = await axios.get( `/api/beers`, { params: { searchTerm } } )
+  return result.data.beers
+}

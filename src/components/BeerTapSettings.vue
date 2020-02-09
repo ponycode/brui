@@ -1,5 +1,6 @@
 <template>
   <div class="beerTap">
+    <!--
     <b-form  v-on:submit.prevent="onSubmit">
       <div class="row">
         <div class="col-md-6 col-md-offset-2" >
@@ -68,20 +69,57 @@
       <b-button type="submit" variant="primary">Save</b-button>
 
     </b-form>
+    -->
+    <div class="row ml-5 mt-5">
+      <div class="col-md-6">
+        <div v-if="beer">
+          <b-media>
+            <template v-slot:aside>
+              <b-img :blank="!beer.imageUrl" blank-color="#ccc" width="100" :src="beer.imageUrl" />
+            </template>
+            <h5 class="mt-0 mb-1">{{beer.name}}</h5>
+            <p class="mb-0">
+              {{beer.description}}
+            </p>
+          </b-media>
+          <b-button class="mt-5" variant="danger">Remove Beer from Tap</b-button>
+        </div>
+        <div v-else>
+          NO BEER!
+
+          <b-input-group class="mt-3">
+            <template v-slot:append>
+              <b-input-group-text><font-awesome-icon icon="search" /></b-input-group-text>
+            </template>
+            <b-form-input placeholder="Search for a beer" debounce="500" v-model="searchTerm"></b-form-input>
+          </b-input-group>
+
+          <div v-if="searchTerm && this.beers" class="results mt-3">
+            <ul class="list-unstyled mt-3" v-for="beer in beers" :key="beer.beerId">
+              <b-media tag="li">
+                <template v-slot:aside>
+                  <b-img :blank="!beer.imageUrl" blank-color="#ccc" width="60" :src="beer.imageUrl" />
+                </template>
+                <h5 class="mt-0 mb-1">{{beer.name}}</h5>
+              </b-media>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { getBeerSearch } from '../api/beers'
+
 export default {
   name: 'beerTapSettings',
   data () {
     return {
-      name: null,
-      imageUrl: null,
-      abv: null,
-      ibu: null,
-      description: null,
-      empty: true
+      searchTerm: null,
+      beers: null
     }
   },
   props: {
@@ -91,44 +129,33 @@ export default {
     }
   },
   methods: {
-    async onSubmit () {
-      let beer = { empty: true };
-
-      if( !this.empty ){
-        beer = this.beer;
+    async performSearch () {
+      if( this.searching ) return
+      
+      if( !this.searchTerm || this.searchTerm.length < 3 ){
+        this.beers = null
+        return
       }
 
-      await this.$store.dispatch('saveBeer', { beer, tapIndex: this.tap.tapIndex })
-      this.$toasted.success('Beer Saved', { singleton: true }).goAway(3000)
+      try{
+        this.searching = true
+        this.beers = await getBeerSearch( this.searchTerm )
+        this.searching = false
+      }catch( e ){
+        this.searching = false
+        this.beers = null
+      }
     }
   },
   computed: {
     beer () {
-      const b = {};
-      b.name = this.name;
-      b.imageUrl = this.imageUrl;
-      b.abv = this.abv;
-      b.ibu = this.ibu;
-      b.description = this.description;
-      return b;
+      if( !this.tap ) return null;
+      return this.tap.beer;
     }
   },
   watch: {
-    tap: {
-      immediate: true,
-      handler () {
-        if (!this.tap ) return;
-        const {beer} = this.tap;
-        
-        this.empty = !beer
-
-        if (!beer) return
-        this.name = beer.name;
-        this.imageUrl = beer.imageUrl;
-        this.abv = beer.abv;
-        this.ibu = beer.ibu;
-        this.description = beer.description;
-      }
+    searchTerm () {
+      this.performSearch();
     }
   }
 }
@@ -136,14 +163,10 @@ export default {
 
 <style type="scss" scoped>
 
-.beerImage {
-  max-height: 300px;
+.beerImage img {
+  max-height: 100px;
   width: auto;
   margin: 0 auto;
-}
-
-.emptyCheckbox{
-  margin-bottom: 20px;
 }
 
 </style>

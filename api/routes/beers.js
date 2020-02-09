@@ -1,4 +1,4 @@
-const { Beer } = require('../models').models;
+const { Beer, Op } = require('../models').models;
 
 module.exports = function( app ){
   app.get('/api/beers/recent', _getMostRecentBeers );
@@ -6,7 +6,29 @@ module.exports = function( app ){
   app.put('/api/beers', _putBeerDetails );
   app.get('/api/beers/:beerId', _getBeerDetails );
   app.post('/api/beers/:beerId', _updateBeerDetails );
+
+  app.get('/api/beers', _getBeers );
 };
+
+async function _getBeers( req, res ){
+  let searchTerm = req.query.searchTerm;
+  searchTerm = `%${searchTerm}%`;
+
+  const where = {};
+  if( searchTerm ){
+    where[Op.or] = [
+      { name: { like: searchTerm } },
+      { description: { like: searchTerm } }
+    ]
+  }
+
+  const beers = await Beer.findAll({
+    where,
+    limit: 100
+  });
+
+  res.send({ beers })
+}
 
 async function _getMostRecentBeers( req, res ){
   const beers = await Beer.findAll({
