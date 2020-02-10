@@ -4,7 +4,7 @@
       <div class="col text-center beerOnTapCol" v-for="tap in taps" :key="tap.tapIndex">
         <h1>{{tap.tapName}}</h1>
         <div class="beerOnTapContainer">
-          <beer-on-tap :beer="tap.beer"></beer-on-tap>
+          <keg-on-tap :keg="tap.Keg"></keg-on-tap>
         </div>
       </div>
     </div>
@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import BeerOnTap from '@/components/BeerOnTap'
+import KegOnTap from '@/components/KegOnTap'
 import { mapState } from 'vuex'
 
 export default {
   name: 'menu',
   components: {
-    BeerOnTap
+    KegOnTap
   },
   computed: mapState({
     taps: state => state.taps

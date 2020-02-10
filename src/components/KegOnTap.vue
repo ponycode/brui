@@ -16,11 +16,17 @@
 
 <script>
 export default {
-  name: 'beerOnTap',
+  name: 'kegOnTap',
   props: {
-    beer: {
+    keg: {
       type: Object,
       required: false
+    }
+  },
+  computed: {
+    beer () {
+      if( !this.keg ) return null
+      return this.keg.Beer
     }
   }
 }

@@ -12,6 +12,7 @@
             class="mb-2"
           >
             <b-card-text>
+              <strong>{{keg.gallons}} gal. - on tap since {{keg.createdAt | formatDate}}</strong>
               {{beer.description}}
             </b-card-text>
             <b-button href="#" variant="danger" size="sm" @click="removeFromTap">Remove from Tap</b-button>
@@ -85,10 +86,13 @@ export default {
     }
   },
   computed: {
-    beer () {
+    keg () {
       if( !this.tap ) return null
-      if( !this.tap.Keg ) return null
-      return this.tap.Keg.Beer;
+      return this.tap.Keg
+    },
+    beer () {
+      if( !this.keg ) return null
+      return this.keg.Beer;
     }
   },
   watch: {
