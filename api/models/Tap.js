@@ -13,6 +13,13 @@ module.exports = ( sequelize, DataTypes ) => {
       type: DataTypes.INTEGER,
       allowNull: true
     }
+  }, {
+    getterMethods: {
+      Beer() {
+        if( !this.Keg ) return null;
+        return this.Keg.Beer;
+      }
+    }
   });
 
   Tap.associate = function( models ){
@@ -20,17 +27,39 @@ module.exports = ( sequelize, DataTypes ) => {
     Tap.belongsTo( Keg, { foreignKey: 'kegId' });
   };
 
-  Tap.findByTapIndexWithBeer = async function( tapIndex ){
-    const tap = await this.findById( tapIndex );
-    if( !tap ) return null;
+  Tap.findByTapIndexWithBeer = async function( tapIndex, transaction ){
+    const { Keg, Beer } = require('.').models;
 
-    if( tap.beerId ) {
-      // TODO: get associations working
-      const { Beer } = require('.').models;
-      tap.Beer = await Beer.findById( tap.beerId )
-    }
-    
-    return tap;
+    return await this.findByPk( tapIndex, {
+      include: [
+        {
+          model: Keg,
+          include: [
+            {
+              model: Beer
+            }
+          ]
+        }
+      ],
+      transaction
+    });
+  };
+
+  Tap.findAllWithBeers = async function(){
+    const { Keg, Beer } = require('.').models;
+
+    return await this.findAll({
+      include: [
+        {
+          model: Keg,
+          include: [
+            {
+              model: Beer
+            }
+          ]
+        }
+      ]
+    });
   };
 
   return Tap;

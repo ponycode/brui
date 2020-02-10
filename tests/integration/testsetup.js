@@ -10,7 +10,7 @@
   // Responsible for connecting to db and starting the server
   await require('../../api/database').connect( TEST_DB_PATH );
 
-  require('../../api/server');
+  await require('../../api/server');
 
   setTimeout( () => {
     run();

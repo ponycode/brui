@@ -16,20 +16,24 @@
   require('./routes')( app );
 
   const PORT = process.env.PORT || 8081;
-  const server = app.listen( PORT, () => {
-    // eslint-disable-next-line no-console
-    console.log(`brui server running on port ${PORT}`)
+
+  return new Promise( ( resolve ) => {
+
+    const server = app.listen( PORT, () => {
+      // eslint-disable-next-line no-console
+      console.log(`brui server running on port ${PORT}`);
+      resolve();
+    });
+  
+    require('./sockets').init( server );
+  
+    if( argv.flow_meter ){
+        const flowMeter = require('./flow-meter')
+        flowMeter.listen();
+    }else if( argv.mock_flow_meter ){
+      require('./flow-meter/MockFlowMeter');
+    }
+
   });
 
-  require('./sockets').init( server );
-
-  if( argv.flow_meter ){
-      const flowMeter = require('./flow-meter')
-      flowMeter.listen();
-  }
-
-  if( argv.mock_flow_meter ){
-    require('./flow-meter/MockFlowMeter');
-  }
- 
 })();

@@ -1,14 +1,9 @@
 const assert = require('chai').assert;
+const dbUtils = require('./lib/dbUtils');
 
 describe('Data model works as expected', function(){
 
-  beforeEach( async () => {
-    const { Beer, Tap, Keg, Pour } = require('../../api/models').models;
-    await Pour.destroy({ truncate: true });
-    await Keg.destroy({ truncate: true });
-    await Tap.destroy({ truncate: true });
-    await Beer.destroy({ truncate: true });
-  });
+  beforeEach( dbUtils.emptyDB );
 
   it( 'taps and kegs are happy together', async function(){
     const { Tap, Keg, Beer } = require('../../api/models').models;

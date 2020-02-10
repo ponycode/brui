@@ -10,6 +10,19 @@ module.exports = ( sequelize, DataTypes ) => {
     beerId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    finishedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: true
+    },
+    totalPourCount: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    totalPourMilliliters: {
+      type: DataTypes.DECIMAL,
+      allowNull: true
     }
   });
 

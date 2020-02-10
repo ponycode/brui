@@ -21,6 +21,10 @@ exports.load = function( sequelize ){
       models[modelName].associate( models );
     }
   });
+
+  models.transaction = function( work ){
+    return sequelize.transaction( work );
+  };
 };
 
 exports.models = models;

@@ -29,8 +29,8 @@ exports.listen = function(){
 };
 
 exports.pourStart = async function( tapIndex ){
-  const tap = await Tap.findByTapIndexWithBeer( tapIndex );
-  const beerName = tap && tap.Beer ? tap.Beer.name : ''
+  const { Beer } = await Tap.findByTapIndexWithBeer( tapIndex );
+  const beerName = Beer ? Beer.name : '';
   sockets.broadcast({ type: 'pour_start', tapIndex, beerName });
 }
 
