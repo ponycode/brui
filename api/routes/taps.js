@@ -62,26 +62,32 @@ async function _deleteKegFromTap( req, res ){
 }
 
 async function _putKegOntoTap( req, res ){
-  let { beerId } = req.body;
+  let { beerId, gallons } = req.body;
   let { tapIndex } = req.params;
 
   beerId = parseInt( beerId, 10 );
   tapIndex = parseInt( tapIndex, 10 );
+  gallons = parseInt( gallons, 10 );
 
   if( !_.isNumber(beerId) ) return res.status(400).send('beerId is required');
   if( !_.isNumber(tapIndex) ) return res.status(400).send('tapIndex is required');
+  if( !_.isNumber(gallons) ) return res.status(400).send('gallons is required');
 
-  const keg = await Keg.create({
-    beerId
-  });
-
-  await Tap.update({
-    kegId: keg.kegId
-  },
-  {
-    where: {
-      tapIndex 
-    }
+  await transaction( async transaction => {
+    const keg = await Keg.create({
+      beerId,
+      gallons
+    }, { transaction });
+  
+    await Tap.update({
+      kegId: keg.kegId
+    },
+    {
+      where: {
+        tapIndex 
+      },
+      transaction
+    });
   });
 
   const tap = await Tap.findByTapIndexWithBeer( tapIndex );

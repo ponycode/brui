@@ -11,6 +11,11 @@ module.exports = ( sequelize, DataTypes ) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    gallons: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 5
+    },
     finishedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

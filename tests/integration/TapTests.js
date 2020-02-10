@@ -13,7 +13,8 @@ describe('Tap Model', function(){
     });
 
     const keg = await Keg.create({
-      beerId: beer.beerId
+      beerId: beer.beerId,
+      gallons: 5
     });
 
     const tap = await Tap.create({

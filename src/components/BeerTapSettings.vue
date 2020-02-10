@@ -1,75 +1,6 @@
 <template>
   <div class="beerTap">
-    <!--
-    <b-form  v-on:submit.prevent="onSubmit">
-      <div class="row">
-        <div class="col-md-6 col-md-offset-2" >
-          <b-form-checkbox
-            v-model="empty"
-            class="emptyCheckbox"
-          >
-            Empty Tap
-          </b-form-checkbox>
 
-          <div v-if="!empty">
-
-            <b-form-group label="Name" label-for="beerName">
-              <b-form-input 
-                            type="text"
-                            v-model="name"
-                            required
-                            placeholder="Beer name">
-              </b-form-input>
-            </b-form-group>
-
-            <b-form-group label="Image" label-for="beerImage">
-              <b-form-input 
-                            type="text"
-                            v-model="imageUrl"
-                            required
-                            placeholder="Beer image url">
-              </b-form-input>
-            </b-form-group>
-
-            <b-form-group label="ABV" label-for="abv">
-              <b-form-input 
-                            type="number"
-                            v-model="abv"
-                            required
-                            placeholder="ABV">
-              </b-form-input>
-            </b-form-group>
-            
-            <b-form-group label="IBU" label-for="ibu">
-              <b-form-input 
-                            type="number"
-                            v-model="ibu"
-                            required
-                            placeholder="IBU">
-              </b-form-input>
-            </b-form-group>
-
-            <b-form-group label="Description" label-for="description">
-              <b-form-textarea 
-                              v-model="description"
-                              placeholder="Beer description"
-                              :rows="3"
-                              :max-rows="6">
-              </b-form-textarea>
-            </b-form-group>
-
-          </div>
-
-        </div>
-        <div class="col-md-4">
-          <img v-if="imageUrl && !empty" :src="imageUrl" class="beerImage"/>
-        </div>
-      </div>
-    
-      <b-button type="submit" variant="primary">Save</b-button>
-
-    </b-form>
-    -->
     <div class="row ml-5 mt-5">
       <div class="col-md-6">
         <div v-if="beer">
@@ -83,7 +14,7 @@
             <b-card-text>
               {{beer.description}}
             </b-card-text>
-            <b-button href="#" variant="danger" size="sm">Remove from Tap</b-button>
+            <b-button href="#" variant="danger" size="sm" @click="removeFromTap">Remove from Tap</b-button>
           </b-card>
         </div>
         <div v-else>
@@ -147,13 +78,17 @@ export default {
       }
     },
     selectBeer ( beer ) {
-      alert( beer.name )
+      this.$store.dispatch( 'putKegOnTap', { tapIndex: this.tap.tapIndex, beerId: beer.beerId, gallons: 5 })
+    },
+    removeFromTap () {
+      this.$store.dispatch( 'removeKegFromTap', { tapIndex: this.tap.tapIndex })
     }
   },
   computed: {
     beer () {
-      if( !this.tap ) return null;
-      return this.tap.beer;
+      if( !this.tap ) return null
+      if( !this.tap.Keg ) return null
+      return this.tap.Keg.Beer;
     }
   },
   watch: {

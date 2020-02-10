@@ -56,7 +56,7 @@ exports.connect = async function( databasePath = process.env.DB_PATH || 'brui.sq
     const sequelize = await _connect( databasePath );
     models.load( sequelize );
     models.DB_PATH = databasePath;
-    await sequelize.sync();
+    await sequelize.sync({ force: false });
     connected = true
   }catch( e ){
     console.error( 'Error connecting to db', e );

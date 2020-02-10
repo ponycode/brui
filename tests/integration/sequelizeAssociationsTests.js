@@ -13,7 +13,8 @@ describe('Data model works as expected', function(){
     });
 
     const keg1 = await Keg.create({
-      beerId: beer1.beerId
+      beerId: beer1.beerId,
+      gallons: 5
     });
 
     const leftTap = await Tap.create({
@@ -37,7 +38,8 @@ describe('Data model works as expected', function(){
     });
 
     const keg1 = await Keg.create({
-      beerId: beer1.beerId
+      beerId: beer1.beerId,
+      gallons: 5
     });
 
     const dbBeer = await keg1.getBeer();
@@ -55,7 +57,8 @@ describe('Data model works as expected', function(){
     });
 
     const keg = await Keg.create({
-      beerId: beer.beerId
+      beerId: beer.beerId,
+      gallons: 5
     });
 
     const tap = await Tap.create({
@@ -127,7 +130,8 @@ describe('Data model works as expected', function(){
     });
 
     const keg1 = await Keg.create({
-      beerId: beer1.beerId
+      beerId: beer1.beerId,
+      gallons: 5
     });
 
     const leftTap = await Tap.create({

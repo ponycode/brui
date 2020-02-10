@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getSettings, saveSettings, getBeers, saveBeer, getTaps } from './api/settings'
+import { getSettings, saveSettings, getBeers, saveBeer } from './api/settings'
 import { getPourHistory, getBeerStats, getPoursChartData } from './api/stats'
 import { getMostRecentBeers, getBeerDetails, updateBeerDetails, createNewBeer } from './api/beers'
+import { getTaps, putKegOnTap, removeKegFromTap } from './api/taps'
 
 Vue.use(Vuex)
 
@@ -127,6 +128,16 @@ export default new Vuex.Store({
     async fetchPoursChartData ({ commit }) {
       const chartData = await getPoursChartData()
       commit( MUTATIONS.SET_POUR_CHART_DATA, chartData)
-    }
+    },
+    async putKegOnTap ({ commit }, { tapIndex, beerId, gallons } ) {
+      await putKegOnTap({ tapIndex, beerId, gallons })
+      const taps = await getTaps()
+      commit( MUTATIONS.SET_TAPS, taps)
+    },
+    async removeKegFromTap ({ commit }, { tapIndex } ) {
+      await removeKegFromTap({ tapIndex })
+      const taps = await getTaps()
+      commit( MUTATIONS.SET_TAPS, taps)
+    } 
   }
 })

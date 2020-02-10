@@ -20,7 +20,7 @@ describe('Tap Model', function(){
       name: "Unholy Swill"
     });
 
-    const { data: { tap: dbTap } } = await axios.put(`/api/taps/${tap.tapIndex}/keg`, { beerId: beer.beerId });
+    const { data: { tap: dbTap } } = await axios.put(`/api/taps/${tap.tapIndex}/keg`, { beerId: beer.beerId, gallons: 10 });
 
     const { Keg: dbKeg } = dbTap;
     const { Beer: dbBeer } = dbKeg;
@@ -36,6 +36,7 @@ describe('Tap Model', function(){
 
     const keg = await Keg.findByPk( dbKeg.kegId );
     assert.ok( keg.finishedAt );
+    assert.equal( keg.gallons, 10 );
     assert.equal( keg.totalPourCount, 3 );
     assert.equal( keg.totalPourMilliliters, 1800 );
   });
