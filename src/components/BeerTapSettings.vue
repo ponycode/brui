@@ -73,21 +73,26 @@
     <div class="row ml-5 mt-5">
       <div class="col-md-6">
         <div v-if="beer">
-          <b-media>
-            <template v-slot:aside>
-              <b-img :blank="!beer.imageUrl" blank-color="#ccc" width="100" :src="beer.imageUrl" />
-            </template>
-            <h5 class="mt-0 mb-1">{{beer.name}}</h5>
-            <p class="mb-0">
+          <b-card
+            :title="beer.name"
+            :img-src="beer.imageUrl"
+            img-top
+            style="max-width: 20rem;"
+            class="mb-2"
+          >
+            <b-card-text>
               {{beer.description}}
-            </p>
-          </b-media>
-          <b-button class="mt-5" variant="danger">Remove Beer from Tap</b-button>
+            </b-card-text>
+            <b-button href="#" variant="danger" size="sm">Remove from Tap</b-button>
+          </b-card>
         </div>
         <div v-else>
-          NO BEER!
 
-          <b-input-group class="mt-3">
+          <div class="emptyTap">
+            <h2>Empty Tap</h2>
+          </div>
+
+          <b-input-group class="mt-5">
             <template v-slot:append>
               <b-input-group-text><font-awesome-icon icon="search" /></b-input-group-text>
             </template>
@@ -95,14 +100,9 @@
           </b-input-group>
 
           <div v-if="searchTerm && this.beers" class="results mt-3">
-            <ul class="list-unstyled mt-3" v-for="beer in beers" :key="beer.beerId">
-              <b-media tag="li">
-                <template v-slot:aside>
-                  <b-img :blank="!beer.imageUrl" blank-color="#ccc" width="60" :src="beer.imageUrl" />
-                </template>
-                <h5 class="mt-0 mb-1">{{beer.name}}</h5>
-              </b-media>
-            </ul>
+            <b-list-group v-for="beer in beers" :key="beer.beerId">
+              <b-list-group-item button @click="selectBeer(beer)">{{beer.name}}</b-list-group-item>
+            </b-list-group>
           </div>
 
         </div>
@@ -145,6 +145,9 @@ export default {
         this.searching = false
         this.beers = null
       }
+    },
+    selectBeer ( beer ) {
+      alert( beer.name )
     }
   },
   computed: {
@@ -167,6 +170,14 @@ export default {
   max-height: 100px;
   width: auto;
   margin: 0 auto;
+}
+
+.emptyTap {
+  border: 1px dashed silver;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 20rem;
+  text-align: center;
 }
 
 </style>

@@ -23,5 +23,4 @@ exports.load = function( sequelize ){
   });
 };
 
-
 exports.models = models;

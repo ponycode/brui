@@ -28,9 +28,8 @@ module.exports = ( sequelize, DataTypes ) => {
   });
 
   Beer.associate = function( models ){
-    const { Beer, Pour } = models;
-    // Beer.hasMany(Pour);
-    Pour.belongsTo( Beer, { foreignKey: 'beerId' });
+    const { Beer, Keg } = models;
+    Beer.hasMany( Keg, { foreignKey: 'beerId' });
   };
 
   return Beer;

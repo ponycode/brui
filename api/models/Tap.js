@@ -9,10 +9,16 @@ module.exports = ( sequelize, DataTypes ) => {
     tapName: {
       type: DataTypes.TEXT
     },
-    beerId: {
-      type: DataTypes.INTEGER
+    kegId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   });
+
+  Tap.associate = function( models ){
+    const { Tap, Keg } = models;
+    Tap.belongsTo( Keg, { foreignKey: 'kegId' });
+  };
 
   Tap.findByTapIndexWithBeer = async function( tapIndex ){
     const tap = await this.findById( tapIndex );

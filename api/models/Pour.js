@@ -7,11 +7,17 @@ module.exports = ( sequelize, DataTypes ) => {
       autoIncrement: true,
       primaryKey: true
     },
+    kegId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     beerId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     tapIndex: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     durationSeconds: {
       type: DataTypes.INTEGER
@@ -23,6 +29,11 @@ module.exports = ( sequelize, DataTypes ) => {
       type: DataTypes.DECIMAL
     }
   });
+
+  Pour.associate = function( models ){
+    const { Keg, Pour } = models;
+    Pour.belongsTo( Keg, { foreignKey: 'kegId' });
+  };
 
   return Pour;
 };

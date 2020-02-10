@@ -7,9 +7,9 @@ const fs = require('fs');
 const models = require('./models');
 
 const dbPath = path.resolve( __dirname, 'brui.sqlite' );
+let connected = false;
 
 async function _connect( databasePath ){
-  if( !databasePath ) databasePath = 'brui.sqlite';
   databasePath = path.resolve( __dirname, databasePath );
   console.log('connecting to db', databasePath);
 
@@ -48,11 +48,16 @@ async function _createDb(){
   });
 }
 
-exports.connect = async function( databasePath ){
+exports.connect = async function( databasePath = process.env.DB_PATH || 'brui.sqlite' ){
+  if( connected ) return;
+
   try{
     await _createDb();
     const sequelize = await _connect( databasePath );
     models.load( sequelize );
+    models.DB_PATH = databasePath;
+    await sequelize.sync();
+    connected = true
   }catch( e ){
     console.error( 'Error connecting to db', e );
     throw e;
