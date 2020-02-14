@@ -1,12 +1,19 @@
 <template>
   <div class="beerOnTap text-center" v-if="beer && !beer.empty">
     <h2 class="mb-1">{{beer.name}}</h2>
-    <b-button class="mt-0 mb-2" v-if="!fullscreen" variant="outline-danger" size="sm" @click="removeKeg"><font-awesome-icon icon="times-circle" class="mr-2"/>Remove Keg</b-button>
+    <b-button class="mt-0 mb-2" v-if="!fullscreen" variant="outline-danger" size="sm" v-b-modal="'removeKegConfirmation-' + tapIndex"><font-awesome-icon icon="times-circle" class="mr-2"/>Remove Keg</b-button>
     <div class="beerImage mt-3">
       <img v-if="beer.imageUrl" :src="beer.imageUrl" />
     </div>
     <div><span class="spec">{{beer.abv}}% <span class="unit">ABV</span></span>, <span class="spec">{{beer.ibu}} <span class="unit">IBU</span></span></div>
     <p class='description'>{{beer.description}}</p>
+
+    <b-modal :id="'removeKegConfirmation-' + tapIndex" title="Remove Keg?" ref="modal" size="sm" ok-title="Yes, Remove Keg" ok-variant="danger" @ok="removeKeg">
+      <h3>{{beer.name}}</h3>
+      <p class="mt-3">
+        Removing this keg will finalize all pour reporting.
+      </p>
+    </b-modal>
   </div>
 </template>
 
