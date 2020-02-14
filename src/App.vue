@@ -87,9 +87,15 @@ export default {
   },
   methods: {
     enterFullScreen () {
+      if( document.fullscreenEnabled ){
+          document.documentElement.requestFullscreen();
+      }
       this.$store.commit('FULLSCREEN', true)
     },
     exitFullscreen () {
+      if( document.fullscreenEnabled ){
+        document.exitFullscreen();
+      }
       this.$store.commit('FULLSCREEN', false)
     }
   },
@@ -100,6 +106,17 @@ export default {
       const start = 160.025045; // stolen from original y translate in svg
       this.$refs.beerHead.setAttribute("transform",`translate(-82.311516, ${start - offset})`);
     }
+  },
+  mounted () {
+    document.addEventListener( 'fullscreenchange', event => {
+      if( document.fullscreenEnabled ){
+        if( document.fullscreenElement ){
+          this.$store.commit('FULLSCREEN', true)
+        } else {
+          this.$store.commit('FULLSCREEN', false)
+        }
+      }
+    });
   }
 }
 </script>
