@@ -4,7 +4,7 @@ const axios = require('axios').create({
   baseURL: 'http://localhost:8081'
 });
 
-describe('Tap Model', function(){
+describe('Taps Routes', function(){
 
   beforeEach( dbUtils.emptyDB );
 
