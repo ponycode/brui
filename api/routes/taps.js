@@ -100,6 +100,7 @@ async function _putKegOntoTap( req, res ){
 async function _getTaps( req, res ){
   const taps = await Tap.findAllWithBeers();
  
+  //const kegStatus
   const results = [];
   for( let tap of taps ){
     const tapJson = tap.toJSON();

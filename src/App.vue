@@ -120,7 +120,17 @@ export default {
 }
 </script>
 
-<style type="scss" scoped>
+<style type="scss">
+
+HTML {
+  height: 100vh;
+}
+
+BODY {
+  background: rgb(73,73,73);
+  background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);
+  height: 100vh;
+}
 
 .root {
   min-width: 100%;

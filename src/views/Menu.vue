@@ -51,8 +51,6 @@ export default {
 <style type="scss" scoped>
 
 .menuContent {
-  background: rgb(73,73,73);
-  background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);
   height: 100vh;
   color: white;
 }

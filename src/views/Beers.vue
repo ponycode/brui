@@ -45,6 +45,12 @@ export default {
 
 <style type="scss" scoped>
 
+.beers{
+  background-color: white;
+  padding-bottom: 100px;
+  height: 100%;
+}
+
 .beerTable td {
   cursor: pointer;
 }

@@ -129,13 +129,11 @@ export default new Vuex.Store({
       const chartData = await getPoursChartData()
       commit( MUTATIONS.SET_POUR_CHART_DATA, chartData)
     },
-    async putKegOnTap ({ dispatch }, { tapIndex, beerId, gallons } ) {
+    async putKegOnTap ( _, { tapIndex, beerId, gallons } ) {
       await putKegOnTap({ tapIndex, beerId, gallons })
-      dispatch('fetchTaps')
     },
-    async removeKegFromTap ({ dispatch }, { tapIndex } ) {
+    async removeKegFromTap ( _, { tapIndex } ) {
       await removeKegFromTap({ tapIndex })
-      dispatch('fetchTaps')
     } 
   }
 })

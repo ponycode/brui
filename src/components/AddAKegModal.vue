@@ -10,9 +10,13 @@
 
     <div v-if="searchTerm && this.beers" class="results mt-3">
       <b-list-group v-for="beer in beers" :key="beer.beerId">
-        <b-list-group-item button @click="selectBeer(beer)">{{beer.name}}</b-list-group-item>
+        <b-list-group-item href="#" button @click="selectBeer(beer)">{{beer.name}}</b-list-group-item>
       </b-list-group>
     </div>
+
+    <template v-slot:modal-footer="{ ok, cancel, hide }">
+       <div></div>
+    </template>
 
   </b-modal>
 </template>

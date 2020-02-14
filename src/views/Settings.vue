@@ -75,5 +75,10 @@ export default {
 
 <style type="scss" scoped>
 
+.settings{
+  background-color: white;
+  padding-bottom: 100px;
+  height: 100%;
+}
 
 </style>

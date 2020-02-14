@@ -133,7 +133,7 @@ export default {
     beer: {
       immediate: true,
       handler () {
-        if( !this.beerId && this.beer.beerId ){
+        if( !this.beerId && this.beer && this.beer.beerId ){
           // created a new beer - update url and UI
           return this.$router.push({ name: 'beerDetails', params: { beerId: this.beer.beerId } })
         }

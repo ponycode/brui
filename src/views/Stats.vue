@@ -68,4 +68,10 @@ export default {
 
 <style type="scss" scoped>
 
+.stats{
+  background-color: white;
+  padding-bottom: 100px;
+  height: 100%;
+}
+
 </style>
