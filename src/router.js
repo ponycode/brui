@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Menu from './views/Menu.vue'
-import Taps from './views/Taps.vue'
 import Settings from './views/Settings.vue'
 import Stats from './views/Stats.vue'
 import Beers from './views/Beers.vue'
@@ -16,11 +15,6 @@ export default new Router({
       path: '/',
       name: 'menu',
       component: Menu
-    },
-    {
-      path: '/taps',
-      name: 'taps',
-      component: Taps
     },
     {
       path: '/settings',

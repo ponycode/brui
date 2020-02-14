@@ -7,11 +7,6 @@
     <div><span class="spec">{{beer.abv}}% <span class="unit">ABV</span></span>, <span class="spec">{{beer.ibu}} <span class="unit">IBU</span></span></div>
     <p class='description'>{{beer.description}}</p>
   </div>
-  <div v-else>
-    <div class="emptyTap">
-      <font-awesome-icon icon="sad-cry" />
-    </div>
-  </div>
 </template>
 
 <script>
@@ -77,12 +72,6 @@ h5 {
   font-size: 20px;
   font-weight: 300;
   color: rgba( 255, 255, 255, 0.8 );
-}
-
-.emptyTap{
-  font-size: 100px;
-  margin-top: 100px;
-  color: rgba( 255, 255, 255, 0.2 );
 }
 
 </style>

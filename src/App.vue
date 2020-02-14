@@ -2,17 +2,16 @@
   <div class="root">
     <b-navbar toggleable="md" type="dark" variant="dark" v-show="!fullscreen">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-navbar-brand :to="{ name: 'menu' }" @click="enterFullScreen"><font-awesome-icon icon="arrows-alt" /> BRUI</b-navbar-brand>
+      <b-navbar-brand :to="{ name: 'menu' }"><font-awesome-icon @click="enterFullScreen" icon="arrows-alt" class="mr-2"/> BRUI</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'stats' }">Stats</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item :to="{ name: 'taps' }">Taps</b-nav-item>
           <b-nav-item :to="{ name: 'beers' }">Beers</b-nav-item>
+          <b-nav-item :to="{ name: 'stats' }">Stats</b-nav-item>
           <b-nav-item :to="{ name: 'settings' }"><font-awesome-icon icon="cog" /> Settings</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -108,7 +107,7 @@ export default {
     }
   },
   mounted () {
-    document.addEventListener( 'fullscreenchange', event => {
+    document.addEventListener( 'fullscreenchange', () => {
       if( document.fullscreenEnabled ){
         if( document.fullscreenElement ){
           this.$store.commit('FULLSCREEN', true)
