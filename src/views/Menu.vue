@@ -2,16 +2,9 @@
   <div class="container-fluid menuContent">
     <div class="row beerOnTapRow">
       <div class="col text-center beerOnTapCol" v-for="tap in taps" :key="tap.tapIndex">
-        <h1>{{tap.tapName}} 
-          <b-dropdown v-if="tap.Keg && !fullscreen" :id="tap.tapIndex + '-dropdown'" right pill variant="dark" size="sm" no-caret class="float-right">
-            <template v-slot:button-content>
-              <font-awesome-icon icon="ellipsis-v" />
-            </template>
-            <b-dropdown-item variant="danger" @click="removeKegOnTapWithIndex(tap.tapIndex)">Remove Keg</b-dropdown-item>
-          </b-dropdown>
-        </h1>
+        <h1>{{tap.tapName}}</h1>
         <div class="beerOnTapContainer">
-          <keg-on-tap v-if="tap.Keg" :keg="tap.Keg"></keg-on-tap>
+          <keg-on-tap v-if="tap.Keg" :keg="tap.Keg" :tap-index="tap.tapIndex"></keg-on-tap>
           <div v-else>
             <div class="emptyTap">
               <font-awesome-icon icon="sad-cry" />

@@ -1,7 +1,8 @@
 <template>
   <div class="beerOnTap text-center" v-if="beer && !beer.empty">
-    <h2>{{beer.name}}</h2>
-    <div class="beerImage">
+    <h2 class="mb-1">{{beer.name}}</h2>
+    <b-button class="mt-0 mb-2" v-if="!fullscreen" variant="outline-danger" size="sm" @click="removeKeg"><font-awesome-icon icon="times-circle" class="mr-2"/>Remove Keg</b-button>
+    <div class="beerImage mt-3">
       <img v-if="beer.imageUrl" :src="beer.imageUrl" />
     </div>
     <div><span class="spec">{{beer.abv}}% <span class="unit">ABV</span></span>, <span class="spec">{{beer.ibu}} <span class="unit">IBU</span></span></div>
@@ -10,18 +11,32 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'kegOnTap',
   props: {
+    tapIndex: {
+      type: Number,
+      required: true
+    },
     keg: {
       type: Object,
       required: false
     }
   },
   computed: {
+    ...mapState({
+      fullscreen: state => state.fullscreen
+    }),
     beer () {
       if( !this.keg ) return null
       return this.keg.Beer
+    }
+  },
+  methods: {
+    removeKeg(){
+      this.$store.dispatch( 'removeKegFromTap', { tapIndex: this.tapIndex })
     }
   }
 }
