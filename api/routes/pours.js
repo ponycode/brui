@@ -6,22 +6,15 @@ module.exports = function( app ){
 };
 
 async function _getPours( req, res ){
-  let pours = await Pour.findAll({
-    where: {
-      createdAt: {
-        $gt: new Date( new Date().getTime() - 30 * 24 * 60 * 60 * 1000 )
-      }
-    },
-    order: [['createdAt', 'DESC']],
-    limit: 1000,
-    include: [Beer]
-  })
-  if( pours.length > 0 ) pours = pours.map( p => {
-    const result = p.toJSON();
-    result.beerName = p.Beer.name;
-    result.floz = p.milliliters * 0.033814;
-    return result;
-  });
+  let pours = await Pour.findAllWithBeer({ fromDaysAgo: 90, limit: 200 });
+  if( pours.length > 0 ){
+    pours = pours.map( p => {
+      const result = p.toJSON();
+      result.beerName = p.Beer.name;
+      result.floz = p.milliliters * 0.033814; // TODO: use a conversion util for this shit
+      return result;
+    });
+  }
   res.send({ pours })
 }
 

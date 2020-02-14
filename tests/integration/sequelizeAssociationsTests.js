@@ -5,6 +5,20 @@ describe('Data model works as expected', function(){
 
   beforeEach( dbUtils.emptyDB );
 
+  it( 'pours and beers are happy together', async function(){
+    const { Pour } = require('../../api/models').models;
+
+    const [tap] = await dbUtils.insertTaps();
+    const [beer] = await dbUtils.insertBeers();
+    await dbUtils.addAKeg( tap, beer );
+    const [pour] = await dbUtils.generatePours( tap, { pourCount: 1, firstPourDaysAgo: 1 });
+
+    const pours = await Pour.findAllWithBeer();
+    assert.lengthOf( pours, 1 );
+    assert.equal( pours[0].pourId, pour.pourId );
+    assert.equal( pours[0].Beer.beerId, beer.beerId );
+  });
+
   it( 'taps and kegs are happy together', async function(){
     const { Tap, Keg, Beer } = require('../../api/models').models;
 

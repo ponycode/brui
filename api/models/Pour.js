@@ -1,3 +1,4 @@
+const moment = require('moment');
 
 module.exports = ( sequelize, DataTypes ) => {
 
@@ -31,8 +32,29 @@ module.exports = ( sequelize, DataTypes ) => {
   });
 
   Pour.associate = function( models ){
-    const { Keg, Pour } = models;
+    const { Keg, Pour, Beer } = models;
     Pour.belongsTo( Keg, { foreignKey: 'kegId' });
+    Pour.belongsTo( Beer, { foreignKey: 'beerId' });
+  };
+
+  Pour.findAllWithBeer = async function({ fromDaysAgo = 90, limit = 200, transaction } = {}){
+    const { Beer } = require('.').models;
+
+    return await Pour.findAll({
+      where: {
+        createdAt: {
+          $gt: moment().subtract( fromDaysAgo, 'days' ).toDate()
+        }
+      },
+      order: [['createdAt', 'DESC']],
+      limit,
+      include: [
+        {
+          model: Beer
+        }
+      ],
+      transaction
+    });
   };
 
   return Pour;
