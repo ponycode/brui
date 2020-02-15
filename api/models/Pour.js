@@ -28,6 +28,11 @@ module.exports = ( sequelize, DataTypes ) => {
     },
     milliliters: {
       type: DataTypes.DECIMAL
+    },
+    simulated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   });
 

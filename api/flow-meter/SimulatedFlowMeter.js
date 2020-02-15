@@ -26,12 +26,12 @@ class SimulatedFlowMeter {
     this.tapIndex = tapIndex;
     this.pourStartTime = new Date().getTime();
 
-    this.pourListener.pourStart( this.tapIndex );
+    this.pourListener.pourStart( this.tapIndex, { simulated: true });
 
     this.pourInterval = setInterval( () => {
       this.durationSeconds = Math.floor( ( new Date().getTime() - this.pourStartTime ) / 1000  );
       this.pourTickCount += 20;
-      this.pourListener.pourStatus( this.tapIndex, { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount })
+      this.pourListener.pourStatus( this.tapIndex, { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount, simulated: true })
     }, 200 );
 
     this.pourTimeout = setTimeout( () => {
@@ -43,7 +43,7 @@ class SimulatedFlowMeter {
     clearInterval( this.pourInterval );
     clearTimeout( this.pourTimeout );
 
-    this.pourListener.pourEnd( this.tapIndex, { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount });
+    this.pourListener.pourEnd( this.tapIndex, { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount, simulated: true });
 
     this.simulatingPour = false;
     this.tapIndex = false;

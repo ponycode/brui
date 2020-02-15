@@ -24,7 +24,7 @@ class PourListener {
     sockets.broadcast({ type: 'pour_status', tapIndex, durationSeconds, pourTickCount, milliliters });
   }
 
-  async pourEnd( tapIndex, { durationSeconds, pourTickCount }){
+  async pourEnd( tapIndex, { durationSeconds, pourTickCount, simulated = false }){
     const { Tap, Pour } = require('../models').models;
 
     const milliliters = Math.round( pourTickCount * this.millilitersPerTick );
@@ -38,7 +38,8 @@ class PourListener {
       beerId: tap.Beer.beerId,
       tickCount: pourTickCount,
       durationSeconds: durationSeconds,
-      milliliters
+      milliliters,
+      simulated
     })
     console.log( "Saved a pour record", pour.pourId );
 

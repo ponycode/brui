@@ -126,7 +126,7 @@ export default {
 BODY {
   background-color: rgb(73,73,73);
   color: white;
-  /*background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);*/
+  background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);
 }
 
 .root {
