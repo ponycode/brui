@@ -6,6 +6,7 @@ class WakeUp {
    * This will wakeup from the screensaver on raspberry pi
    */
   static loudNoise(){
+    console.log('BANG BANG BANG!');
     try{
       exec('xset s reset', {
         env: {
