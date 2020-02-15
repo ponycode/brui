@@ -1,4 +1,5 @@
 const sockets = require('../sockets');
+const WakeUp = require('./Wakeup');
 
 class PourListener {
 
@@ -14,6 +15,8 @@ class PourListener {
     const beerName = tap.Beer ? tap.Beer.name : '';
 
     sockets.broadcast({ type: 'pour_start', tapIndex, beerName });
+
+    WakeUp.loudNoise();
   }
 
   async pourStatus( tapIndex, { durationSeconds, pourTickCount }){
