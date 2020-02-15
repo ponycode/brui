@@ -1,5 +1,6 @@
 ( async function(){
 
+  const PourListener = require('./lib/PourListener');
   const argv = require('minimist')(process.argv.slice(2));
   const express = require('express');
   const path = require('path');
@@ -15,6 +16,11 @@
   
   require('./routes')( app );
 
+  app.use( function( err, req, res, next ){
+    console.error('SERVER ERROR:', err.stack);
+    res.status(500).send('Something broke!');
+  })
+
   const PORT = process.env.PORT || 8081;
 
   return new Promise( ( resolve ) => {
@@ -25,13 +31,20 @@
       resolve();
     });
   
-    require('./sockets').init( server );
-  
+ 
+
+    const sockets = require('./sockets');
+    sockets.init( server );
+
+    const pourListener = new PourListener();
+
     if( argv.flow_meter ){
         const flowMeter = require('./flow-meter')
-        flowMeter.listen();
-    }else if( argv.mock_flow_meter ){
-      require('./flow-meter/MockFlowMeter');
+        flowMeter.listen( pourListener );
+    }else if( argv.simulated_flow_meter ){
+      const SimulatedFlowMeter = require('./flow-meter/SimulatedFlowMeter');
+      const simulatedFlowMeter = new SimulatedFlowMeter( pourListener );
+      sockets.addMessageListener( simulatedFlowMeter.onSocketMessage.bind(simulatedFlowMeter) );
     }
 
   });

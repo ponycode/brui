@@ -3,7 +3,7 @@ import store from './store'
 const socket = new WebSocket('ws://localhost:8081/sockets')
 
 socket.addEventListener('open', function (event) {
-    socket.send('Hello Server!', event);
+    socket.send(JSON.stringify({ event: 'hello' }), event);
 });
 
 socket.addEventListener('message', function (event) {
@@ -13,6 +13,11 @@ socket.addEventListener('message', function (event) {
     console.log('Message from server ', message);
 
     if( message.type === 'pour_start' ){
+
+      // Timeout if we don't get a close message
+      message.timeout = setTimeout( () => {
+        store.commit('POUR_END', message )
+      }, 20000 ) 
 
       store.commit('POUR_START', message )
 
@@ -24,7 +29,7 @@ socket.addEventListener('message', function (event) {
 
       setTimeout( () => {
         store.commit('POUR_END')
-      }, 2000 );
+      }, 2000 )
 
     }else if( message.type === 'reload_taps' ){
 
@@ -32,3 +37,38 @@ socket.addEventListener('message', function (event) {
 
     }
 });
+
+const ALLOW_KEYBOARD_POUR_SIMULATION = true
+if( ALLOW_KEYBOARD_POUR_SIMULATION ){
+  let numberPressed = false;
+  let simulatingPour = false;
+
+  document.addEventListener('keydown', e => {
+    if( ['1', '2', '3'].indexOf(e.key)  === -1 ) return;
+
+    if( simulatingPour ) return; // one at a time
+
+    numberPressed = e.key;
+    
+    if( !simulatingPour ){
+      simulatingPour = true
+      console.log("START POUR", numberPressed )
+      socket.send(JSON.stringify({ event: 'start_simulated_pour', tapIndex: parseInt(numberPressed, 10) - 1 }));
+    }
+  });
+
+  document.addEventListener('keyup', e => {
+    if( ['1', '2', '3'].indexOf(e.key)  === -1 ) return;
+
+    if( e.key === numberPressed ){
+      if( simulatingPour ){
+        simulatingPour = false
+        console.log("END POUR", numberPressed)
+        socket.send(JSON.stringify({ event: 'end_simulated_pour', tapIndex: parseInt(numberPressed, 10) - 1 }));
+      }
+      numberPressed = false;
+    }
+
+  });
+
+}

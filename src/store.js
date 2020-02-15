@@ -55,10 +55,11 @@ export default new Vuex.Store({
     [MUTATIONS.SET_POURS] ( state, pours ) {
       state.pours = pours
     },
-    [MUTATIONS.POUR_START] ( state, { milliliters, beerName } ){
+    [MUTATIONS.POUR_START] ( state, { milliliters, beerName, timeout } ){
       state.currentPour = {
         milliliters,
-        beerName
+        beerName,
+        timeout
       }
     },
     [MUTATIONS.POUR_STATUS] ( state, { milliliters } ) {
@@ -66,6 +67,9 @@ export default new Vuex.Store({
       state.currentPour.milliliters = milliliters
     },
     [MUTATIONS.POUR_END] ( state ) {
+      if( state.currentPour.timeout ){
+        clearTimeout( state.currentPour.timeout );
+      }
       state.currentPour = null
     },
     [MUTATIONS.SET_BEER_STATS] ( state, beerStats ) {

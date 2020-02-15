@@ -2,7 +2,7 @@
   <div class="container-fluid menuContent">
     <div class="row beerOnTapRow">
       <div class="col text-center beerOnTapCol" v-for="tap in taps" :key="tap.tapIndex">
-        <h1>{{tap.tapName}}</h1>
+        <h1 v-on:keyup.p="simulatePour(tap.tapIndex)">{{tap.tapName}}</h1>
         <div class="beerOnTapContainer">
           <keg-on-tap v-if="tap.Keg" :keg="tap.Keg" :tap-index="tap.tapIndex"></keg-on-tap>
           <div v-else>
@@ -40,6 +40,9 @@ export default {
     },
     addAKeg( tapIndex ){
       this.$refs.addAKegModal.show( tapIndex )
+    },
+    simulatePour( tapIndex ){
+      console.log( 'POUR', tapIndex );
     }
   },
   mounted () {
