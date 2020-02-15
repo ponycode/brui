@@ -2,7 +2,12 @@
   <div class="menuContent">
     <div class="row">
       <div class="col text-center" v-for="tap in taps" :key="tap.tapIndex">
-        <h1>{{tap.tapName}}</h1>
+        <h1>
+          {{tap.tapName}}
+          <span v-if="tap.kegStatus" class="float-right">
+            {{tap.kegStatus.remainingPercent}}%
+          </span>
+        </h1>
         <div class="beerOnTapContainer">
           <keg-on-tap v-if="tap.Keg" :keg="tap.Keg" :tap-index="tap.tapIndex"></keg-on-tap>
           <div v-else>

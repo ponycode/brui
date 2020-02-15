@@ -1,4 +1,5 @@
 const { Pour, Beer, sequelize } = require('../models').models;
+const utils = require('../lib/utils');
 
 module.exports = function( app ){
   app.get('/api/pours', _getPours );
@@ -11,7 +12,7 @@ async function _getPours( req, res ){
     pours = pours.map( p => {
       const result = p.toJSON();
       result.beerName = p.Beer.name;
-      result.floz = p.milliliters * 0.033814; // TODO: use a conversion util for this shit
+      result.floz = utils.flozFromMilliliters( p.milliliters );
       return result;
     });
   }

@@ -1,7 +1,8 @@
+const PourListener = require('../lib/PourListener');
 
 class SimulatedFlowMeter {
 
-  constructor( pourListener ){
+  constructor( pourListener = new PourListener() ){
     this.pourListener = pourListener;
     this.simulatingPour = false;
     this.tapIndex = false;

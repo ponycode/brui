@@ -5,7 +5,10 @@
     <div class="beerImage mt-3">
       <img v-if="beer.imageUrl" :src="beer.imageUrl" />
     </div>
-    <div><span class="spec">{{beer.abv}}% <span class="unit">ABV</span></span>, <span class="spec">{{beer.ibu}} <span class="unit">IBU</span></span></div>
+    <div>
+      <span v-if="beer.abv" class="spec">{{beer.abv}}% <span class="unit">ABV</span></span>
+      <span v-if="beer.ibu" class="spec">{{beer.ibu}} <span class="unit">IBU</span></span>
+    </div>
     <p class='description'>{{beer.description}}</p>
 
     <b-modal :id="'removeKegConfirmation-' + tapIndex" title="Remove Keg?" ref="modal" size="sm" ok-title="Yes, Remove Keg" ok-variant="danger" @ok="removeKeg">
@@ -80,7 +83,7 @@ h5 {
 .spec {
   font-size: 30px;
   font-weight: 300;
-  margin-right: 6px;
+  margin-right: 14px;
 }
 
 .spec .unit {

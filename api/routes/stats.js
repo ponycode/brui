@@ -1,4 +1,5 @@
 const { sequelize } = require('../models').models;
+const utils = require('../lib/utils');
 
 module.exports = function( app ){
   app.get('/api/beers/recent/stats', _getRecentBeerStats );
@@ -39,8 +40,8 @@ async function _fetchBeerStats( beerIds ){
       b.beerId, 
       name, 
       ROUND( SUM(milliliters) ) as milliliters, 
-      ROUND( SUM(milliliters) * 0.033814 ) as floz,
-      ROUND( SUM(milliliters) * 0.033814 * 0.0078125 ) as gallons,
+      ROUND( SUM(milliliters) * ${utils.FLOZ_PER_ML} ) as floz,
+      ROUND( SUM(milliliters) * ${utils.GALS_PER_ML} ) as gallons,
       COUNT(1) AS "numberOfPours",
       MIN(p."createdAt") as "firstPourDate",
       MAX(p."createdAt") as "lastPourDate",

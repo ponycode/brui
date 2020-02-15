@@ -1,6 +1,7 @@
 const { Tap, Keg, transaction } = require('../models').models;
 const _ = require('lodash');
 const sockets = require('../sockets');
+const utils = require('../lib/utils.js');
 
 module.exports = function( app ){
   app.get('/api/taps', _getTaps );
@@ -100,7 +101,6 @@ async function _putKegOntoTap( req, res ){
 async function _getTaps( req, res ){
   const taps = await Tap.findAllWithBeers();
  
-  //const kegStatus
   const results = [];
   for( let tap of taps ){
     const tapJson = tap.toJSON();

@@ -6,6 +6,7 @@ module.exports = function( app ){
   require('./stats')( app );
   require('./beers')( app );
   require('./taps')( app );
+  require('./kegs')( app );
 
   app.get('/', _serveVueApp );
   app.get('/*', _serveVueApp );

@@ -3,8 +3,8 @@ import store from './store'
 const socket = new WebSocket("ws://" + location.host + "/sockets");
 
 socket.addEventListener( 'open', event => {
-    socket.send( JSON.stringify( { event: 'hello' } ), event) ;
-    _bindPourSimulator();
+    socket.send( JSON.stringify( { type: 'get_keg_statuses' } ), event );
+    _bindPourSimulatorKeyListeners();
 });
 
 socket.addEventListener( 'message', event => {
@@ -36,12 +36,16 @@ socket.addEventListener( 'message', event => {
 
       store.dispatch('fetchTaps', false)
 
+    }else if( message.type === 'keg_statuses' ){
+console.log('KEG STATUSES', message.data)
+      store.commit('SET_KEG_STATUSES', message.data)
+
     }
 });
 
 const ALLOW_KEYBOARD_POUR_SIMULATION = true
 
-function _bindPourSimulator(){
+function _bindPourSimulatorKeyListeners(){
   if( !ALLOW_KEYBOARD_POUR_SIMULATION ) return;
 
   let numberPressed = false;
@@ -58,7 +62,7 @@ function _bindPourSimulator(){
       simulatingPour = true
       // eslint-disable-next-line no-console
       console.log("START POUR", numberPressed )
-      socket.send(JSON.stringify({ event: 'start_simulated_pour', tapIndex: parseInt(numberPressed, 10) - 1 }));
+      socket.send(JSON.stringify({ type: 'start_simulated_pour', data: { tapIndex: parseInt(numberPressed, 10) - 1 } }));
     }
   });
 
@@ -70,7 +74,7 @@ function _bindPourSimulator(){
         simulatingPour = false
         // eslint-disable-next-line no-console
         console.log("END POUR", numberPressed)
-        socket.send(JSON.stringify({ event: 'end_simulated_pour', tapIndex: parseInt(numberPressed, 10) - 1 }));
+        socket.send(JSON.stringify({ type: 'end_simulated_pour', data: { tapIndex: parseInt(numberPressed, 10) - 1 } }));
       }
       numberPressed = false;
     }

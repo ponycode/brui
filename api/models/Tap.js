@@ -62,6 +62,18 @@ module.exports = ( sequelize, DataTypes ) => {
     });
   };
 
+  Tap.findAllWithKegs = async function(){
+    const { Keg } = require('.').models;
+
+    return await this.findAll({
+      include: [
+        {
+          model: Keg
+        }
+      ]
+    });
+  };
+
   return Tap;
 };
 

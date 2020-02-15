@@ -1,10 +1,9 @@
-const sockets = require('../sockets');
 const WakeUp = require('./Wakeup');
+const socketMessages = require('./socketMessages');
 
 class PourListener {
 
   constructor({ millilitersPerTick = 0.64 } = {}){
-    this.sockets = sockets;
     this.millilitersPerTick = millilitersPerTick;
   }
 
@@ -14,14 +13,14 @@ class PourListener {
     const tap = await Tap.findByTapIndexWithBeer( tapIndex );
     const beerName = tap.Beer ? tap.Beer.name : '';
 
-    sockets.broadcast({ type: 'pour_start', tapIndex, beerName });
+    socketMessages.sendPourStart( tapIndex, beerName );
 
     WakeUp.loudNoise();
   }
 
   async pourStatus( tapIndex, { durationSeconds, pourTickCount }){
     const milliliters = pourTickCount * this.millilitersPerTick;
-    sockets.broadcast({ type: 'pour_status', tapIndex, durationSeconds, pourTickCount, milliliters });
+    socketMessages.sendPourStatus({ tapIndex, durationSeconds, pourTickCount, milliliters });
   }
 
   async pourEnd( tapIndex, { durationSeconds, pourTickCount, simulated = false }){
@@ -31,7 +30,8 @@ class PourListener {
     console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
 
     const tap = await Tap.findByTapIndexWithBeer( tapIndex );
-
+    if( !tap.Keg || !tap.Beer ) return;
+    
     const pour = await Pour.create({
       tapIndex,
       kegId: tap.kegId,
@@ -43,7 +43,7 @@ class PourListener {
     })
     console.log( "Saved a pour record", pour.pourId );
 
-    sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, milliliters, pourId: pour.pourId });
+    socketMessages.sendPourEnd({ tapIndex, durationSeconds, milliliters, pourTickCount, pourId: pour.pourId });
   }
 
 }
