@@ -24,7 +24,7 @@ class PourListener {
   async pourEnd( tapIndex, { durationSeconds, pourTickCount }){
     const { Tap, Pour } = require('../models').models;
 
-    const milliliters = pourTickCount * this.millilitersPerTick;
+    const milliliters = Math.round( pourTickCount * this.millilitersPerTick );
     console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
 
     const tap = await Tap.findByTapIndexWithBeer( tapIndex );
