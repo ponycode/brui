@@ -39,9 +39,22 @@
     const pourListener = new PourListener();
 
     if( argv.flow_meter ){
-        const flowMeter = require('./flow-meter')
-        flowMeter.listen( pourListener );
+      const flowMeter = require('./flow-meter')
+      flowMeter.listen( pourListener );
     }else if( argv.simulated_flow_meter ){
+      /**
+       * A little bit circular here but here's how it works.
+       * 
+       * The pourListener handles DB interactions and send socket messages to the client to show
+       * and hide the pouring modal.
+       * 
+       * Since the simulatedFlowMeter is triggered by the client, it becaomse a messageListener so that
+       * it can recieve pourStart and pourEnd events. It then simulates a pour as if it came from the
+       * FlowMeter and notifies the pourListener who notifies the client.
+       * 
+       * To see this in action set the argument above and then press and hold 1, 2, or 3 on the client UI. The number
+       * corresponds to the tap index 1=0, 2=1, 3=2. Release the button to end the pour.
+       */
       const SimulatedFlowMeter = require('./flow-meter/SimulatedFlowMeter');
       const simulatedFlowMeter = new SimulatedFlowMeter( pourListener );
       sockets.addMessageListener( simulatedFlowMeter.onSocketMessage.bind(simulatedFlowMeter) );
