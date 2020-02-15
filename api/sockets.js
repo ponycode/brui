@@ -9,8 +9,6 @@ exports.init = function( server ){
   wss = new WebSocket.Server({ server, path: '/sockets' });
 
   wss.on("connection", ws => {
-    console.log('ws connection', ws);
-
     ws.on('message', message => {
       // Incoming from client
       try{
@@ -21,7 +19,6 @@ exports.init = function( server ){
       }
     });
   });
-
 };
 
 exports.addMessageListener = function( listener ){

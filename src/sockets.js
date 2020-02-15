@@ -1,5 +1,7 @@
 import store from './store'
 
+const socket = new WebSocket("ws://" + location.host + "/sockets");
+
 const socket = new WebSocket('ws://localhost:8081/sockets')
 
 socket.addEventListener('open', function (event) {
