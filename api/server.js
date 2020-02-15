@@ -38,6 +38,9 @@
 
 
     if( argv.flow_meter ){
+      // eslint-disable-next-line no-console
+      console.log('FLOW METER ENABLED');
+
       /**
        * This is a live flow meter which relies on pigpio to recieve tick events from the
        * hall-effect sensor. It calls events on the pour listener who handles the DB interactions
@@ -47,6 +50,8 @@
       const flowMeter = require('./flow-meter')
       flowMeter.listen( pourListener );
     }else if( argv.simulated_flow_meter ){
+      // eslint-disable-next-line no-console
+      console.log('SIMULATED POURS ENABLED');
       /**
        * A little bit circular here but here's how it works.
        * 
