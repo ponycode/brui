@@ -4,7 +4,7 @@ const socket = new WebSocket("ws://" + location.host + "/sockets");
 
 socket.addEventListener( 'open', event => {
     socket.send( JSON.stringify( { event: 'hello' } ), event) ;
-    _bindPourSimulator();
+    //_bindPourSimulator();
 });
 
 socket.addEventListener( 'message', event => {
