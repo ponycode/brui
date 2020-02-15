@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getSettings, saveSettings, getBeers, saveBeer } from './api/settings'
+import { getSettings, saveSettings } from './api/settings'
 import { getPourHistory, getBeerStats, getPoursChartData } from './api/stats'
 import { getMostRecentBeers, getBeerDetails, updateBeerDetails, createNewBeer } from './api/beers'
 import { getTaps, putKegOnTap, removeKegFromTap } from './api/taps'
@@ -93,10 +93,6 @@ export default new Vuex.Store({
       settings = await saveSettings( settings )
       commit( MUTATIONS.SET_SETTINGS, settings )
     },
-    async fetchBeers ({ commit }) {
-      const beers = await getBeers()
-      commit( MUTATIONS.SET_BEERS, beers )
-    },
     async fetchMostRecentBeers ({ commit }) {
       const beers = await getMostRecentBeers()
       commit( MUTATIONS.SET_MOST_RECENT_BEERS, beers )
@@ -112,10 +108,6 @@ export default new Vuex.Store({
     async createNewBeer ({ commit }, beerDetails ) {
       const newBeerDetails = await createNewBeer( beerDetails )
       commit( MUTATIONS.SET_BEER_DETAILS, newBeerDetails )
-    },
-    async saveBeer ({ dispatch }, { beer, tapIndex }) {
-      await saveBeer( tapIndex, beer )
-      dispatch('fetchTaps')
     },
     async fetchTaps ({ commit }) {
       const taps = await getTaps()

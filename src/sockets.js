@@ -2,11 +2,12 @@ import store from './store'
 
 const socket = new WebSocket("ws://" + location.host + "/sockets");
 
-socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({ event: 'hello' }), event);
+socket.addEventListener( 'open', event => {
+    socket.send( JSON.stringify( { event: 'hello' } ), event) ;
+    _bindPourSimulator();
 });
 
-socket.addEventListener('message', function (event) {
+socket.addEventListener( 'message', event => {
     const message = JSON.parse( event.data );
 
     // eslint-disable-next-line no-console
@@ -39,7 +40,10 @@ socket.addEventListener('message', function (event) {
 });
 
 const ALLOW_KEYBOARD_POUR_SIMULATION = true
-if( ALLOW_KEYBOARD_POUR_SIMULATION ){
+
+function _bindPourSimulator(){
+  if( !ALLOW_KEYBOARD_POUR_SIMULATION ) return;
+
   let numberPressed = false;
   let simulatingPour = false;
 
@@ -52,6 +56,7 @@ if( ALLOW_KEYBOARD_POUR_SIMULATION ){
     
     if( !simulatingPour ){
       simulatingPour = true
+      // eslint-disable-next-line no-console
       console.log("START POUR", numberPressed )
       socket.send(JSON.stringify({ event: 'start_simulated_pour', tapIndex: parseInt(numberPressed, 10) - 1 }));
     }
@@ -63,6 +68,7 @@ if( ALLOW_KEYBOARD_POUR_SIMULATION ){
     if( e.key === numberPressed ){
       if( simulatingPour ){
         simulatingPour = false
+        // eslint-disable-next-line no-console
         console.log("END POUR", numberPressed)
         socket.send(JSON.stringify({ event: 'end_simulated_pour', tapIndex: parseInt(numberPressed, 10) - 1 }));
       }

@@ -16,7 +16,8 @@ async function _connect( databasePath ){
    const sequelize = new Sequelize( 'brui', 'brui-user', 'brui-password', {
     host: 'localhost',
     dialect: 'sqlite',
-    storage: databasePath
+    storage: databasePath,
+    logging: false
   });
 
   await sequelize.authenticate()
