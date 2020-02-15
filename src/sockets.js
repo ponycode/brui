@@ -4,7 +4,7 @@ const socket = new WebSocket("ws://" + location.host + "/sockets");
 
 socket.addEventListener( 'open', event => {
     socket.send( JSON.stringify( { event: 'hello' } ), event) ;
-    //_bindPourSimulator();
+    _bindPourSimulator();
 });
 
 socket.addEventListener( 'message', event => {
@@ -24,7 +24,7 @@ socket.addEventListener( 'message', event => {
 
     }else if ( message.type === 'pour_status' ){
 
-      store.commit('POUR_STATUS', message )
+      //store.commit('POUR_STATUS', message )
 
     }else if( message.type === 'pour_end' ){
 
