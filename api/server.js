@@ -36,9 +36,14 @@
     const sockets = require('./sockets');
     sockets.init( server );
 
-    const pourListener = new PourListener();
 
     if( argv.flow_meter ){
+      /**
+       * This is a live flow meter which relies on pigpio to recieve tick events from the
+       * hall-effect sensor. It calls events on the pour listener who handles the DB interactions
+       * and notifies the client UI via sockets.
+       */
+      const pourListener = new PourListener();
       const flowMeter = require('./flow-meter')
       flowMeter.listen( pourListener );
     }else if( argv.simulated_flow_meter ){
@@ -56,6 +61,7 @@
        * corresponds to the tap index 1=0, 2=1, 3=2. Release the button to end the pour.
        */
       const SimulatedFlowMeter = require('./flow-meter/SimulatedFlowMeter');
+      const pourListener = new PourListener();
       const simulatedFlowMeter = new SimulatedFlowMeter( pourListener );
       sockets.addMessageListener( simulatedFlowMeter.onSocketMessage.bind(simulatedFlowMeter) );
     }
