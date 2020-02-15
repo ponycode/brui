@@ -43,7 +43,7 @@ class SimulatedFlowMeter {
     clearInterval( this.pourInterval );
     clearTimeout( this.pourTimeout );
 
-    //this.pourListener.pourEnd( this.tapIndex, { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount });
+    this.pourListener.pourEnd( this.tapIndex, { durationSeconds: this.durationSeconds, pourTickCount: this.pourTickCount });
 
     this.simulatingPour = false;
     this.tapIndex = false;
