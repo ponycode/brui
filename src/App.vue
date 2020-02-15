@@ -18,6 +18,7 @@
     </b-navbar>
     
     <router-view class="container-fluid"/>
+    
     <a v-show="fullscreen" @click="exitFullscreen" class="exitFullscreen">
       <font-awesome-icon icon="compress-arrows-alt" />
     </a>
@@ -122,19 +123,13 @@ export default {
 
 <style type="scss">
 
-HTML {
-  height: 100vh;
-}
-
 BODY {
-  background: rgb(73,73,73);
-  background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);
-  height: 100vh;
+  background-color: rgb(73,73,73);
+  color: white;
+  /*background: radial-gradient(circle, rgba(73,73,73,1) 0%, rgba(0,0,0,1) 100%);*/
 }
 
 .root {
-  min-width: 100%;
-  min-height: 100%;
   position: relative;
 }
 
@@ -168,8 +163,8 @@ BODY {
   border-radius: 30px;
   z-index: 999;
   background-color: #222;
-  border: 2px solid silver;
-  box-shadow: 0 0 30px rgba( 0, 0, 0, 0.5 );
+  border: 1px solid silver;
+  /*box-shadow: 0 0 30px rgba( 0, 0, 0, 0.5 );*/
   transform: translate3d( 0, 0, 0 );
   transition: transform 0.3s;
   color: white;

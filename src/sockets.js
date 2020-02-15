@@ -11,7 +11,7 @@ socket.addEventListener( 'message', event => {
     const message = JSON.parse( event.data );
 
     // eslint-disable-next-line no-console
-    console.log('Message from server ', message);
+    //console.log('Message from server ', message);
 
     if( message.type === 'pour_start' ){
 
@@ -24,7 +24,7 @@ socket.addEventListener( 'message', event => {
 
     }else if ( message.type === 'pour_status' ){
 
-      //store.commit('POUR_STATUS', message )
+      store.commit('POUR_STATUS', message )
 
     }else if( message.type === 'pour_end' ){
 
