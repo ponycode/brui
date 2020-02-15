@@ -16,9 +16,9 @@ socket.addEventListener( 'message', event => {
     if( message.type === 'pour_start' ){
 
       // Timeout if we don't get a close message
-      message.timeout = setTimeout( () => {
-        store.commit('POUR_END', message )
-      }, 20000 ) 
+      // message.timeout = setTimeout( () => {
+      //   store.commit('POUR_END', message )
+      // }, 20000 ) 
 
       store.commit('POUR_START', message )
 

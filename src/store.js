@@ -67,9 +67,9 @@ export default new Vuex.Store({
       state.currentPour.milliliters = milliliters
     },
     [MUTATIONS.POUR_END] ( state ) {
-      if( state.currentPour.timeout ){
-        clearTimeout( state.currentPour.timeout );
-      }
+      // if( state.currentPour.timeout ){
+      //   clearTimeout( state.currentPour.timeout );
+      // }
       state.currentPour = null
     },
     [MUTATIONS.SET_BEER_STATS] ( state, beerStats ) {
