@@ -49,7 +49,8 @@
       const pourListener = new PourListener();
       const flowMeter = require('./flow-meter')
       flowMeter.listen( pourListener );
-    }else if( argv.simulated_flow_meter ){
+    }
+    if( argv.simulated_flow_meter ){
       // eslint-disable-next-line no-console
       console.log('SIMULATED POURS ENABLED');
       /**
