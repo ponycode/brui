@@ -4,8 +4,8 @@
       <div class="col text-center" v-for="tap in taps" :key="tap.tapIndex">
         <h1>
           {{tap.tapName}}
-          <span v-if="tap.kegStatus" class="float-right">
-            {{tap.kegStatus.remainingPercent}}%
+          <span v-if="kegStatuses[tap.tapIndex]" class="float-right">
+            {{kegStatuses[tap.tapIndex].remainingPercent}}%
           </span>
         </h1>
         <div class="beerOnTapContainer">
@@ -37,7 +37,8 @@ export default {
   },
   computed: mapState({
     fullscreen: state => state.fullscreen,
-    taps: state => state.taps
+    taps: state => state.taps,
+    kegStatuses: state => state.kegStatuses
   }),
   methods: {
     removeKegOnTapWithIndex( tapIndex ){

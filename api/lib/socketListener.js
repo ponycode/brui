@@ -1,5 +1,5 @@
-const socketMessages = require('../lib/socketMessages');
 const SimulatedFlowMeter = require('../flow-meter/SimulatedFlowMeter');
+const socketActions = require('./socketActions');
 const simulatedFlowMeter = new SimulatedFlowMeter();
 
 class SocketListener {
@@ -8,7 +8,7 @@ class SocketListener {
     switch( message.type ){
 
       case 'get_keg_statuses':
-        this._handleFetchKegStatuses();
+        socketActions.sendKegStatuses();
         break;
 
       case 'start_simulated_pour':
@@ -22,12 +22,6 @@ class SocketListener {
       default:
         console.log(`Unknown socket message type: ${message.type}`);
     }
-  }
-
-  async _handleFetchKegStatuses(){
-    const { Keg } = require('../models').models;
-    const statuses = await Keg.getAllKegStatuses();
-    socketMessages.sendKegStatuses( statuses );
   }
 
 }

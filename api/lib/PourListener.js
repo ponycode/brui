@@ -1,5 +1,6 @@
 const WakeUp = require('./Wakeup');
 const socketMessages = require('./socketMessages');
+const socketActions = require('./socketActions');
 
 class PourListener {
 
@@ -31,7 +32,7 @@ class PourListener {
 
     const tap = await Tap.findByTapIndexWithBeer( tapIndex );
     if( !tap.Keg || !tap.Beer ) return;
-    
+
     const pour = await Pour.create({
       tapIndex,
       kegId: tap.kegId,
@@ -44,6 +45,7 @@ class PourListener {
     console.log( "Saved a pour record", pour.pourId );
 
     socketMessages.sendPourEnd({ tapIndex, durationSeconds, milliliters, pourTickCount, pourId: pour.pourId });
+    socketActions.sendKegStatuses();
   }
 
 }

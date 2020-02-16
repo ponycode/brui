@@ -37,7 +37,7 @@ socket.addEventListener( 'message', event => {
       store.dispatch('fetchTaps', false)
 
     }else if( message.type === 'keg_statuses' ){
-console.log('KEG STATUSES', message.data)
+
       store.commit('SET_KEG_STATUSES', message.data)
 
     }

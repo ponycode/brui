@@ -20,7 +20,8 @@ export const MUTATIONS = {
   'SET_BEER_STATS': 'SET_BEER_STATS',
   'SET_MOST_RECENT_BEERS': 'SET_MOST_RECENT_BEERS',
   'SET_BEER_DETAILS': 'SET_BEER_DETAILS',
-  'SET_POUR_CHART_DATA': 'SET_POUR_CHART_DATA'
+  'SET_POUR_CHART_DATA': 'SET_POUR_CHART_DATA',
+  'SET_KEG_STATUSES': 'SET_KEG_STATUSES'
 };
 
 export default new Vuex.Store({
@@ -34,7 +35,8 @@ export default new Vuex.Store({
     beerStats: null,
     mostRecentBeers: null,
     beerDetails: null,
-    poursChartData: null
+    poursChartData: null,
+    kegStatuses: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -83,6 +85,13 @@ export default new Vuex.Store({
     },
     [MUTATIONS.SET_POUR_CHART_DATA] ( state, poursChartData ) {
       state.poursChartData = poursChartData
+    },
+    [MUTATIONS.SET_KEG_STATUSES] ( state, kegStatuses ) {
+      const keyedStatuses = {}
+      for( const status of kegStatuses ){
+        keyedStatuses[status.tapIndex] = status
+      }
+      state.kegStatuses = keyedStatuses
     }
   },
   actions: {
