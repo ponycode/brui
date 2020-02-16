@@ -8,11 +8,11 @@
     "lint": "vue-cli-service lint",
     "server": "node api/server.js",
     "test": "mocha --recursive tests",
-    "migration:create": "./node_modules/knex/bin/cli.js --knexfile=./knexfile.js --env=development migrate:make",
-    "migrate:up": "./node_modules/knex/bin/cli.js --knexfile=./knexfile.js --env=development migrate:up",
-    "migrate:down": "./node_modules/knex/bin/cli.js --knexfile=./knexfile.js --env=development migrate:down",
-    "migrate:prod:up": "./node_modules/knex/bin/cli.js --knexfile=./knexfile.js --env=production migrate:up",
-    "migrate:prod:down": "./node_modules/knex/bin/cli.js --knexfile=./knexfile.js --env=production migrate:down"
+    "migration:create": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=dev migrate:make",
+    "migrate:up": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=dev migrate:up",
+    "migrate:down": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=dev migrate:down",
+    "migrate:prod:up": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=prod migrate:up",
+    "migrate:prod:down": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=prod migrate:down"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
