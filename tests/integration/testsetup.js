@@ -16,7 +16,7 @@
     if( typeof run === 'function' ){
       run();
     }else{
-      process.exit(0); // used when testing this file
+      process.exit(0); // used when testing this file directly
     }
   }, 500 );
 

@@ -6,7 +6,7 @@
   const path = require('path');
   const bodyParser = require('body-parser')
   const socketListener = require('./lib/socketListener');
-  await require('./database').connect( argv.environment );
+  await require('./sequelize').connect( argv.environment );
   
   const app = express();
   

@@ -16,7 +16,7 @@ async function _connect( databasePath ){
 
   await sequelize.authenticate()
    
-  console.log('Connection has been established successfully.');
+  console.log('Sequelize is connected.');
 
   return sequelize;
 }
@@ -25,7 +25,7 @@ exports.connect = async function( environment = 'dev' ){
   if( connected ) return;
   
   const databasePath = database.databasePathForEnvironment( environment );
-  console.log(`connecting to ${environment} db:`, databasePath);
+  console.log(`sequelize connecting to ${environment} db:`, databasePath);
 
   try{
     await database.ensureDatabaseExists( environment );
