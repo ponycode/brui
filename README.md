@@ -53,8 +53,45 @@ npm install sqlite3 --build-from-source --sqlite=/usr
 And then ran `brui/npm install`.
 
 
+### x11vnc to remote into the main instance
+
+#### Install x11vnc
+1. `sudo apt-get install x11vnc`
+2. `x11vnc -storepasswd`
+
+#### Autostart x11vnc
+1. `cd ~/.config`
+2. `mkdir autostart` unless it already exists
+3. `cd autostart`
+4. `nano x11vnc.desktop`
+5. paste following text:
+
+```
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=X11VNC
+Comment=
+Exec=x11vnc -forever -usepw -display :0 -ultrafilexfer
+StartupNotify=false
+Terminal=false
+Hidden=false
+```
+
+6. Save the file and reboot
+
+#### Connect to the pi using x11vnc
+
+1. Open OSX ScreenSharing application and connect to `vnc://[ip address of pi]`.
+
+
 ## Running locally
 
 Start the API server by running `npm run server` or run the 'Run Server' configuration in VSCode.
 
 Start the Vue dev server by running `npm run serve`
+
+The server supports the following arguments:
+
+* `environment` - Chooses which sqlite database file in the `database` folder to use. By default it will use the `dev` datbase. Options include `dev`, `test`, or `prod`.
+* `flow_meter` - Enables the live flow meter.
