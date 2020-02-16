@@ -4,7 +4,7 @@
       <div class="col text-center" v-for="tap in taps" :key="tap.tapIndex">
         <h1>
           {{tap.tapName}}
-          <span v-if="kegStatuses[tap.tapIndex]" class="float-right">
+          <span v-if="kegStatuses && kegStatuses[tap.tapIndex]" class="float-right">
             {{kegStatuses[tap.tapIndex].remainingPercent}}%
           </span>
         </h1>

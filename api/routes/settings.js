@@ -1,6 +1,4 @@
-const { Setting, Tap, Beer, Op } = require('../models').models;
-const _ = require('lodash');
-const sockets = require('../sockets');
+const { Setting, Tap, Op, sequelize } = require('../models').models;
 
 module.exports = function( app ){
   app.get('/api/settings', _getSettings );
@@ -25,6 +23,8 @@ async function _fetchSettings(){
     });
   }
 
+  settings.numberOfTaps = parseInt( settings.numberOfTaps, 10 );
+  
   const taps = await Tap.findAll();
 
   settings = settings.toJSON();
@@ -54,17 +54,22 @@ async function _putSettings( req, res ){
 
   tapNames = tapNames ? tapNames.slice( 0, numberOfTaps ) : null; // safety
 
-  await Setting.updateAllSettings({
-    numberOfTaps: numberOfTaps
-  });
+  await sequelize.transaction( async transaction => {
+    await Setting.updateAllSettings({
+      numberOfTaps: numberOfTaps
+    }, transaction );
 
-  const tapIndexes = await _upsertTaps( numberOfTaps, tapNames );
-  await _deleteExtraTaps( tapIndexes );
+    const tapIndexes = await _upsertTaps( numberOfTaps, tapNames, transaction );
+    await _deleteExtraTaps( tapIndexes, transaction );
+  });
+ 
+
+  
 
   res.send( await _fetchSettings() );
 }
 
-async function _upsertTaps( numberOfTaps, tapNames ){
+async function _upsertTaps( numberOfTaps, tapNames, transaction ){
   const tapIndexes = [];
   for( let i = 0; i < numberOfTaps; i++ ){
     await Tap.upsert({
@@ -74,19 +79,21 @@ async function _upsertTaps( numberOfTaps, tapNames ){
     {
       where: {
         tapIndex: i
-      }
+      },
+      transaction
     });
     tapIndexes.push( i );
   }
   return tapIndexes;
 }
 
-async function _deleteExtraTaps( tapIndexesToKeep ){
+async function _deleteExtraTaps( tapIndexesToKeep, transaction ){
   await Tap.destroy({
     where: {
       tapIndex: {
         [Op.notIn]: tapIndexesToKeep
       }
-    }
+    },
+    transaction
   });
 }

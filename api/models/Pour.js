@@ -27,7 +27,7 @@ module.exports = ( sequelize, DataTypes ) => {
       type: DataTypes.INTEGER
     },
     milliliters: {
-      type: DataTypes.DECIMAL
+      type: DataTypes.FLOAT
     },
     simulated: {
       type: DataTypes.BOOLEAN,

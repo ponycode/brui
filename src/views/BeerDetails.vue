@@ -1,5 +1,5 @@
 <template>
-  <div class="beerDetails mt-3">
+  <div class="beerDetails pt-3">
 
     <router-link to="/beers"><font-awesome-icon icon="chevron-left" /> All Beers</router-link>
 
@@ -148,6 +148,12 @@ export default {
 </script>
 
 <style type="scss" scoped>
+
+.beerDetails {
+  background-color: white;
+  padding-bottom: 100px;
+  height: 100%;
+}
 
 .beerImage {
   max-height: 300px;

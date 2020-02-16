@@ -16,7 +16,7 @@ module.exports = ( sequelize, DataTypes ) => {
     return settings;
   };
 
-  Setting.updateAllSettings = async function( settings ){
+  Setting.updateAllSettings = async function( settings, transaction ){
     await Setting.upsert({
       id: 1,
       numberOfTaps: settings.numberOfTaps
@@ -24,7 +24,8 @@ module.exports = ( sequelize, DataTypes ) => {
     {
       where: {
         id: 1
-      }
+      },
+      transaction
     });
     
     return await this.findAllSettings();

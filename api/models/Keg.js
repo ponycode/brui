@@ -15,7 +15,7 @@ module.exports = ( sequelize, DataTypes ) => {
       allowNull: false
     },
     gallons: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 5
     },
