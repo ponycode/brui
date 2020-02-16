@@ -118,10 +118,9 @@ describe('Data model works as expected', function(){
     });
 
     const { Keg: dbKeg } = dbTap;
-    const { Beer: dbBeer } = dbKeg;
 
-    assert.equal( dbKeg.kegId, keg1.beerId );
-    assert.equal( dbBeer.beerId, beer1.beerId );
+    assert.equal( dbTap.kegId, keg1.kegId );
+    assert.equal( dbKeg.beerId, keg1.beerId );
 
     const pours = await dbKeg.getPours();
     assert.lengthOf( pours, 3 );
