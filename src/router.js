@@ -8,7 +8,7 @@ import BeerDetails from './views/BeerDetails.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -44,3 +44,5 @@ export default new Router({
     }
   ]
 })
+
+export default router

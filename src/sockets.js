@@ -4,7 +4,6 @@ const socket = new WebSocket("ws://" + location.host + "/sockets");
 
 socket.addEventListener( 'open', event => {
     socket.send( JSON.stringify( { type: 'get_keg_statuses' } ), event );
-    _bindPourSimulatorKeyListeners();
 });
 
 socket.addEventListener( 'message', event => {
@@ -43,42 +42,4 @@ socket.addEventListener( 'message', event => {
     }
 });
 
-const ALLOW_KEYBOARD_POUR_SIMULATION = true
-
-function _bindPourSimulatorKeyListeners(){
-  if( !ALLOW_KEYBOARD_POUR_SIMULATION ) return;
-
-  let numberPressed = false;
-  let simulatingPour = false;
-
-  document.addEventListener('keydown', e => {
-    if( ['1', '2', '3'].indexOf(e.key)  === -1 ) return;
-
-    if( simulatingPour ) return; // one at a time
-
-    numberPressed = e.key;
-    
-    if( !simulatingPour ){
-      simulatingPour = true
-      // eslint-disable-next-line no-console
-      console.log("START POUR", numberPressed )
-      socket.send(JSON.stringify({ type: 'start_simulated_pour', data: { tapIndex: parseInt(numberPressed, 10) - 1 } }));
-    }
-  });
-
-  document.addEventListener('keyup', e => {
-    if( ['1', '2', '3'].indexOf(e.key)  === -1 ) return;
-
-    if( e.key === numberPressed ){
-      if( simulatingPour ){
-        simulatingPour = false
-        // eslint-disable-next-line no-console
-        console.log("END POUR", numberPressed)
-        socket.send(JSON.stringify({ type: 'end_simulated_pour', data: { tapIndex: parseInt(numberPressed, 10) - 1 } }));
-      }
-      numberPressed = false;
-    }
-
-  });
-
-}
+export default socket
