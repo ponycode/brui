@@ -16,12 +16,7 @@ async function _getSettings( req, res ){
  */
 async function _fetchSettings(){
   let settings = await Setting.findAllSettings();
-  if( !settings ){
-    // Let's always have a settings row no matter what
-    settings = await Setting.updateAllSettings({
-      numberOfTaps: 0
-    });
-  }
+  if( !settings ) throw new Error(`Oops! It looks like you haven't run the initial database setup.`);
 
   settings.numberOfTaps = parseInt( settings.numberOfTaps, 10 );
   
@@ -56,16 +51,12 @@ async function _putSettings( req, res ){
 
   await sequelize.transaction( async transaction => {
     await Setting.updateAllSettings({
-      numberOfTaps: numberOfTaps
+      numberOfTaps
     }, transaction );
 
-    const tapIndexes = await _upsertTaps( numberOfTaps, tapNames, transaction );
-    await _deleteExtraTaps( tapIndexes, transaction );
+    await _upsertTaps( numberOfTaps, tapNames, transaction );
   });
  
-
-  
-
   res.send( await _fetchSettings() );
 }
 
@@ -85,15 +76,4 @@ async function _upsertTaps( numberOfTaps, tapNames, transaction ){
     tapIndexes.push( i );
   }
   return tapIndexes;
-}
-
-async function _deleteExtraTaps( tapIndexesToKeep, transaction ){
-  await Tap.destroy({
-    where: {
-      tapIndex: {
-        [Op.notIn]: tapIndexesToKeep
-      }
-    },
-    transaction
-  });
 }

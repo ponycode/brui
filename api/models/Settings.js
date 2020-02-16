@@ -7,11 +7,12 @@ module.exports = ( sequelize, DataTypes ) => {
     }
   });
 
-  Setting.findAllSettings = async function(){
+  Setting.findAllSettings = async function( transaction ){
     const settings = await Setting.findOne({
       where: {
         id: 1
-      }
+      },
+      transaction
     });
     return settings;
   };
@@ -28,7 +29,7 @@ module.exports = ( sequelize, DataTypes ) => {
       transaction
     });
     
-    return await this.findAllSettings();
+    return await this.findAllSettings( transaction );
   };
 
   return Setting;

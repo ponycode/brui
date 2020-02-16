@@ -74,6 +74,23 @@ module.exports = ( sequelize, DataTypes ) => {
     });
   };
 
+  Tap.insertInitialTaps = async function( tapCount, transaction ){
+    const taps = [];
+    for( let i = 0; i < tapCount; i++ ){
+      taps.push( await Tap.upsert({
+        tapIndex: i,
+        tapName: ''
+      },
+      {
+        where: {
+          tapIndex: i
+        },
+        transaction
+      }));
+    }
+    return taps;
+  }
+
   return Tap;
 };
 
