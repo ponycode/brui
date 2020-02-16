@@ -1,11 +1,11 @@
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: "../api/brui.sqlite"
+    filename: "./api/brui.sqlite"
   },
   useNullAsDefault: true,
   migrations: {
-    directory: '.',
+    directory: './migrations',
     stub: 'migration.stub'
   }
 };
