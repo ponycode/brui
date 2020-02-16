@@ -1,13 +1,16 @@
+const path = require('path');
 
-function _options( sqliteFileName ){
+const DATABASE_FOLDER_PATH = path.resolve( __dirname, '../database');
+
+function _options( sqliteFileName ){  
   return {
     client: 'sqlite3',
     connection: {
-      filename: sqliteFileName
+      filename: path.resolve( DATABASE_FOLDER_PATH, sqliteFileName )
     },
     useNullAsDefault: true,
     migrations: {
-      directory: 'migrations',
+      directory: path.resolve( DATABASE_FOLDER_PATH, 'migrations' ),
       stub: 'migration.stub'
     }
   };

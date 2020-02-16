@@ -1,18 +1,12 @@
 /* eslint-disable no-console */
 
 const Sequelize = require('sequelize');
-const path = require('path');
-const sqlite = require('sqlite3');
-const fs = require('fs');
 const models = require('./models');
+const database = require('../database');
 
-const dbPath = path.resolve( __dirname, 'brui.sqlite' );
 let connected = false;
 
 async function _connect( databasePath ){
-  databasePath = path.resolve( __dirname, databasePath );
-  console.log('connecting to db', databasePath);
-
    const sequelize = new Sequelize( 'brui', 'brui-user', 'brui-password', {
     host: 'localhost',
     dialect: 'sqlite',
@@ -27,33 +21,14 @@ async function _connect( databasePath ){
   return sequelize;
 }
 
-async function _createDb(){
-  if( fs.existsSync( dbPath ) ) return;
-
-  return new Promise( ( resolve, reject ) => {
-    const db = new sqlite.Database( dbPath );
-
-    db.on( 'open', function(){
-      console.log( `Created empty sqlite db: '${dbPath}'` );
-      db.close();
-    });
-
-    db.on( 'error', function( error ){
-      console.log( `Error creating sqlite db: '${dbPath}'`, error );
-      reject( error );
-    });
-
-    db.on( 'close', function(){
-      resolve();
-    });
-  });
-}
-
-exports.connect = async function( databasePath = process.env.DB_PATH || 'brui.sqlite' ){
+exports.connect = async function( environment = 'dev' ){
   if( connected ) return;
+  
+  const databasePath = database.databasePathForEnvironment( environment );
+  console.log(`connecting to ${environment} db:`, databasePath);
 
   try{
-    await _createDb();
+    await database.ensureDatabaseExists( environment );
     const sequelize = await _connect( databasePath );
     models.load( sequelize );
     models.DB_PATH = databasePath;

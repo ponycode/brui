@@ -1,19 +1,23 @@
 ( async () => {
   
-  const fs = require('fs');
+  const ENVIRONMENT = 'test';
 
-  const TEST_DB_PATH = require('path').resolve( __dirname, './test-db.sqlite');
-  if( fs.existsSync( TEST_DB_PATH ) ){
-    fs.unlinkSync( TEST_DB_PATH );
-  }
+  const database = require('../../database');
+  await database.deleteDatabase( ENVIRONMENT );
+  await database.ensureDatabaseExists( ENVIRONMENT );
+  await database.migrateToLatest( ENVIRONMENT );
 
   // Responsible for connecting to db and starting the server
-  await require('../../api/database').connect( TEST_DB_PATH );
+  await require('../../api/database').connect( ENVIRONMENT );
 
   await require('../../api/server');
 
   setTimeout( () => {
-    run();
+    if( typeof run === 'function' ){
+      run();
+    }else{
+      process.exit(0); // used when testing this file
+    }
   }, 500 );
 
 })();

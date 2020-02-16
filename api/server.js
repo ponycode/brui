@@ -1,12 +1,12 @@
 ( async function(){
 
-  const PourListener = require('./lib/PourListener');
   const argv = require('minimist')(process.argv.slice(2));
+  const PourListener = require('./lib/PourListener');
   const express = require('express');
   const path = require('path');
   const bodyParser = require('body-parser')
   const socketListener = require('./lib/socketListener');
-  await require('./database').connect( argv.database );
+  await require('./database').connect( argv.environment );
   
   const app = express();
   
