@@ -21,7 +21,8 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium
 
 
 # Launch Chrome
-/usr/bin/chromium-browser --touch-events --noerrdialogs --disable-infobars --kiosk https://pimylifeup.com https://www.adafruit.com &
+#/usr/bin/chromium-browser --touch-events --noerrdialogs --disable-infobars --kiosk https://pimylifeup.com https://www.adafruit.com &
+/usr/bin/chromium-browser --touch-events --noerrdialogs --disable-infobars http://localhost:8080 &
 
 
 # force refreshes every 15 seconds
