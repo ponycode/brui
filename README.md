@@ -53,6 +53,19 @@ npm install sqlite3 --build-from-source --sqlite=/usr
 And then ran `brui/npm install`.
 
 
+### Optimize for Kiosk Experience
+
+1. Remove unused packages:
+  1. `sudo apt-get purge wolfram-engine scratch scratch2 nuscratch sonic-pi idle3 -y`
+  2. `sudo apt-get purge smartsim java-common minecraft-pi libreoffice* -y`
+2. Free up space
+  1. `sudo apt-get clean`
+  2. `sudo apt-get autoremove -y`
+3. Install tools to simulate key presses and hide the mouse cursor
+  1. `sudo apt-get install xdotool unclutter sed`
+
+
+
 ### x11vnc to remote into the main instance
 
 #### Install x11vnc
@@ -79,6 +92,9 @@ Hidden=false
 ```
 
 6. Save the file and reboot
+7. `sudo apt-get install autocutsel` to enable copy / paste
+8. Add `autocutsel -fork` to `/home/pi/.vnc/xstartup` to run autocutsel ( this didn't work for me )
+
 
 #### Connect to the pi using x11vnc
 
