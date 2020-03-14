@@ -98,7 +98,7 @@ export default {
         const floz = milliliters * 0.0338
 
         if( this.$refs.pourModalBeerHead ){
-          const percentOfGlass = floz / 12;
+          const percentOfGlass = floz / 10; // 10 oz cup
           const totalMovement = 100;
           const offset = Math.round( totalMovement * percentOfGlass );
 
