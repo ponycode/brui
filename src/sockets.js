@@ -28,6 +28,8 @@ socket.addEventListener( 'message', event => {
     }else if( message.type === 'pour_end' ){
 
       setTimeout( () => {
+        /* eslint-disable no-console */
+        console.log("commiting pour end")
         store.commit('POUR_END')
       }, 2000 )
 

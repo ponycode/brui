@@ -28,10 +28,13 @@ class PourListener {
     const { Tap, Pour } = require('../models').models;
 
     const milliliters = Math.round( pourTickCount * this.millilitersPerTick );
-    console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
+    console.log( `Pour ended [${tapIndex}]: ${pourTickCount} ticks; ${milliliters} ml.; ${durationSeconds} seconds`);
 
     const tap = await Tap.findByTapIndexWithBeer( tapIndex );
-    if( !tap.Keg || !tap.Beer ) return;
+    if( !tap.Keg || !tap.Beer ){
+      socketMessages.sendPourEnd({ tapIndex, durationSeconds, milliliters, pourTickCount, pourId: null });
+      return;
+    }
 
     const pour = await Pour.create({
       tapIndex,

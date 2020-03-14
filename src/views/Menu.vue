@@ -26,8 +26,6 @@
 <script>
 import KegOnTap from '@/components/KegOnTap'
 import AddAKegModal from '@/components/AddAKegModal'
-//import PourSimulatorListener from '../lib/pourSimulatorBindings'
-//const pourSimulatorListener = new PourSimulatorListener()
 
 import { mapState } from 'vuex'
 
@@ -52,17 +50,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('fetchTaps')
-  },
-  // beforeRouteEnter (to, from, next) {
-  //   console.log("INSTALL")
-  //   pourSimulatorListener.install()
-  //   next();
-  // },
-  // beforeRouteLeave (to, from, next) {
-  //   console.log("UNINSTALL")
-  //   pourSimulatorListener.uninstall()
-  //   next();
-  // }
+  }
 }
 </script>
 

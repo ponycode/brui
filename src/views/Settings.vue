@@ -11,10 +11,15 @@
         </b-col>
       </b-row>
 
-      <b-row>
+      <b-row v-for="index in numberOfTaps" :key="index">
         <b-col md="4">
-          <b-form-group :label="'Tap ' + index + ' Name'" v-for="index in numberOfTaps" :key="index">
-            <b-input v-model="tapNames[index - 1]" class="mb-3" />
+          <b-form-group :label="` Tap ${index} Name`" :label-for="`tap-${index}-name`"> 
+            <b-input-group>
+              <b-input :id="`tap-${index}-name`" v-model="tapNames[index - 1]"/>
+              <b-input-group-append>
+                <b-button variant="outline-success" @mousedown="pourSimulatorListener.startPour(index - 1)" @mouseup="pourSimulatorListener.endPour(index - 1)">Simulate Pour</b-button>
+              </b-input-group-append>
+            </b-input-group>
           </b-form-group>
         </b-col>
       </b-row>
@@ -32,6 +37,8 @@
 
 <script>
 import {mapState} from 'vuex'
+import PourSimulatorListener from '../lib/pourSimulatorBindings'
+const pourSimulatorListener = new PourSimulatorListener()
 
 export default {
   name: 'settings',
@@ -43,7 +50,8 @@ export default {
         { value: 3, text: 'Triple tap kegarator' }
       ],
       numberOfTaps: 1,
-      tapNames: []
+      tapNames: [],
+      pourSimulatorListener
     };
   },
   computed: {
@@ -79,6 +87,8 @@ export default {
   background-color: white;
   padding-bottom: 100px;
   height: 100%;
+
+  color: #333;
 }
 
 </style>
