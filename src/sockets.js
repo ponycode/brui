@@ -1,5 +1,21 @@
 import store from './store'
 
+const listeners = [];
+
+const eventBus = {
+
+  register( callback ){
+    listeners.push( callback );
+  },
+
+  emit( message ){
+    for( let l of listeners ){
+      l( message );
+    }
+  }
+
+}
+
 const socket = new WebSocket("ws://" + location.host + "/sockets");
 
 socket.addEventListener( 'open', event => {
@@ -19,18 +35,22 @@ socket.addEventListener( 'message', event => {
       //   store.commit('POUR_END', message )
       // }, 20000 ) 
 
-      store.commit('POUR_START', message )
+      //store.commit('POUR_START', message )
+      eventBus.emit( message );
 
     }else if ( message.type === 'pour_status' ){
 
-      store.commit('POUR_STATUS', message )
+      //store.commit('POUR_STATUS', message )
+      eventBus.emit( message );
 
     }else if( message.type === 'pour_end' ){
 
       setTimeout( () => {
         /* eslint-disable no-console */
         console.log("commiting pour end")
-        store.commit('POUR_END')
+        //store.commit('POUR_END')
+        eventBus.emit( message );
+
       }, 2000 )
 
     }else if( message.type === 'reload_taps' ){
@@ -44,4 +64,4 @@ socket.addEventListener( 'message', event => {
     }
 });
 
-export default socket
+export { socket, eventBus }

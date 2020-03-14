@@ -1,4 +1,4 @@
-import socket from '../sockets'
+import { socket } from '../sockets'
 
 class PourSimulatorListener {
 
