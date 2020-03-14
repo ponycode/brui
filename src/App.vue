@@ -25,8 +25,8 @@
 
     <div class="pourModal" ref="pourModal">
       <h1 class="lead">You are Pouring</h1>
-      <h2 ref="pourModalBeerName"></h2>
-      <h3 class="text-success" ref="pourModalPourAmount"></h3>
+      <h2 class="pourModalBeerName" ref="pourModalBeerName"></h2>
+      <h3 class="text-success pourModalPourAmount" ref="pourModalPourAmount"></h3>
 
       <div class="text-center mt-4">
         <svg width="111px" height="150px" viewBox="0 0 150 203" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -113,7 +113,9 @@ export default {
 
       }else if( message.type === 'pour_end' ){
         this.$refs.pourModal.classList.remove('pourModalVisible');
-        this.currentPour = null
+        
+        const start = 160.025045; // stolen from original y translate in svg
+        this.$refs.pourModalBeerHead.setAttribute( 'transform',`translate( -82.311516, ${start})`);
       }
     }
   },
@@ -135,6 +137,11 @@ export default {
 
 <style type="scss">
 
+HTML, BODY {
+  height: 100%;
+  width: 100%;
+}
+
 BODY {
   background-color: rgb(73,73,73);
   color: white;
@@ -143,6 +150,8 @@ BODY {
 
 .root {
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .exitFullscreen {
@@ -166,9 +175,10 @@ BODY {
 
 .pourModal{
   position: absolute;
-  top: -430px;
+  top: 50%;
   left: 50%;
   margin-left: -300px;
+  margin-top: -200px;
   width: 600px;
   height: 400px;
   padding: 40px;
@@ -177,17 +187,27 @@ BODY {
   background-color: #222;
   border: 1px solid silver;
   /*box-shadow: 0 0 30px rgba( 0, 0, 0, 0.5 );*/
-  transform: translate3d( 0, 0, 0 );
-  transition: transform 0.3s;
+  /*transform: translate3d( 0, 0, 0 );*/
+  /*transform: translate3d( 0, 530px, 0 );*/
+  /* transition: transform 0.3s; */
   color: white;
+  opacity: 0.0;
 }
 
 .pourModalVisible {
-    transform: translate3d( 0, 530px, 0 );
+  opacity: 1.0;
+  /* transform: translate3d( 0, 530px, 0 ); */
 }
 
 .beerHead{
   transition: 0.5s transform;
+}
+
+.pourModalBeerName {
+  height: 40px;
+}
+.pourModalPourAmount {
+  height: 40px;
 }
 
 </style>
