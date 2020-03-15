@@ -63,7 +63,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { eventBus } from './sockets'
+import { pourEventBus, socket } from './sockets'
 
 export default {
   data () {
@@ -120,7 +120,7 @@ export default {
     }
   },
   mounted () {
-    eventBus.register( this.pourEvent );
+    pourEventBus.register( this.pourEvent );
 
     document.addEventListener( 'fullscreenchange', () => {
       if( document.fullscreenEnabled ){
@@ -129,6 +129,18 @@ export default {
         } else {
           this.$store.commit('FULLSCREEN', false)
         }
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if( event.isComposing || event.keyCode === 229 ) {
+        return; // IME composition - WTF is IME composition?
+      }
+
+      if( event.key === 's' ){
+        socket.sendMessage({ type: 'screen_sleep' });
+      }else if( event.key === 'w' ){
+        socket.sendMessage({ type: 'screen_wake' });
       }
     });
   }

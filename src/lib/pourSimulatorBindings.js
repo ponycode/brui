@@ -14,7 +14,7 @@ class PourSimulatorListener {
 
     // eslint-disable-next-line no-console
     console.log("START SIMULATED POUR")
-    socket.send(JSON.stringify({ type: 'start_simulated_pour', data: { tapIndex } }));
+    socket.sendMessage( { type: 'start_simulated_pour', data: { tapIndex } } );
   }
 
   endPour( tapIndex ){
@@ -24,7 +24,7 @@ class PourSimulatorListener {
 
     // eslint-disable-next-line no-console
     console.log("END SIMULATED POUR")
-    socket.send(JSON.stringify({ type: 'end_simulated_pour', data: { tapIndex } }));
+    socket.sendMessage( { type: 'end_simulated_pour', data: { tapIndex } } );
   }
 }
 
