@@ -22,7 +22,7 @@ class WakeUp {
 
   static sleep(){
     try{
-      execSync('/opt/vc/bin/tvservice -0', { // power off HDMI
+      execSync('/opt/vc/bin/tvservice -o', { // power off HDMI
         env: DISPLAY_0
       })
       console.log('GO TO SLEEP!');
