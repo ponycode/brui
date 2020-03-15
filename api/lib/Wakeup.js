@@ -1,6 +1,8 @@
 const { execSync } = require('child_process');
 const DISPLAY_0 = { DISPLAY: ':0' };
 
+let autoSleepTimeout = null;
+
 class WakeUp {
 
   /**
@@ -18,6 +20,11 @@ class WakeUp {
     }catch( e ){
       console.error(`Error making loud noise: ${e}`);
     }
+
+    if( autoSleepTimeout ) clearTimeout( autoSleepTimeout );
+    autoSleepTimeout = setTimeout( () => {
+      WakeUp.sleep();
+    }, 1 * 60 * 1000 );
   }
 
   static sleep(){
