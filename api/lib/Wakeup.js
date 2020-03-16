@@ -3,6 +3,8 @@
 const { execSync } = require('child_process');
 const DISPLAY_0 = { DISPLAY: ':0' };
 
+const MS_IN_HOUR = 60 * 60 * 1000;
+
 let autoSleepTimeout = null;
 
 class WakeUp {
@@ -31,9 +33,11 @@ class WakeUp {
     }
 
     if( autoSleepTimeout ) clearTimeout( autoSleepTimeout );
+
     autoSleepTimeout = setTimeout( () => {
+      autoSleepTimeout = null;
       WakeUp.sleep();
-    }, 1 * 60 * 1000 );
+    }, 1 * MS_IN_HOUR );
   }
 
   static sleep(){
