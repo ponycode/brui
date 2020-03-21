@@ -14,7 +14,7 @@ $1.95 each x1
 ### 10k SMT Resistor
 Mouser PN#: 660-RN73R1JTD1002B50
 https://www.mouser.com/ProductDetail/660-RN73R1JTD1002B50
-$0.45 each x3
+$0.45 each x4
 
 ### Molex Vertical PCB Friction Lock
 538-22-23-2031
