@@ -25,3 +25,7 @@ x3
 ### Titan 300 FLow Sensor
 https://brewskey.myshopify.com/products/titan-300-flow-sensor
 $55 each
+
+### DHT22 Compatible Temperature / Humidity Sensor
+https://www.mouser.com/ProductDetail/Seeed-Studio/101990561?qs=sGAEpiMZZMsG1k5vdNM%2FcwWsAUaAbjlp3lGuaB1oozk%3D
+5$ each
