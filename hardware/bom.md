@@ -34,11 +34,18 @@ https://www.mouser.com/ProductDetail/?qs=BLN8Q0P37WapYBZgTV5Zeg%3D%3D
 $0.17 each
 x4
 
+### 4 Conductor Sensor Wire
+Mouser PN#: 538-155220-0064-5
+https://www.mouser.com/ProductDetail/538-155220-0064-5
+$2.30 per 5 meters
+
 ### Titan 300 FLow Sensor
 https://brewskey.myshopify.com/products/titan-300-flow-sensor
 $55 each
+1 per tap up to 3
 
 ### DHT22 Compatible Temperature / Humidity Sensor
-
+Mouser PN#: 713-101990561
 https://www.mouser.com/ProductDetail/Seeed-Studio/101990561?qs=sGAEpiMZZMsG1k5vdNM%2FcwWsAUaAbjlp3lGuaB1oozk%3D
 5$ each
+x1
