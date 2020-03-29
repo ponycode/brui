@@ -14,14 +14,38 @@ $1.95 each x1
 ### 10k SMT Resistor
 Mouser PN#: 660-RN73R1JTD1002B50
 https://www.mouser.com/ProductDetail/660-RN73R1JTD1002B50
-$0.45 each x3
+$0.45 each x4
 
 ### Molex Vertical PCB Friction Lock
-538-22-23-2031
+Mouser PN#: 538-22-23-2031
 https://www.mouser.com/ProductDetail/538-22-23-2031
 $0.24 each 
-x3
+x4
+
+### Molex Verical PCB Wire Housing
+Mouser PN#: 538-50-29-1558
+https://www.mouser.com/ProductDetail/?qs=N5TNDCQULdM0ntHrUpyWWg%3D%3D
+$0.10 each
+x4
+
+### Molex KK Crimp Terminal
+Mouser PN#: 538-08-50-0114
+https://www.mouser.com/ProductDetail/?qs=BLN8Q0P37WapYBZgTV5Zeg%3D%3D
+$0.17 each
+x4
+
+### 4 Conductor Sensor Wire
+Mouser PN#: 538-155220-0064-5
+https://www.mouser.com/ProductDetail/538-155220-0064-5
+$2.30 per 5 meters
 
 ### Titan 300 FLow Sensor
 https://brewskey.myshopify.com/products/titan-300-flow-sensor
 $55 each
+1 per tap up to 3
+
+### DHT22 Compatible Temperature / Humidity Sensor
+Mouser PN#: 713-101990561
+https://www.mouser.com/ProductDetail/Seeed-Studio/101990561?qs=sGAEpiMZZMsG1k5vdNM%2FcwWsAUaAbjlp3lGuaB1oozk%3D
+5$ each
+x1
