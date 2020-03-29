@@ -76,16 +76,15 @@ module.exports = ( sequelize, DataTypes ) => {
       const result = {
         tapIndex: tap.tapIndex,
         kegId: keg.kegId,
-        gallonsTotal: keg.gallons
+        gallonsTotal: keg.gallons,
+        gallonsPoured: 0,
+        remainingPercent: 100
       };
 
-      let pourTotals = pourTotalsByKegId[keg.kegId];
+      const pourTotals = pourTotalsByKegId[keg.kegId];
       if( pourTotals ){
         result.gallonsPoured = utils.gallonsFromMilliliters( pourTotals.millilitersPoured ),
         result.remainingPercent = 100 - utils.precision( (result.gallonsPoured / keg.gallons) * 100, 0 )
-      }else{
-        result.gallonsPoured = 0;
-        result.remainingPercent = 100;
       }
 
       results.push( result );
