@@ -23,6 +23,7 @@
 
 <script>
 import { getBeerSearch } from '../api/beers'
+import  { socket } from '../sockets'
 
 export default {
   name: 'AddAKegModal',
@@ -32,9 +33,6 @@ export default {
       searchTerm: null,
       beers: null
     }
-  },
-  computed: {
-    
   },
   methods: {
     show( tapIndex ){
@@ -60,6 +58,7 @@ export default {
     },
     selectBeer ( beer ) {
       this.$store.dispatch( 'putKegOnTap', { tapIndex: this.tapIndex, beerId: beer.beerId, gallons: 5 })
+      socket.sendMessage( { type: 'get_keg_statuses' } )
       this.$refs.modal.hide()
     },
   },
