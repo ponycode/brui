@@ -2,8 +2,8 @@
   <div class="beerOnTap text-center" v-if="beer && !beer.empty">
     <h2 class="mb-1">{{beer.name}}</h2>
     <b-button class="mt-0 mb-2" v-if="!fullscreen" variant="outline-danger" size="sm" v-b-modal="'removeKegConfirmation-' + tapIndex"><font-awesome-icon icon="times-circle" class="mr-2"/>Remove Keg</b-button>
-    <div class="beerImage mt-3">
-      <img v-if="beer.imageUrl" :src="beer.imageUrl" />
+    <div class="beerImage mt-3" v-if="beer.imageUrl">
+      <img :src="beer.imageUrl" />
     </div>
     <div>
       <span v-if="beer.abv" class="spec">{{beer.abv}}% <span class="unit">ABV</span></span>
