@@ -46,7 +46,7 @@ module.exports = ( sequelize, DataTypes ) => {
   };
 
   Tap.findAllWithBeers = async function(){
-    const { Keg, Beer } = require('.').models;
+    const { Keg, Beer, BeerImage } = require('.').models;
 
     return await this.findAll({
       include: [
@@ -54,7 +54,13 @@ module.exports = ( sequelize, DataTypes ) => {
           model: Keg,
           include: [
             {
-              model: Beer
+              model: Beer,
+              include: [
+                {
+                  model: BeerImage,
+                  attributes: ['contentType']
+                }
+              ]
             }
           ]
         }
