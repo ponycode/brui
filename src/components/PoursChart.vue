@@ -31,8 +31,9 @@ export default {
             title: ( [firstToolTipItem] ) => {
               return 'Pours on ' + firstToolTipItem.xLabel
             },
-            label: ( tooltipItems ) => {
-                return tooltipItems.yLabel + ' fl. oz';
+            label: ( tooltipItem, data ) => {
+              const beerName = data.datasets[tooltipItem.datasetIndex].label || '';
+              return `${beerName}: ${tooltipItem.yLabel} fl. oz`;
             }
         }
       },
