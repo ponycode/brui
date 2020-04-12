@@ -10,7 +10,7 @@ async function _connect( databasePath ){
     host: 'localhost',
     dialect: 'sqlite',
     storage: databasePath,
-    logging: true
+    logging: process.env.SQL_LOGGING
   });
 
   await sequelize.authenticate()
