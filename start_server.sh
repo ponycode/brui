@@ -1,6 +1,9 @@
 #!/bin/bash
 
 
+# Start the server with flow_meter support
+node api/server.js --flow_meter=1 --simulated_flow_meter=1 --environment=prod &
+
 if [[ -d /home/pi ]] # Shitty way to see if we're running on a pi - TODO: improve
 then
 
@@ -22,7 +25,7 @@ then
   if [[ -f /usr/bin/chromium-browser ]]
   then
     # --kiosk is another option here
-    /usr/bin/chromium-browser --touch-events --noerrdialogs --disable-infobars http://localhost:8080 &
+    /usr/bin/chromium-browser --touch-events --noerrdialogs --disable-infobars http://localhost:8081 &
   fi
 
   # force refreshes every 15 seconds
@@ -31,6 +34,3 @@ then
   #      sleep 15
   #done
 fi
-
-# Start the server with flow_meter support
-node api/server.js --flow_meter=0 --simulated_flow_meter=1 --environment=prod
