@@ -17,32 +17,30 @@
   
   require('./routes')( app );
 
-  app.use( function( err, req, res, next ){
+  app.use( function( err, req, res ){
+    // eslint-disable-next-line no-console
     console.error('SERVER ERROR:', err.stack);
     res.status(500).send('Something broke!');
   })
 
   const PORT = process.env.PORT || 8081;
 
-  return new Promise( ( resolve ) => {
 
-    const server = app.listen( PORT, () => {
-      // eslint-disable-next-line no-console
-      console.log(`brui server running on port ${PORT}`);
-      resolve();
-    });
-  
-    const sockets = require('./sockets');
-    sockets.init( server );
-    sockets.addMessageListener( socketListener.onSocketMessage.bind(socketListener) );
-
-    if( argv.flow_meter ){
-      // eslint-disable-next-line no-console
-      console.log('FLOW METER ENABLED');
-      const flowMeter = require('./flow-meter')
-      flowMeter.listen( new PourListener() );
-    }
-   
+  const server = app.listen( PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log(`brui server running on port ${PORT}`);
   });
+
+  const sockets = require('./sockets');
+  sockets.init( server );
+  sockets.addMessageListener( socketListener.onSocketMessage.bind(socketListener) );
+
+  if( argv.flow_meter ){
+    // eslint-disable-next-line no-console
+    console.log('FLOW METER ENABLED');
+
+    const flowMeter = require('./flow-meter')
+    flowMeter.listen( new PourListener() );
+  }
 
 })();
