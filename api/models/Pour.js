@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 module.exports = ( sequelize, DataTypes ) => {
 
@@ -48,7 +49,7 @@ module.exports = ( sequelize, DataTypes ) => {
     return await Pour.findAll({
       where: {
         createdAt: {
-          $gt: moment().subtract( fromDaysAgo, 'days' ).toDate()
+          [Op.gt]: moment().subtract( fromDaysAgo, 'days' ).toDate()
         }
       },
       order: [['createdAt', 'DESC']],

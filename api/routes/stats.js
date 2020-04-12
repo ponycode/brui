@@ -41,7 +41,7 @@ async function _fetchBeerStats( beerIds ){
       name, 
       ROUND( SUM(milliliters) ) as milliliters, 
       ROUND( SUM(milliliters) * ${utils.FLOZ_PER_ML} ) as floz,
-      ROUND( SUM(milliliters) * ${utils.GALS_PER_ML} ) as gallons,
+      ROUND( SUM(milliliters) * ${utils.GAL_PER_ML} ) as gallons,
       COUNT(1) AS "numberOfPours",
       MIN(p."createdAt") as "firstPourDate",
       MAX(p."createdAt") as "lastPourDate",
@@ -50,6 +50,11 @@ async function _fetchBeerStats( beerIds ){
     WHERE b.beerId IN(?)
     GROUP BY b.beerId;
   `;
-  const stats = await sequelize.query( sql, { replacements: [beerIds], type: sequelize.QueryTypes.SELECT });
-  return stats;
+  try{
+    const stats = await sequelize.query( sql, { replacements: [beerIds], type: sequelize.QueryTypes.SELECT });
+    return stats;
+  }catch(e){
+    return null;
+  }
+
 }

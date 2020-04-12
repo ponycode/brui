@@ -1,12 +1,10 @@
 <template>
-  <div class="stats">
-
-    <br/>
-    <h2>Stats</h2>
+  <div class="stats pt-3">
 
     <pours-chart></pours-chart>
 
-    <table class="table mt-3">
+    <h3 class="mt-3">Keg History</h3>
+    <table class="table mt-5">
       <tr>
         <th>Beer</th>
         <th>Poured</th>
@@ -25,8 +23,7 @@
       </tr>
     </table>
 
-    <br/>
-    <h2>Pour History</h2>
+    <h3 class="mt-3">Pour History</h3>
     <table class="table">
       <tr>
         <th>Date</th>
@@ -72,6 +69,7 @@ export default {
   background-color: white;
   padding-bottom: 100px;
   min-height: 100%;
+  color: #333;
 }
 
 </style>

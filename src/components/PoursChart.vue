@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div>
+    <h3>Fl. oz Poured, last 3 months</h3>
     <bar-chart
       v-if="loaded && chartData"
       :chartdata="chartData"
@@ -18,16 +19,26 @@ export default {
   data: () => ({
     loaded: false,
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       title: {
-        display: true,
-        text: 'Fl oz. poured over last 3 months'
+        display: false
       },
       tooltips: {
         mode: 'index',
-        intersect: false
+        intersect: false,
+        callbacks: {
+            title: ( [firstToolTipItem] ) => {
+              return 'Pours on ' + firstToolTipItem.xLabel
+            },
+            label: ( tooltipItems ) => {
+                return tooltipItems.yLabel + ' fl. oz';
+            }
+        }
       },
-      responsive: true,
-      maintainAspectRatio: false,
+      legend: {
+        position: 'right'
+      },
       scales: {
         xAxes: [{
           type: 'time',
