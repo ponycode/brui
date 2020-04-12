@@ -17,7 +17,7 @@ exports.load = function( sequelize ){
   });
   
   Object.keys( models ).forEach( modelName => {
-    if( models[modelName].associate ){
+    if( models[modelName] && models[modelName].associate ){
       models[modelName].associate( models );
     }
   });

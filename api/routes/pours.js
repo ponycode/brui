@@ -24,7 +24,7 @@ async function _getPoursChart( req, res ){
     SELECT
       date( createdAt, 'start of day' ) as date,
       beerId,
-      COUNT(1) as pourCount
+      SUM(milliliters) as millilitersPoured
     FROM "Pours" WHERE createdAt > date('now','-3 months')
     GROUP BY date( createdAt, 'start of day' ), beerId
     ORDER BY date( createdAt, 'start of day' ) DESC;
@@ -36,43 +36,41 @@ async function _getPoursChart( req, res ){
   });
 
 
-  const poursByBeerId = {}
-  const dates = []
+  const flozPouredByBeerIdAndDate = {};
+  const dates = [];
 
   for( const p of pours ){
-    if( !poursByBeerId[p.beerId] ) poursByBeerId[p.beerId] = {}
-    poursByBeerId[p.beerId][p.date] = p.pourCount
-
-    if( dates.indexOf(p.date) === -1 ) dates.push( p.date )
+    if( !flozPouredByBeerIdAndDate[p.beerId] ) flozPouredByBeerIdAndDate[p.beerId] = {}
+    flozPouredByBeerIdAndDate[p.beerId][p.date] = utils.flozFromMilliliters( p.millilitersPoured );
+    if( dates.indexOf(p.date) === -1 ) dates.push( p.date );
   }
 
   const beers = await Beer.findAll({
     where: {
-      beerId: Object.keys( poursByBeerId )
+      beerId: Object.keys( flozPouredByBeerIdAndDate )
     }
   });
 
   const beersById = beers.reduce( ( obj, beer ) => {
-    obj[beer.beerId] = beer
-    return obj
+    obj[beer.beerId] = beer;
+    return obj;
   }, {} )
 
   const datasets = [];
-  for( const beerId in poursByBeerId ){
-    const pours = poursByBeerId[beerId];
+  for( const beerId in flozPouredByBeerIdAndDate ){
+    const flozPouredByDate = flozPouredByBeerIdAndDate[beerId];
     const beer = beersById[beerId];
 
-    const counts = [];
+    const flozPouredData = [];
     
     for( const date of dates ){
-      const count = pours[date];
-      counts.push( count ? count : 0 )
+      const flozPoured = flozPouredByDate[date];
+      flozPouredData.push( flozPoured ? flozPoured : 0 )
     }
 
     datasets.push({
       label: beer.name,
-      data: counts,
-      backgroundColor: _chartColor( datasets.length )
+      data: flozPouredData
     });
   }
 
@@ -82,9 +80,4 @@ async function _getPoursChart( req, res ){
       datasets
     }
   })
-}
-
-function _chartColor( index){
-  const colors = ['#F8B195', '#F67280', '#C06C84', '#6C5B7B', '#355C7D'];
-  return colors[index]; 
 }

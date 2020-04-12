@@ -9,6 +9,7 @@ import Toasted from 'vue-toasted';
 import './icons'
 import './sockets'
 import moment from 'moment'
+import 'chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes';
 
 Vue.filter('formatDate', function(value, format='MM/DD/YYYY hh:mm A') {
   if (value) {
