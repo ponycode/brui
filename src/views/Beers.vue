@@ -48,7 +48,7 @@ export default {
 .beers{
   background-color: white;
   padding-bottom: 100px;
-  height: 100%;
+  min-height: 100%;
 }
 
 .beerTable td {

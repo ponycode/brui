@@ -2,9 +2,11 @@ const path = require('path');
 const fs = require('fs');
 const basename  = path.basename( __filename );
 const models = {};
+const { Op } = require('sequelize');
+
 
 exports.load = function( sequelize ){
-  models.Op = sequelize.Op;
+  models.Op = Op;
   models.sequelize = sequelize;
   
   fs.readdirSync( path.resolve( __dirname ) )

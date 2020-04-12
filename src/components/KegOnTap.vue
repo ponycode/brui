@@ -11,7 +11,7 @@
     </div>
     <p class='description'>{{beer.description}}</p>
 
-    <b-modal :id="'removeKegConfirmation-' + tapIndex" title="Remove Keg?" ref="modal" size="sm" ok-title="Yes, Remove Keg" ok-variant="danger" @ok="removeKeg">
+    <b-modal :id="'removeKegConfirmation-' + tapIndex" title="Remove Keg?" ref="modal" size="lg" ok-title="Yes, Remove Keg" ok-variant="danger" @ok="removeKeg" modal-class="removeKegConfirmation">
       <h3>{{beer.name}}</h3>
       <p class="mt-3">
         Removing this keg will finalize all pour reporting.
@@ -97,6 +97,14 @@ h5 {
   font-size: 20px;
   font-weight: 300;
   color: rgba( 255, 255, 255, 0.8 );
+}
+
+</style>
+
+<style type="scss">
+
+.removeKegConfirmation{
+  color: #333;
 }
 
 </style>

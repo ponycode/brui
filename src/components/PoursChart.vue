@@ -20,7 +20,7 @@ export default {
     options: {
       title: {
         display: true,
-        text: 'Pours over last 3 months'
+        text: 'Fl oz. poured over last 3 months'
       },
       tooltips: {
         mode: 'index',

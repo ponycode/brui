@@ -9,8 +9,8 @@
     </b-input-group>
 
     <div v-if="searchTerm && this.beers" class="results mt-3">
-      <b-list-group v-for="beer in beers" :key="beer.beerId">
-        <b-list-group-item href="#" button @click="selectBeer(beer)">{{beer.name}}</b-list-group-item>
+      <b-list-group>
+        <b-list-group-item v-for="beer in beers" :key="beer.beerId" href="#" button @click="selectBeer(beer)">{{beer.name}}</b-list-group-item>
       </b-list-group>
     </div>
 
@@ -70,6 +70,8 @@ export default {
 }
 </script>
 
-<style type="scss" scoped>
-
+<style type="scss">
+#addAKegModal{
+  color: #333;
+}
 </style>

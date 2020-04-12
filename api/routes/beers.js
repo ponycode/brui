@@ -17,12 +17,12 @@ async function _getBeers( req, res ){
   const where = {};
   if( searchTerm ){
     where[Op.or] = [
-      { name: { like: searchTerm } },
-      { description: { like: searchTerm } }
+      { name: { [Op.like]: searchTerm } },
+      { description: { [Op.like]: searchTerm } }
     ]
   }
 
-  const beers = await Beer.findAll({
+  const beers =await Beer.findAll({
     where,
     limit: 100
   });
