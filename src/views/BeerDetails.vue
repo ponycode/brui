@@ -26,6 +26,21 @@
               </b-form-input>
             </b-form-group>
 
+            <b-form-group v-if="beerId" label="Image" label-for="beerImage">
+              <div v-if="imageUrl">
+                <img :src="imageUrl" class="beerImage" />
+                <b-button variant="danger" @click="deleteImage">Delete Image</b-button>
+              </div>
+              <b-form-file
+                v-else
+                v-model="imageFile"
+                :state="Boolean(imageFile)"
+                placeholder="Choose a image or drop it here..."
+                drop-placeholder="Drop image file here..."
+                accept="image/*"
+              ></b-form-file>
+            </b-form-group>
+
             <b-form-group label="ABV" label-for="abv">
               <b-form-input 
                             v-model="abv"
@@ -67,6 +82,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import {deleteBeerImage, addBeerImage } from '../api/beers'
 
 export default {
   name: 'beerDetails',
@@ -80,13 +96,34 @@ export default {
     return {
       name: null,
       imageUrl: null,
+      deleteImageUrl: null,
+      addImageUrl: null,
       abv: null,
       ibu: null,
       description: null,
-      empty: true
+      empty: true,
+      imageFile: null
     }
   },
   methods: {
+    async uploadFile(){
+      if( !this.imageFile || !this.addImageUrl ) return
+
+      const { type, name } = this.imageFile
+
+      const result = await addBeerImage ({
+        addImageUrl: this.addImageUrl,
+        imageFile: this.imageFile
+      })
+
+      console.log('FILE UPDATED', type, name, result )
+      await this.$store.dispatch('fetchBeerDetails', this.beerId )
+    },
+    async deleteImage(){
+      console.log(`DELETEING IMAGE ${this.deleteImageUrl}`)
+      console.log( 'DELETE IMAGE', await deleteBeerImage( this.deleteImageUrl ) )
+      await this.$store.dispatch('fetchBeerDetails', this.beerId )
+    },
     async onSubmit () {
       if( this.beerId ) {
         await this.$store.dispatch('updateBeerDetails', this.updatedBeer )
@@ -102,6 +139,8 @@ export default {
 
       this.name = beer.name
       this.imageUrl = beer.imageUrl
+      this.deleteImageUrl = beer.deleteImageUrl
+      this.addImageUrl = beer.addImageUrl
       this.abv = beer.abv
       this.ibu = beer.ibu
       this.description = beer.description
@@ -130,6 +169,9 @@ export default {
     }
   },
   watch: {
+    imageFile() {
+      this.uploadFile()
+    },
     beer: {
       immediate: true,
       handler () {

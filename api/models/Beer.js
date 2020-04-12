@@ -13,9 +13,6 @@ module.exports = ( sequelize, DataTypes ) => {
     brewerName: {
       type: DataTypes.TEXT
     },
-    imageUrl: {
-      type: DataTypes.TEXT
-    },
     abv: {
       type: DataTypes.FLOAT
     },
@@ -28,8 +25,9 @@ module.exports = ( sequelize, DataTypes ) => {
   });
 
   Beer.associate = function( models ){
-    const { Beer, Keg } = models;
+    const { Beer, Keg, BeerImage } = models;
     Beer.hasMany( Keg, { foreignKey: 'beerId' });
+    Beer.hasOne( BeerImage, { foreignKey: 'beerId' });
   };
 
   return Beer;

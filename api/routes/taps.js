@@ -1,7 +1,6 @@
 const { Tap, Keg, transaction } = require('../models').models;
 const _ = require('lodash');
 const sockets = require('../sockets');
-const utils = require('../lib/utils.js');
 
 module.exports = function( app ){
   app.get('/api/taps', _getTaps );
@@ -104,6 +103,13 @@ async function _getTaps( req, res ){
   const results = [];
   for( let tap of taps ){
     const tapJson = tap.toJSON();
+
+    // TODO: find a place to add these urls - transformers?
+    if( tapJson.Keg && tapJson.Keg.Beer && tapJson.Keg.Beer.BeerImage ){
+      tapJson.Keg.Beer.imageUrl = `/api/beers/${tapJson.Keg.Beer.beerId}/image`;
+      delete tapJson.Keg.Beer.BeerImage;
+    }
+
     delete tapJson.Beer;
     results.push( tapJson );
   }

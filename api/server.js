@@ -7,6 +7,7 @@
   const bodyParser = require('body-parser')
   const socketListener = require('./lib/socketListener');
   await require('./sequelize').connect( argv.environment );
+  const fileUpload = require('express-fileupload');
   
   const app = express();
   
@@ -14,7 +15,7 @@
   app.use( express.static( path.join( __dirname, '../dist' ), { index: false } ) );
   app.use( bodyParser.json() );
   app.use( bodyParser.urlencoded({ extended: true }) );
-  
+  app.use( fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
   require('./routes')( app );
 
   app.use( function( err, req, res ){
