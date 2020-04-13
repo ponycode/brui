@@ -21,13 +21,13 @@ async function _getPours( req, res ){
 
 async function _getPoursChart( req, res ){
   const sql = `
-    SELECT
-      date( createdAt, 'start of day' ) as date,
-      beerId,
-      SUM(milliliters) as millilitersPoured
-    FROM "Pours" WHERE createdAt > date('now','-3 months')
-    GROUP BY date( createdAt, 'start of day' ), beerId
-    ORDER BY date( createdAt, 'start of day' ) DESC;
+  SELECT
+    date( createdAt, 'localtime', 'start of day' ) as date,
+    beerId,
+    SUM(milliliters) as millilitersPoured
+  FROM "Pours" WHERE createdAt > date('now','-3 months')
+  GROUP BY date( createdAt, 'localtime', 'start of day' ), beerId
+  ORDER BY date( createdAt, 'localtime', 'start of day' ) DESC;
   `;
 
   const pours = await sequelize.query( sql, {

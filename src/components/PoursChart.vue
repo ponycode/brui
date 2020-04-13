@@ -12,6 +12,7 @@
 import BarChart from './BarChart'
 import { mapState } from 'vuex'
 import { ClassicCyclic13 } from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.tableau';
+import moment from 'moment-timezone'
 
 export default {
   name: 'PoursChart',
@@ -44,7 +45,6 @@ export default {
         xAxes: [{
           type: 'time',
           time: {
-            parser: 'YYYY-MM-DD',
             unit: 'day'
           },
           stacked: true,
