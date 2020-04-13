@@ -5,76 +5,65 @@
 
     <b-form v-on:submit.prevent="onSubmit">
       <div class="row mt-3">
+        <b-col md="6">
 
-        <div class="col-md-6 col-md-offset-2" >
-          <div>
+          <b-form-group label="Beer Name" label-for="beerName">
+            <b-form-input 
+                          id="beerName"
+                          type="text"
+                          v-model="name"
+                          required
+                          placeholder="Beer name">
+            </b-form-input>
+          </b-form-group>
 
-            <b-form-group label="Name" label-for="beerName">
-              <b-form-input 
-                            type="text"
-                            v-model="name"
-                            required
-                            placeholder="Beer name">
-              </b-form-input>
-            </b-form-group>
+          <b-form-group label="ABV" label-for="abv">
+            <b-form-input 
+                          v-model="abv"
+                          placeholder="ABV">
+            </b-form-input>
+          </b-form-group>
+          
+          <b-form-group label="IBU" label-for="ibu">
+            <b-form-input 
+                          type="number"
+                          v-model="ibu"
+                          placeholder="IBU">
+            </b-form-input>
+          </b-form-group>
 
-            <b-form-group label="Image" label-for="beerImage">
-              <b-form-input 
-                            type="text"
-                            v-model="imageUrl"
-                            placeholder="Beer image url">
-              </b-form-input>
-            </b-form-group>
+          <b-form-group label="Description" label-for="description">
+            <b-form-textarea 
+                            v-model="description"
+                            placeholder="Beer description"
+                            :rows="3"
+                            :max-rows="6">
+            </b-form-textarea>
+          </b-form-group>
 
-            <b-form-group v-if="beerId" label="Image" label-for="beerImage">
-              <div v-if="imageUrl">
-                <img :src="imageUrl" class="beerImage" />
-                <b-button variant="danger" @click="deleteImage">Delete Image</b-button>
-              </div>
-              <b-form-file
-                v-else
-                v-model="imageFile"
-                :state="Boolean(imageFile)"
-                placeholder="Choose a image or drop it here..."
-                drop-placeholder="Drop image file here..."
-                accept="image/*"
-              ></b-form-file>
-            </b-form-group>
-
-            <b-form-group label="ABV" label-for="abv">
-              <b-form-input 
-                            v-model="abv"
-                            placeholder="ABV">
-              </b-form-input>
-            </b-form-group>
-            
-            <b-form-group label="IBU" label-for="ibu">
-              <b-form-input 
-                            type="number"
-                            v-model="ibu"
-                            placeholder="IBU">
-              </b-form-input>
-            </b-form-group>
-
-            <b-form-group label="Description" label-for="description">
-              <b-form-textarea 
-                              v-model="description"
-                              placeholder="Beer description"
-                              :rows="3"
-                              :max-rows="6">
-              </b-form-textarea>
-            </b-form-group>
-
-          </div>
-
-        </div>
-        <div class="col-md-4">
-          <img v-if="imageUrl && !empty" :src="imageUrl" class="beerImage"/>
-        </div>
+          <b-form-group v-if="beerId" label="Image" label-for="beerImage">
+            <div v-if="imageUrl">
+              <img :src="imageUrl" class="beerImage" /><br/>
+              <b-button variant="danger" class="mt-2" size="sm" @click="deleteImage">Delete Image</b-button>
+            </div>
+            <b-form-file
+              v-else
+              v-model="imageFile"
+              :state="Boolean(imageFile)"
+              placeholder="Choose a image or drop it here..."
+              drop-placeholder="Drop image file here..."
+              accept="image/*"
+            ></b-form-file>
+          </b-form-group>
+        </b-col>
       </div>
     
-      <b-button variant="default-outline" @click="reset">Reset</b-button>
-      <b-button type="submit" variant="primary">{{saveButtonTitle}}</b-button>
+      <div class="row mt-4">
+        <b-col>
+          <b-button variant="default-outline" @click="reset">Reset</b-button>
+          <b-button type="submit" variant="primary">{{saveButtonTitle}}</b-button>
+        </b-col>
+      </div>
 
     </b-form>
   </div>
@@ -195,6 +184,7 @@ export default {
   background-color: white;
   padding-bottom: 100px;
   height: 100%;
+  color: #333;
 }
 
 .beerImage {
