@@ -1,0 +1,10 @@
+{
+  "uid": "brui",
+  "append": true,
+  "watch": false,
+  "script": "api/server.js",
+  "sourceDir": "/home/pi/brui",
+  "logFile": "/home/pi/brui/logs/forever.log",
+  "outFile": "/home/pi/brui/logs/stdout.log",
+  "errFile": "/home/pi/brui/logs/stderr.log"
+}

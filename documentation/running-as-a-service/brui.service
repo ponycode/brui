@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the brui application
+After=multi-user.target
+
+[Service]
+ExecStart=/home/pi/.nvm/versions/node/v10.13.0/bin/forever start /home/pi/brui/forever/production.json
+ExecStartPost=/home/pi/brui/exec-start-post.sh
+
+[Install]
+WantedBy=multi-user.target
