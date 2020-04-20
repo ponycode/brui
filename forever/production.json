@@ -2,8 +2,9 @@
   "uid": "brui",
   "append": true,
   "watch": false,
-  "script": "api/server.js --flow_meter=1 --simulated_flow_meter=1 --environment=prod ",
   "sourceDir": "/home/pi/brui",
+  "script": "api/server.js",
+  "args": ["--environment", "prod", "--flow_meter", "1", "--simulated_flow_meter", "1"],
   "logFile": "/home/pi/brui/logs/forever.log",
   "outFile": "/home/pi/brui/logs/stdout.log",
   "errFile": "/home/pi/brui/logs/stderr.log"
