@@ -1,10 +1,19 @@
 [Unit]
 Description=Run the brui application
-After=multi-user.target
+After=network.target
 
 [Service]
-ExecStart=/home/pi/.nvm/versions/node/v10.13.0/bin/forever start /home/pi/brui/forever/production.json
+Type=simple
+WorkingDirectory=/home/pi/brui
+ExecStart=/home/pi/.nvm/versions/node/v10.13.0/bin/node /home/pi/brui/api/server.js  --flow_meter=1 --simulated_flow_meter=1 --environment=prod
 ExecStartPost=/home/pi/brui/exec-start-post.sh
+User=pi
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=brui
+Environment="PATH=/home/pi/.nvm/versions/node/v10.13.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" NODE_PATH=/home/pi/.nvm/versions/node/v10.13.0/lib/node_modules
 
 [Install]
 WantedBy=multi-user.target
