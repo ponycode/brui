@@ -1,25 +1,14 @@
-
-const sockets = require('../sockets');
-const { Pour, Tap } = require('../models').models;
 const FlowMeter = require('./FlowMeter');
 
 const flowMeters = [];
-const ML_PER_TICK = 0.64; // TODO: add to settings UI
 
-exports.listen = function( pourListener ){
-  const tapConfig = [
-    {
-      tapIndex: 0,
-      gpioPin: 24
-    },
-    // No middle tap right now
-    {
-      tapIndex: 2,
-      gpioPin: 23
-    }
-  ];
+exports.listen = function({ pinConfig, pourListener }){
+  if( !pinConfig ) throw new Error(`pinConfig is required`);
+  if( !pourListener ) throw new Error(`pourListener is required`);
 
-  tapConfig.forEach( ({ tapIndex, gpioPin }) => {
+  pinConfig.forEach( ({ type, gpioPin, tapIndex }) => {
+    if( type !== 'flow' ) return;
+
     const flowMeter = new FlowMeter( FlowMeter.createGPIO( gpioPin ) );
     flowMeter.on('pour_start', pourListener.pourStart.bind( pourListener, tapIndex ) );
     flowMeter.on('pour_status', pourListener.pourStatus.bind( pourListener, tapIndex ) ); 
@@ -27,37 +16,3 @@ exports.listen = function( pourListener ){
     flowMeters.push( flowMeter );
   });
 };
-
-/*
-exports.pourStart = async function( tapIndex ){
-  const { Beer } = await Tap.findByTapIndexWithBeer( tapIndex );
-  const beerName = Beer ? Beer.name : '';
-  sockets.broadcast({ type: 'pour_start', tapIndex, beerName });
-}
-
-exports.pourStatus = async function( tapIndex, { durationSeconds, pourTickCount } ){
-  const milliliters = pourTickCount * ML_PER_TICK;
-  sockets.broadcast({ type: 'pour_status', tapIndex, durationSeconds, pourTickCount, milliliters });
-}
-
-exports.pourEnd = async function( tapIndex, { durationSeconds, pourTickCount } ){
-  const milliliters = pourTickCount * ML_PER_TICK;
-  console.log( "Pour ended", tapIndex, pourTickCount, milliliters, durationSeconds );
-
-  const tap = await Tap.findById( tapIndex );
-
-  const pour = await Pour.create({
-    beerId: tap ? tap.beerId : null,
-    tapIndex,
-    tickCount: pourTickCount,
-    durationSeconds: durationSeconds,
-    milliliters
-  })
-  console.log( "Saved a pour record", pour.pourId );
-
-  setTimeout( () => {
-    // have modal linger a bit
-    sockets.broadcast({ type: 'pour_end', tapIndex, durationSeconds, milliliters });
-  }, 2000 );
-};
-*/
