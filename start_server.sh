@@ -2,7 +2,7 @@
 
 
 # Start the server with flow_meter support
-node api/server.js --flow_meter=1 --simulated_flow_meter=1 --environment=prod &
+node api/server.js --flow_meter=1 --simulated_flow_meter=1 --temp_humidity_sensor=1 --environment=prod &
 
 if [[ -d /home/pi ]] # Shitty way to see if we're running on a pi - TODO: improve
 then
