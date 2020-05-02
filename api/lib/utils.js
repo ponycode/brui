@@ -12,4 +12,8 @@ exports.flozFromMilliliters = function( milliliters ){
 exports.precision = function( value, decimals ){
   const d = Math.pow( 10, decimals );
   return Math.round( (value + Number.EPSILON) * d ) / d;
-}
+};
+
+exports.tempFFromTempC = function( tempC ){
+  return exports.precision( tempC * (9/5) + 32, 1 );
+};

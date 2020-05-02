@@ -1,5 +1,5 @@
 const sensor = require("node-dht-sensor");
-
+const { precision, tempFFromTempC } = require('../lib/utils');
 class DHT11Sensor {
 
   constructor({ sockets, gpioPinNumber, sensorType = 11, readIntervalSeconds = 3 }){
@@ -21,9 +21,13 @@ class DHT11Sensor {
   async tick(){
     try{
       const { temperature: temperatureC, humidity: humidityPercent } = await sensor.read( this.sensorType, this.gpioPinNumber );
-      const temperatureF = temperatureC * (9/5) + 32;
       console.log(`${new Date().toISOString()}; type=${this.sensorType}; pin=${this.gpioPinNumber}; temp: ${temperatureF}°F; humidity: ${humidityPercent}%`);
-      this.sockets.broadcast({ type: 'temp_humidity_update', temperatureF, temperatureC, humidityPercent });
+      this.sockets.broadcast({ 
+        type: 'temp_humidity_update',
+        temperatureF: tempFFromTempC( temperatureC ),
+        temperatureC: precision( temperatureC, 1 ),
+        humidityPercent: precision( humidityPercent, 1 )
+      });
     }catch( error ){
       console.error(`Error reading temp & humidty: ${error}`);
     }
