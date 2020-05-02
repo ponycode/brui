@@ -12,7 +12,8 @@
     "migrate:up": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=dev migrate:up",
     "migrate:down": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=dev migrate:down",
     "migrate:prod:up": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=prod migrate:up",
-    "migrate:prod:down": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=prod migrate:down"
+    "migrate:prod:down": "./node_modules/knex/bin/cli.js --knexfile=./database/knexfile.js --env=prod migrate:down",
+    "ssh": "ssh -R 52698:localhost:52698 pi@brui.local"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
