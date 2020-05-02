@@ -21,3 +21,7 @@ yarn-error.log*
 /database/brui-prod.sqlite
 /database/brui-dev.sqlite
 /database/brui-test.sqlite
+stderr.log
+stdout.log
+logs/*
+.AppleDouble
