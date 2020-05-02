@@ -36,12 +36,37 @@
   sockets.init( server );
   sockets.addMessageListener( socketListener.onSocketMessage.bind(socketListener) );
 
+  // TODO: make this DB driven
+  const pinConfig = [
+    {
+      type: 'flow',
+      tapIndex: 0,
+      gpioPin: 24,
+    },
+    {
+      type: 'flow',
+      tapIndex: 2,
+      gpioPin: 23,
+    },
+    {
+      type: 'temp-humidity',
+      gpioPin: 25,
+      readIntervalSeconds: 3
+    }
+  ];
+
   if( argv.flow_meter ){
     // eslint-disable-next-line no-console
     console.log('FLOW METER ENABLED');
-
     const flowMeter = require('./flow-meter')
-    flowMeter.listen( new PourListener() );
+    flowMeter.listen({ pinConfig, pourListener: new PourListener() });
+  }
+
+  if( argv.temp_humidity_sensor ){
+    // eslint-disable-next-line no-console
+    console.log('TEMP & HUMIDITY SENSOR ENABLED');
+    const tempHumiditySensor = require('./temp-humidity-sensor');
+    tempHumiditySensor.listen({ pinConfig, sockets });
   }
 
 })();
