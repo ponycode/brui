@@ -26,7 +26,7 @@ class DHT11Sensor {
       this.sockets.broadcast({ 
         type: 'temp_humidity_update',
         temperatureF: precision( temperatureF, 1 ),
-        temperatureC: precision( temperatureF, 1 ),
+        temperatureC: precision( temperatureC, 1 ),
         humidityPercent: precision( humidityPercent, 1 )
       });
     }catch( error ){
