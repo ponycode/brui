@@ -15,5 +15,5 @@ exports.precision = function( value, decimals ){
 };
 
 exports.tempFFromTempC = function( tempC ){
-  return exports.precision( tempC * (9/5) + 32, 1 );
+  return tempC * (9/5) + 32;
 };
