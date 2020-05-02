@@ -20,8 +20,10 @@ class DHT11Sensor {
 
 	async tick(){
 		try{
-			const { temperature, humidity } = await sensor.read( this.sensorType, this.gpioPinNumber );
-			console.log(`${new Date().toISOString()}; type=${this.sensorType}; pin=${this.gpioPinNumber}; temp: ${temperature * (9/5) + 32}°F; humidity: ${humidity}%`);
+			const { temperature: temperatureC, humidity: humidityPercent } = await sensor.read( this.sensorType, this.gpioPinNumber );
+			const temperatureF = temperatureC * (9/5) + 32;
+			console.log(`${new Date().toISOString()}; type=${this.sensorType}; pin=${this.gpioPinNumber}; temp: ${temperatureF}°F; humidity: ${humidityPercent}%`);
+			this.sockets.broadcast({ type: 'temp_humidity_update', temperatureF, temperatureC, humidityPercent });
 		}catch( error ){
 			console.error(`Error reading temp & humidty: ${error}`);
 		}
