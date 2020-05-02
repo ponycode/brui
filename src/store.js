@@ -21,7 +21,8 @@ export const MUTATIONS = {
   'SET_MOST_RECENT_BEERS': 'SET_MOST_RECENT_BEERS',
   'SET_BEER_DETAILS': 'SET_BEER_DETAILS',
   'SET_POUR_CHART_DATA': 'SET_POUR_CHART_DATA',
-  'SET_KEG_STATUSES': 'SET_KEG_STATUSES'
+  'SET_KEG_STATUSES': 'SET_KEG_STATUSES',
+  'SET_TEMP_AND_HUMIDITY': 'SET_TEMP_AND_HUMIDITY'
 };
 
 export default new Vuex.Store({
@@ -36,7 +37,11 @@ export default new Vuex.Store({
     mostRecentBeers: null,
     beerDetails: null,
     poursChartData: null,
-    kegStatuses: null
+    kegStatuses: null,
+    hasReceivedTempAndHumidity: false,
+    temperatureC: null,
+    temperatureF: null,
+    humidityPercent: null
   },
   mutations: {
     [MUTATIONS.SET_SETTINGS] ( state, settings ) {
@@ -92,6 +97,12 @@ export default new Vuex.Store({
         keyedStatuses[status.tapIndex] = status
       }
       state.kegStatuses = keyedStatuses
+    },
+    [MUTATIONS.SET_TEMP_AND_HUMIDITY] ( state, data ){
+      state.hasReceivedTempAndHumidity = true;
+      state.temperatureF = data.temperatureF;
+      state.temperatureC = data.temperatureC;
+      state.humidityPercent = data.humidityPercent;
     }
   },
   actions: {

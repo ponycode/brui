@@ -51,7 +51,7 @@
     {
       type: 'temp-humidity',
       gpioPin: 25,
-      readIntervalSeconds: 3
+      readIntervalSeconds: 60
     }
   ];
 
@@ -66,6 +66,11 @@
     // eslint-disable-next-line no-console
     console.log('TEMP & HUMIDITY SENSOR ENABLED');
     const tempHumiditySensor = require('./temp-humidity-sensor');
+    tempHumiditySensor.listen({ pinConfig, sockets });
+  }else if( argv.simulated_temp_humidity ){
+    // eslint-disable-next-line no-console
+    console.log('SIMULATED TEMP & HUMIDITY SENSOR ENABLED');
+    const tempHumiditySensor = require('./temp-humidity-sensor/simulator.js');
     tempHumiditySensor.listen({ pinConfig, sockets });
   }
 

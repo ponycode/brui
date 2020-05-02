@@ -59,6 +59,10 @@ class SocketWrapper {
 
       store.commit('SET_KEG_STATUSES', message.data)
 
+    }else if( message.type === 'temp_humidity_update' ){
+
+      store.commit('SET_TEMP_AND_HUMIDITY', message )
+
     }
   }
 

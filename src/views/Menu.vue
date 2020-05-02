@@ -14,6 +14,7 @@
             <div class="emptyTap">
               <font-awesome-icon icon="sad-cry" />
             </div>
+            <temp-and-humidity />
             <b-button v-if="!fullscreen" size="sm" variant="outline-light" @click="addAKeg(tap.tapIndex)">Add a Keg</b-button>
           </div>
         </div>
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+import TempAndHumidity from '@/components/TempAndHumidity'
 import KegOnTap from '@/components/KegOnTap'
 import AddAKegModal from '@/components/AddAKegModal'
 
@@ -33,7 +35,8 @@ export default {
   name: 'menu',
   components: {
     KegOnTap,
-    AddAKegModal
+    AddAKegModal,
+    TempAndHumidity
   },
   computed: mapState({
     fullscreen: state => state.fullscreen,

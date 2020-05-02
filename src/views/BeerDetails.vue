@@ -71,7 +71,7 @@
 
 <script>
 import {mapState} from 'vuex'
-import {deleteBeerImage, addBeerImage } from '../api/beers'
+import { addBeerImage } from '../api/beers'
 
 export default {
   name: 'beerDetails',
@@ -98,19 +98,19 @@ export default {
     async uploadFile(){
       if( !this.imageFile || !this.addImageUrl ) return
 
-      const { type, name } = this.imageFile
+      // const { type, name } = this.imageFile
 
-      const result = await addBeerImage ({
+      await addBeerImage ({
         addImageUrl: this.addImageUrl,
         imageFile: this.imageFile
       })
 
-      console.log('FILE UPDATED', type, name, result )
+      //console.log('FILE UPDATED', type, name, result )
       await this.$store.dispatch('fetchBeerDetails', this.beerId )
     },
     async deleteImage(){
-      console.log(`DELETEING IMAGE ${this.deleteImageUrl}`)
-      console.log( 'DELETE IMAGE', await deleteBeerImage( this.deleteImageUrl ) )
+      //console.log(`DELETEING IMAGE ${this.deleteImageUrl}`)
+      //console.log( 'DELETE IMAGE', await deleteBeerImage( this.deleteImageUrl ) )
       await this.$store.dispatch('fetchBeerDetails', this.beerId )
     },
     async onSubmit () {
