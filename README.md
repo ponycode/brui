@@ -64,7 +64,23 @@ And then ran `brui/npm install`.
 3. Install tools to simulate key presses and hide the mouse cursor
   1. `sudo apt-get install xdotool unclutter sed`
 
+### Starting BRUI on boot
+1. Create a system.d service file: `sudo nano /lib/systemd/system/brui.service`
+2. Paste in these contents and tailor as needed:
+```
+[Unit]
+Description=Run the BRUI app on boot with forever
+After=multi-user.target
 
+[Service]
+ExecStart=forever -a -o /home/pi/brui/stdout.log -e /home/pi/brui/stderr.log --sourceDir=/home/pi/brui -p /home/pi/brui api/server.js --$
+
+[Install]
+WantedBy=multi-user.target
+```
+3. Reload the systemd services: `systemctl daemon-reload`
+4. Start the service: `systemctl start brui.service`
+5. Check the status: `systemctl status brui.service`
 
 ### x11vnc to remote into the main instance
 
