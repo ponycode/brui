@@ -79,8 +79,9 @@ ExecStart=forever -a -o /home/pi/brui/stdout.log -e /home/pi/brui/stderr.log --s
 WantedBy=multi-user.target
 ```
 3. Reload the systemd services: `systemctl daemon-reload`
-4. Start the service: `systemctl start brui.service`
-5. Check the status: `systemctl status brui.service`
+4. Enable the service on boot: `sudo systemctl enable brui.service`
+5. Start the service: `systemctl start brui.service`
+6. Check the status: `systemctl status brui.service`
 
 ### x11vnc to remote into the main instance
 
