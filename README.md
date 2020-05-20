@@ -22,7 +22,8 @@ These are a little pricy - I'm pretty sure any similarly rated food-grade hall e
 
 ### Temperature Sensor
 
-Coming Soon
+Purchase a DHT-11 or DHT-22. These sensors are can be wired to the flow meter ports of the BRUI PCB.
+https://learn.adafruit.com/dht
 
 
 ### Brui PCB
@@ -53,6 +54,12 @@ npm install sqlite3 --build-from-source --sqlite=/usr
 And then ran `brui/npm install`.
 
 
+### Clone BRUI
+1. CD to `/home/pi`
+2. Clone the repo: `git clone git@github.com:ponycode/brui.git`
+3. CD into `/home/pi/brui`
+
+
 ### Optimize for Kiosk Experience
 
 1. Remove unused packages:
@@ -64,6 +71,7 @@ And then ran `brui/npm install`.
 3. Install tools to simulate key presses and hide the mouse cursor
   1. `sudo apt-get install xdotool unclutter sed`
 
+
 ### Starting BRUI on boot
 1. Create a system.d service file: `sudo nano /lib/systemd/system/brui.service`
 2. Paste in these contents and tailor as needed:
@@ -74,6 +82,7 @@ After=multi-user.target
 
 [Service]
 ExecStart=forever -a -o /home/pi/brui/stdout.log -e /home/pi/brui/stderr.log --sourceDir=/home/pi/brui -p /home/pi/brui api/server.js --$
+ExecStartPost=/home/pi/brui/exec-start-post.sh
 
 [Install]
 WantedBy=multi-user.target
