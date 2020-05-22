@@ -92,6 +92,10 @@ WantedBy=multi-user.target
 5. Start the service: `systemctl start brui.service`
 6. Check the status: `systemctl status brui.service`
 
+#### Turn of the ScreenSaver ( brui will sleep & wake the display automatically )
+1. Install: `sudo apt install xscreensaver`
+2. Go to Preferences -> Screensaver and disable the screensaver.
+
 ### x11vnc to remote into the main instance
 
 #### Install x11vnc
