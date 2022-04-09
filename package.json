@@ -28,7 +28,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.1.7-alpha.3",
     "i": "^0.3.6",
-    "minimist": "^1.2.3",
+    "minimist": "^1.2.6",
     "momentjs": "^2.0.0",
     "node-dht-sensor": "^0.4.1",
     "npm": "^6.13.4",
